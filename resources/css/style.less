@@ -1,0 +1,126 @@
+@mobile: ~"only screen and (max-width: 667px)";
+@desktop: ~"only screen and (min-width: 668px)";
+
+* {
+	-webkit-font-smoothing: antialiased;
+    font-family: "Helvetica Neue";
+}
+
+::selection {
+	
+}
+
+html, body {
+	margin: 0;
+	
+	#startScreen {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		background: white;
+		z-index: 999;
+		pointer-events: auto;
+
+		&.mapReady {
+			#startScreenContentContainer {
+				#startButton {
+					pointer-events: auto;
+					opacity: 1;
+				}
+			}
+		}
+
+		&.gameStarted {
+			opacity: 0;
+			pointer-events: none;
+
+			* {
+				pointer-events: none!important;
+			}
+		}
+
+		#startScreenContentContainer {
+			text-align: left;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 300px;
+			height: 300px;
+			margin-left: -150px;
+			margin-top: -150px;
+
+			#startButton {
+				opacity: 0.5;
+				pointer-events: none;
+			}
+		}
+	}
+
+	#map {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		transition: opacity 0.5s;
+		opacity: 0;
+	}
+
+	#questions {
+		width: 500px;
+		height: 500px;
+		position: fixed;
+		bottom: -157px;
+		left: 50%;
+		margin-top: 100px;
+		margin-left: -250px;
+		z-index: 1;
+		border-radius: 16px;
+		box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+		background: white;
+
+		#optionStatus {
+			font-size: 24px;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			margin: 20px auto 0 auto;
+
+			#correct, #wrong {
+				opacity: 0;
+				position: absolute;
+				transition: opacity 0.5s;
+			}
+		}
+
+		#options {
+			padding: 20px;
+	
+			.option {
+				color: #2e2e2e;
+				padding: 15px 20px;
+				background: rgba(0, 0, 0, 0.1);
+				border-radius: 8px;
+				margin-bottom: 20px;
+				cursor: pointer;
+				
+				&:hover {
+					background: rgba(0, 0, 0, 0.2);
+				}
+	
+				label {
+					pointer-events: none;
+					cursor: pointer;
+				}
+			}
+		}
+	
+	}
+	
+	@media @mobile {
+		
+	}
+	
+	@media @desktop {
+	
+	}
+
+}

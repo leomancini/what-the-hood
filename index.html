@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>NYC Neighborhood Quiz</title>
+		<link rel="stylesheet/less" href="resources/css/style.less">
+		<script src="resources/js/lib/less.js"></script>
+		<script src="resources/js/functions/averageGeolocation.js"></script>
+		<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+		<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
+		<script src="resources/data/neighborhoods/new-york-city.json"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+
+		<div id="startScreen">
+			<div id="startScreenContentContainer">
+				<form>
+					<input type="checkbox" name="queens" value="Queens" checked="checked" class="boroughCheckbox">
+					<label for="queens">Queens</label><br>
+					<input type="checkbox" name="queens" value="Manhattan" checked="checked" class="boroughCheckbox">
+					<label for="queens">Manhattan</label><br>
+					<input type="checkbox" name="queens" value="Brooklyn" checked="checked" class="boroughCheckbox">
+					<label for="queens">Brooklyn</label><br>
+					<input type="checkbox" name="queens" value="The Bronx" checked="checked" class="boroughCheckbox">
+					<label for="queens">The Bronx</label><br>
+					<input type="checkbox" name="queens" value="Staten Island" checked="checked" class="boroughCheckbox">
+					<label for="queens">Staten Island</label><br>
+				</form>
+				<br>
+				<br>
+				<a href="#start" id="startButton">Loading...</a>
+			</div>
+		</div>
+
+		<div id="game">		
+			<div id="map"></div>
+
+			<div id="questions">
+				<div id="optionStatus">
+					<div id="correct">✅</div>
+					<div id="wrong">🚫</div>
+				</div>
+				<div id="options">
+					<div class="option" id="A">
+						A - <label></label>
+					</div>
+					<div class="option" id="B">
+						B - <label></label>
+					</div>
+					<div class="option" id="C">
+						C - <label></label>
+					</div>
+					<div class="option" id="D">
+						D - <label></label>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script src="resources/js/game.js"></script>
+		<script src="resources/js/index.js"></script>
+	</body>
+</html>
