@@ -1,19 +1,4 @@
-
-mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
-
-const boroughCheckboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox');
-
-for (const boroughCheckbox of boroughCheckboxes) {
-    boroughCheckbox.addEventListener('click', getSelectedBoroughs);
-}
-
-let map;
-const mapContainer = document.querySelector('#map');
-window.selectedBoroughs = [];
-
-getSelectedBoroughs();
-
-function getSelectedBoroughs(){
+function getSelectedBoroughs() {
     var selectedBoroughs = [];
     var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
     
@@ -103,18 +88,20 @@ function populateAnswerOptions(answerOptions, neighborhoodData) {
     const optionsDivs = document.querySelectorAll('.option');
 
     for (i = 0; i < optionsDivs.length; ++i) {
-        if (optionsDivs[i].getAttribute('data-neighborhood-name') === neighborhoodData.randomlySelectedNeighborhood.metadata.name) {
-        }
+        optionsDivs[i].style.pointerEvents = 'auto';
+        // if (optionsDivs[i].getAttribute('data-neighborhood-name') === neighborhoodData.randomlySelectedNeighborhood.metadata.name) {
+        // }
     }
 }
 
 function clearAnswerOptions() {
-  const optionsDivs = document.querySelectorAll('.option');
-  
-  for (var i = 0; i < optionsDivs.length; ++i) {
-      optionsDivs[i].setAttribute('data-neighborhood-name', '');
-      optionsDivs[i].querySelector('label').innerHTML = '';
-  }
+    const optionsDivs = document.querySelectorAll('.option');
+
+    for (var i = 0; i < optionsDivs.length; ++i) {
+        optionsDivs[i].style.pointerEvents = 'none';
+        optionsDivs[i].setAttribute('data-neighborhood-name', '');
+        optionsDivs[i].querySelector('label').innerHTML = '';
+    }
 }
 
 function showOptionStatus(status) {
@@ -135,6 +122,105 @@ function showOptionStatus(status) {
     }
 }
 
+let timer;
+let secondsRaw = 0, secondsFormatted = 0, minutesFormatted = 0;
+
+function incrementTimer() {
+    secondsRaw++;
+    gameState.totalTime = secondsRaw;
+
+    secondsFormatted++;
+
+    if (secondsFormatted >= 60) {
+        secondsFormatted = 0;
+        minutesFormatted++;
+    }
+    
+    document.querySelector('#clock').textContent =
+        (minutesFormatted ? (minutesFormatted > 9 ? minutesFormatted : "0" + minutesFormatted) : "00") + ":" +
+        (secondsFormatted > 9 ? secondsFormatted : "0" + secondsFormatted);
+
+    startTimer();
+}
+
+function startTimer() {
+    timer = setTimeout(incrementTimer, 1000);
+}
+
+function stopTimer(timer) {
+    clearTimeout(timer);
+
+    gameState.totalTimeFormatted = document.querySelector('#clock').textContent;
+}
+
+function goToNextLevel(e) {
+    if (e.target.offsetParent && e.target.offsetParent.id === 'questions') {
+        if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
+            showOptionStatus('correct');
+
+            gameState.answeredCorrectly++;
+        } else {
+            showOptionStatus('wrong');
+
+            gameState.answeredIncorrectly++;
+        }
+    }
+
+    if (window.levelNumber === config.maxNumLevels) {
+        // Stop game
+
+        stopGame();
+    } else {
+        // Go to next level
+    
+        showOptionStatus();
+        
+        window.levelNumber++;
+    
+        const neighborhoodData = getNextNeighborhoodData();
+        const offsetMapCenter = getNeighborhoodCoordsCenter(neighborhoodData);
+        const answerOptions = getAnswerOptions(neighborhoodData);
+
+        if (window.levelNumber !== 0) {
+            mapContainer.style.opacity = 0;
+            clearAnswerOptions();
+        }
+    
+        setTimeout(function() {
+            if(map.getLayer('neighborhood')) map.removeLayer('neighborhood');
+            if(map.getSource('neighborhood')) map.removeSource('neighborhood');
+    
+            map.setCenter(offsetMapCenter);
+    
+            map.addSource('neighborhood', {
+                'type': 'geojson',
+                'data': neighborhoodData.randomlySelectedNeighborhood
+            });
+        
+            map.addLayer({
+                'id': 'neighborhood',
+                'type': 'fill',
+                'source': 'neighborhood',
+                'layout': {},
+                'paint': {
+                    'fill-color': '#088',
+                    'fill-opacity': 0.5
+                }
+            });
+        
+            setTimeout(function() {
+                mapContainer.style.opacity = 1;
+        
+                populateAnswerOptions(answerOptions, neighborhoodData);
+    
+                document.getElementById('startScreen').classList.add('mapReady');
+                document.getElementById('startButton').innerHTML = 'Start';
+                document.getElementById('startButton').addEventListener('click', startGame);    
+            }, 300);
+        }, 500);
+    }
+}
+
 function initalizeMap() {
     const map = new mapboxgl.Map({
         container: 'map',
@@ -145,62 +231,6 @@ function initalizeMap() {
     });
 
     return map;
-}
-
-function goToNextLevel(e) {
-    if (e.target.offsetParent && e.target.offsetParent.id === 'questions') {
-        if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
-            showOptionStatus('correct');
-        } else {
-            showOptionStatus('wrong');
-        }
-    }
-
-    showOptionStatus();
-    
-    window.levelNumber++;
-
-    if (window.levelNumber !== 0) {
-        mapContainer.style.opacity = 0;
-        clearAnswerOptions();
-    }
-
-    const neighborhoodData = getNextNeighborhoodData();
-    const offsetMapCenter = getNeighborhoodCoordsCenter(neighborhoodData);
-    const answerOptions = getAnswerOptions(neighborhoodData);
-
-    setTimeout(function() {
-        if(map.getLayer('neighborhood')) map.removeLayer('neighborhood');
-        if(map.getSource('neighborhood')) map.removeSource('neighborhood');
-
-        map.setCenter(offsetMapCenter);
-
-        map.addSource('neighborhood', {
-            'type': 'geojson',
-            'data': neighborhoodData.randomlySelectedNeighborhood
-        });
-    
-        map.addLayer({
-            'id': 'neighborhood',
-            'type': 'fill',
-            'source': 'neighborhood',
-            'layout': {},
-            'paint': {
-                'fill-color': '#088',
-                'fill-opacity': 0.5
-            }
-        });
-    
-        setTimeout(function() {
-            mapContainer.style.opacity = 1;
-    
-            populateAnswerOptions(answerOptions, neighborhoodData);
-
-            document.getElementById('startScreen').classList.add('mapReady');
-            document.getElementById('startButton').innerHTML = 'Start';
-            document.getElementById('startButton').addEventListener('click', startGame);    
-        }, 300);
-    }, 500);
 }
 
 function initalizeGame() {
@@ -217,3 +247,55 @@ function initalizeGame() {
         optionDiv.addEventListener('click', goToNextLevel);
     }
 }
+
+function startGame() {
+    startTimer();
+
+    document.getElementById('startScreen').classList.add('gameStarted');
+}
+
+function stopGame() {
+    stopTimer(timer);
+
+    mapContainer.style.opacity = 0;
+    clearAnswerOptions();
+
+    answeredCorrectlyPercentage = gameState.answeredCorrectly / (gameState.answeredCorrectly + gameState.answeredIncorrectly);
+    gameState.answeredCorrectlyPercentage = answeredCorrectlyPercentage;
+
+    // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
+
+    setTimeout(function() {
+        console.log(gameState);
+
+        document.getElementById('gameScreen').classList.add('gameOver');
+        document.getElementById('gameOverScreen').classList.add('visible');
+
+        document.querySelector('#gameOverScreen #content #clock').textContent = gameState.totalTimeFormatted;
+        document.querySelector('#gameOverScreen #content #answerTotals #answeredCorrectly').textContent = gameState.answeredCorrectly;
+        document.querySelector('#gameOverScreen #content #answerTotals #answeredIncorrectly').textContent = gameState.answeredIncorrectly;
+    }, 1000);
+}
+
+let gameState = {
+    totalTime: 0,
+    totalTimeFormatted: '',
+    answeredCorrectly: 0,
+    answeredIncorrectly: 0,
+    answeredCorrectlyPercentage: 0,
+    totalScore: 0
+};
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
+
+const boroughCheckboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox');
+
+for (const boroughCheckbox of boroughCheckboxes) {
+    boroughCheckbox.addEventListener('click', getSelectedBoroughs);
+}
+
+let map;
+const mapContainer = document.querySelector('#map');
+window.selectedBoroughs = [];
+
+getSelectedBoroughs();

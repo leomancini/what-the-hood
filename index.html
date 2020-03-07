@@ -33,7 +33,11 @@
 			</div>
 		</div>
 
-		<div id="game">		
+		<div id="gameScreen">	
+			<div id="clock">
+				<time>00:00</time>
+			</div>
+
 			<div id="map"></div>
 
 			<div id="questions">
@@ -57,7 +61,22 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="gameOverScreen">
+			<div id="content">
+				<div id="answerTotals">
+					✅ <div id="answeredCorrectly">0</div>
+					<br>
+					🚫 <div id="answeredIncorrectly">0</div>
+				</div>
+				<br>
+				Total Time: <div id="clock">
+					<time>00:00</time>
+				</div>
+			</div>
+		</div>
 		
+		<script src="resources/js/config.js"></script>
 		<script src="resources/js/game.js"></script>
 		<script src="resources/js/index.js"></script>
 	</body>
