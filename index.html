@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>NYC Neighborhood Quiz</title>
-		<link rel="stylesheet/less" href="resources/css/style.less">
+		<link rel="stylesheet/less" href="resources/css/style.less?v=10">
 		<script src="resources/js/lib/less.js"></script>
 		<script src="resources/js/functions/averageGeolocation.js"></script>
 		<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
@@ -11,7 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
 	</head>
-	<body>
+	<body ontouchstart="">
 
 		<div id="startScreen">
 			<div id="startScreenContentContainer">
@@ -41,7 +41,8 @@
 			<div id="map"></div>
 
 			<div id="questions">
-				<div id="optionStatus">
+				<div id="statusBar">
+					<div id="info"></div>
 					<div id="correct">✅</div>
 					<div id="wrong">🚫</div>
 				</div>

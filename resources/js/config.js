@@ -1,3 +1,3 @@
 const config = {
-    maxNumLevels: 3,
+    maxNumLevels: 10,
 };
