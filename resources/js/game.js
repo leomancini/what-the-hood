@@ -28,8 +28,6 @@ function getNextNeighborhoodData() {
         }
     });
 
-    console.log(randomlySelectedNeighborhood.metadata.name);
-
     return {
         randomlySelectedNeighborhood,
         neighborhoodDatabaseSelectedBoroughsOnly
@@ -261,7 +259,7 @@ function initalizeGame() {
 function startGame() {
     startTimer();
     goToNextLevel();
-    
+
     document.getElementById('startScreen').classList.add('gameStarted');
 }
 
