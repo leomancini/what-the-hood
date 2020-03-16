@@ -127,6 +127,23 @@ function updateStatusBar(status) {
     }
 }
 
+function getShapeColor(type) {
+    if (type === 'random') {
+        const availableColors = [config.colors.blue, config.colors.orange];
+        const randomlySelectedColor = availableColors[Math.floor(Math.random() * availableColors.length)];
+    
+        return randomlySelectedColor;
+    } else if (type === 'order') {
+        if (levelNumber % 2 === 1) {
+            orderBasedColor = config.colors.blue;
+        } else {
+            orderBasedColor = config.colors.orange;
+        }
+
+        return orderBasedColor;
+    }
+}
+
 let timer;
 let secondsRaw = 0, secondsFormatted = 0, minutesFormatted = 0;
 
@@ -171,6 +188,10 @@ function goToNextLevel(e) {
         }
     }
 
+    if(window.levelNumber === 0) {
+        startTimer();
+    }
+
     if (window.levelNumber === config.maxNumLevels) {
         // Stop game
 
@@ -189,7 +210,6 @@ function goToNextLevel(e) {
 
         if (window.levelNumber !== 0) {
             mapContainer.style.opacity = 0;
-            clearAnswerOptions();
         }
     
         setTimeout(function() {
@@ -202,6 +222,8 @@ function goToNextLevel(e) {
                 'type': 'geojson',
                 'data': neighborhoodData.randomlySelectedNeighborhood
             });
+
+            const fillColor = getShapeColor('order');
         
             map.addLayer({
                 'id': 'neighborhood',
@@ -209,14 +231,18 @@ function goToNextLevel(e) {
                 'source': 'neighborhood',
                 'layout': {},
                 'paint': {
-                    'fill-color': '#3291FF',
+                    'fill-color': fillColor,
                     'fill-opacity': 1
                 }
             });
         
             setTimeout(function() {
                 mapContainer.style.opacity = 1;
-        
+
+                if (window.levelNumber !== 0) {
+                    clearAnswerOptions();
+                }
+
                 populateAnswerOptions(answerOptions, neighborhoodData);  
             }, 300);
         }, 500);
@@ -243,12 +269,12 @@ function initalizeGame() {
     document.getElementById('startButton').innerHTML = 'Loading...';
     
     map.on('load', function() {
-        map.resize();
-
-        document.getElementById('startScreen').classList.add('mapReady');
-        document.getElementById('startButton').innerHTML = 'Start';
-        document.getElementById('startButton').addEventListener('click', startGame);   
+        map.resize();  
     });
+
+    document.getElementById('startScreen').classList.add('mapReady');
+    document.getElementById('startButton').innerHTML = 'Start';
+    document.getElementById('startButton').addEventListener('click', startGame); 
     
     const optionDivs = document.querySelectorAll('.option');
     for (const optionDiv of optionDivs) {
@@ -257,7 +283,6 @@ function initalizeGame() {
 }
 
 function startGame() {
-    startTimer();
     goToNextLevel();
 
     document.getElementById('startScreen').classList.add('gameStarted');

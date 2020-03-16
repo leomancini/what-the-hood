@@ -1,9 +1,22 @@
+@font-face {
+	font-family: 'Permanent Marker';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: local('Permanent Marker Regular'), local('PermanentMarker-Regular'), url(https://fonts.gstatic.com/s/permanentmarker/v9/Fh4uPib9Iyv2ucM6pGQMWimMp004La2Cf5b6jlg.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+  
 @mobile: ~"only screen and (max-width: 812px)";
 @desktop: ~"only screen and (min-width: 813px)";
 
+@blue: #0075FF;
+@orange: #FF6600;
+@black: #000000;
+@white: #FFFFFF;
+
 * {
 	-webkit-font-smoothing: antialiased;
-	font-family: "Helvetica Neue";
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -33,6 +46,69 @@ html, body {
 		pointer-events: auto;
 		// opacity: 0;
 
+		@offset: -105px;
+		@size: 240px;
+
+		.neighborhoodWrappersContainer {
+			position: fixed;
+			overflow: visible;
+
+			.neighborhoodWrapper {
+				transform: scale(0.75);
+				transform-origin: top left;
+
+				svg {
+					// background: rgba(0, 0, 0, 0.1);
+				}
+			}
+
+			&#top {
+				top: @offset;
+				left: @size + @offset;
+				width: calc(~"100% - "(@size*2) + (@offset*2));
+				height: @size;
+
+				.neighborhoodWrapper {
+					display: inline-block;
+				}
+			}
+
+			&#left {
+				left: @offset;
+				width: @size;
+				height: 100%;
+
+				.neighborhoodWrapper {
+					display: block;
+
+					#neighborhood2 {
+						top: -60px;
+					}
+				}
+			}
+
+			&#right {
+				right: @offset;
+				width: @size;
+				height: 100%;
+
+				.neighborhoodWrapper {
+					display: block;
+				}
+			}
+
+			&#bottom {
+				bottom: @offset;
+				left: @size + @offset;
+				width: calc(~"100% - "(@size*2) + (@offset*2));
+				height: @size;
+
+				.neighborhoodWrapper {
+					display: inline-block;
+				}
+			}
+		}
+
 		&.mapReady {
 			#startScreenContentContainer {
 				#startButton {
@@ -51,6 +127,40 @@ html, body {
 			}
 		}
 
+		#titleWrapper {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -140px;
+			margin-top: -270px;
+			
+			h1 {
+				font-family: 'Permanent Marker';
+				text-align: center;
+
+				#what, #the, #hood {
+					display: block;
+					font-size: 80px;
+				}
+
+				#what {
+					color: @orange;
+					margin-bottom: -35px;
+					margin-left: -30px;
+				}
+
+				#the {
+					color: @black;
+					margin-bottom: -35px;
+				}
+
+				#hood {
+					color: @blue;
+					margin-left: 30px;
+				}
+			}
+		}
+
 		#startScreenContentContainer {
 			text-align: left;
 			position: absolute;
@@ -60,21 +170,47 @@ html, body {
 			margin-top: -150px;
 			padding: 0 20px;
 
+			@keyframes colorchange {
+				0% {
+					background: @blue;
+				}
+				
+				50% {
+					background: @black;
+				}
+
+				100% {
+					background: @orange;
+				}
+			}
+
 			#startButton {
 				opacity: 0.5;
 				pointer-events: none;
 
-				width: 100%;
-				background: #3291FF;
+				width: 120px;
+				background: @black;
+				// animation: colorchange 5s alternate ease-in-out infinite;
+				font-family: 'Helvetica Neue', 'Helvetica';
 				display: block;
-				height: 56px;
+				height: 120px;
 				color: white;
 				text-align: center;
-				line-height: 56px;
-				border-radius: 8px;
+				line-height: 120px;
+				border-radius: 120px;
 				text-decoration: none;
 				font-weight: bold;
-				font-size: 20px;
+				font-size: 28px;
+				position: relative;
+				left: 50%;
+				margin-top: 120px;
+				margin-left: -60px;
+				transition: all 0.5s;
+				transform: scale(1);
+
+				&:focus, &:active {
+					transform: scale(0.9);
+				}
 			}
 		}
 	}
@@ -95,17 +231,13 @@ html, body {
 			position: absolute;
 			top: 0;
 			left: 50%;
-			margin-left: -70px;
-			width: 100px;
-			height: 30px;
+			margin-left: -58px;
+			width: 116px;
 			z-index: 2;
-			padding: 20px;
-			background: white;
-			text-align: center;
+			text-align: left;
 			margin-top: 20px;
-			font-size: 24px;
-			border-radius: 16px;
-			box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+			font-size: 38px;
+			font-family: 'Permanent Marker';		
 		}
 
 		#map {
@@ -121,7 +253,6 @@ html, body {
 		#questions {
 			width: 100%;
 			z-index: 3;
-			box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
 			background: white;
 			display: flex;
 			flex-direction: column;
@@ -133,7 +264,7 @@ html, body {
 				width: 100%;
 				height: 30px;
 				text-align: center;
-				padding: 12px 0 0 0px;
+				font-family: 'Helvetica Neue', 'Helvetica';
 
 				#info {
 					position: absolute;
@@ -151,24 +282,32 @@ html, body {
 			}
 	
 			#options {
-				padding: 20px;
-				width: calc(~"100% - 40px");
+				width: 100%;
+				background: @white;
 
 				.option {
-					color: #2e2e2e;
-					padding: 15px 20px;
-					background: rgba(0, 0, 0, 0.1);
-					border-radius: 8px;
-					margin-bottom: 20px;
 					cursor: pointer;
+					height: 80px;
+					line-height: 80px;
+					text-align: center;
+					background: @blue;
 		
+					.letter {
+						display: none;
+					}
+
 					label {
+						display: inline-block;
+						color: @white;
+						font-family: 'Helvetica Neue', 'Helvetica';
+						font-weight: bold;
+						font-size: 24px;
 						pointer-events: none;
 						cursor: pointer;
 					}
 
 					&:active, &:focus {
-						background: rgba(0, 0, 0, 0.2);
+						background: @orange;
 					}
 
 					&:last-child {

@@ -2,18 +2,81 @@
 <html>
 	<head>
 		<title>NYC Neighborhood Quiz</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
 		<link rel="stylesheet/less" href="resources/css/style.less?v=10">
 		<script src="resources/js/lib/less.js"></script>
+		<script src="resources/data/neighborhoods/new-york-city.js"></script>
 		<script src="resources/js/functions/averageGeolocation.js"></script>
+		<script src="resources/js/functions/renderNeighborhoodShape.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
 		<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
 		<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
-		<script src="resources/data/neighborhoods/new-york-city.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
 	</head>
 	<body ontouchstart="">
 
 		<div id="startScreen">
+			<div class="neighborhoodWrappersContainer" id="top">
+				<div class="neighborhoodWrapper" style="margin-top: -110px; margin-left: 0px;">
+					<svg><g id="neighborhood1"></g></svg>
+				</div>
+			</div>
+	
+			<div class="neighborhoodWrappersContainer" id="left">
+				<div class="neighborhoodWrapper" style="margin-top: -200px; margin-left: -50px;">
+					<svg><g id="neighborhood2"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -180px; margin-left: -10px;">
+					<svg><g id="neighborhood3"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -120px; margin-left: -230px;">
+					<svg><g id="neighborhood4"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -435px; margin-left: -70px;">
+					<svg><g id="neighborhood5"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -270px; margin-left: -110px;">
+					<svg><g id="neighborhood6"></g></svg>
+				</div>
+			</div>
+
+			<div class="neighborhoodWrappersContainer" id="right">
+				<div class="neighborhoodWrapper" style="margin-top: -345px; margin-left: 20px;">
+					<svg><g id="neighborhood7"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -390px; margin-left: 5px;">
+					<svg><g id="neighborhood8"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -230px; margin-left: 40px;">
+					<svg><g id="neighborhood9"></g></svg>
+				</div>
+	
+				<div class="neighborhoodWrapper" style="margin-top: -140px; margin-left: -20px;">
+					<svg><g id="neighborhood10"></g></svg>
+				</div>
+			</div>
+	
+			<div class="neighborhoodWrappersContainer" id="bottom">
+				<div class="neighborhoodWrapper" style="margin-top: -10px; margin-left: -130px;">
+					<svg><g id="neighborhood11"></g></svg>
+				</div>
+			</div>
+
+			<div id="titleWrapper">
+				<h1>
+					<span id="what">WHAT</span>
+					<span id="the">THE</span>
+					<span id="hood">HOOD?</span>
+				</h1>
+			</div>
+
 			<div id="startScreenContentContainer">
 				<form>
 					<input type="checkbox" name="queens" value="Queens" checked="checked" class="boroughCheckbox">
@@ -27,8 +90,6 @@
 					<input type="checkbox" name="queens" value="Staten Island" checked="checked" class="boroughCheckbox">
 					<label for="queens">Staten Island</label><br>
 				</form>
-				<br>
-				<br>
 				<a href="#start" id="startButton">Loading...</a>
 			</div>
 		</div>
@@ -48,16 +109,16 @@
 				</div>
 				<div id="options">
 					<div class="option" id="A">
-						A - <label></label>
+						<span class="letter">A</span><label></label>
 					</div>
 					<div class="option" id="B">
-						B - <label></label>
+						<span class="letter">B</span><label></label>
 					</div>
 					<div class="option" id="C">
-						C - <label></label>
+						<span class="letter">C</span><label></label>
 					</div>
 					<div class="option" id="D">
-						D - <label></label>
+						<span class="letter">D</span><label></label>
 					</div>
 				</div>
 			</div>
