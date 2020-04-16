@@ -3,7 +3,7 @@
 	<head>
 		<title>NYC Neighborhood Quiz</title>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
-		<link rel="stylesheet/less" href="resources/css/style.less?v=10">
+		<link rel="stylesheet/less" href="resources/css/style.less?v=13">
 		<script src="resources/js/lib/less.js"></script>
 		<script src="resources/data/neighborhoods/new-york-city.js"></script>
 		<script src="resources/js/functions/averageGeolocation.js"></script>
@@ -11,6 +11,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
 		<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
 		<link href="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
 	</head>
@@ -94,19 +95,22 @@
 			</div>
 		</div>
 
-		<div id="gameScreen">	
-			<div id="clock">
-				<time>00:00</time>
+		<div id="gameScreen">
+			<div id="statusBar">
+				<div id="info">NYC</div>
+				<div id="clock">
+					<time>00:00</time>
+				</div>
+				<div id="level"></div>
 			</div>
 
-			<div id="map"></div>
+			<div id="mapWrapperContainer">
+				<div id="mapWrapper">
+					<div id="map"></div>
+				</div>
+			</div>
 
 			<div id="questions">
-				<div id="statusBar">
-					<div id="info"></div>
-					<div id="correct">✅</div>
-					<div id="wrong">🚫</div>
-				</div>
 				<div id="options">
 					<div class="option" id="A">
 						<span class="letter">A</span><label></label>
@@ -138,8 +142,8 @@
 			</div>
 		</div>
 		
-		<script src="resources/js/config.js"></script>
-		<script src="resources/js/game.js"></script>
-		<script src="resources/js/index.js"></script>
+		<script src="resources/js/config.js?v=13"></script>
+		<script src="resources/js/game.js?v=13"></script>
+		<script src="resources/js/index.js?v=13"></script>
 	</body>
 </html>

@@ -15,6 +15,24 @@
 @black: #000000;
 @white: #FFFFFF;
 
+@border-radius: 8px;
+
+.material-icons {
+    direction: ltr;
+    display: inline-block;
+    font-family: 'Material Icons';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: normal;
+    line-height: 1;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
 * {
 	-webkit-font-smoothing: antialiased;
 	-webkit-tap-highlight-color: transparent;
@@ -219,78 +237,100 @@ html, body {
 		z-index: 1;
 		width: 100%;
 		height: 100%;
+		min-width: 320px;
+		min-height: 480px;
 		position: fixed;
 		transition: opacity 0.5s;
+		background: @blue;
 
 		&.gameOver {
 			opacity: 0;
 			pointer-events: none;
 		}
 
-		#clock {
-			position: absolute;
-			top: 0;
-			left: 50%;
-			margin-left: -58px;
-			width: 116px;
-			z-index: 2;
-			text-align: left;
-			margin-top: 20px;
-			font-size: 38px;
-			font-family: 'Permanent Marker';		
+		#statusBar {
+			width: calc(~"100% - 60px");
+			font-size: 18px;
+			height: 20px;
+			font-family: 'Helvetica Neue', 'Helvetica';
+			position: relative;
+			margin-top: 25px;
+			margin-left: 30px;
+			margin-bottom: 25px;
+
+			#info, #level {
+				position: absolute;
+				font-size: 18px;
+				line-height: 20px;
+				color: rgba(0, 0, 0, 0.5);
+				font-weight: normal;
+			}
+
+			#info {
+				left: 0;
+			}
+
+			#level {
+				right: 0;
+			}
+
+			#clock {
+				position: absolute;
+				left: 50%;
+				margin-left: -60px;
+				width: 120px;
+				z-index: 2;
+				font-size: 18px;
+				line-height: 20px;
+				font-weight: bold;
+				text-align: center;
+				color: #FFFFFF;
+			}
 		}
 
-		#map {
-			width: 100%;
-			height: 100%;
-			position: fixed;
-			transition: opacity 0.5s;
-			opacity: 0;
-			top: 0;
-			left: 0;
+		#mapWrapperContainer {
+			width: calc(~"100% - 60px");
+			height: calc(~"100% - 368px");
+			border-radius: @border-radius;
+			box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
+			margin-left: 30px;
+			margin-bottom: 30px;
+			min-height: 100px;
+
+			#mapWrapper {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background: rgba(255, 255, 255, 0.2);
+				border-radius: @border-radius;
+				-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+	
+				#map {
+					opacity: 0;
+					transition: opacity 0.5s;
+					width: 100%;
+					height: 100%;
+				}
+			}
 		}
 	
 		#questions {
 			width: 100%;
 			z-index: 3;
-			background: white;
-			display: flex;
-			flex-direction: column;
-			position: fixed;
-			bottom: 0;
-
-			#statusBar {
-				font-size: 24px;
-				width: 100%;
-				height: 30px;
-				text-align: center;
-				font-family: 'Helvetica Neue', 'Helvetica';
-
-				#info {
-					position: absolute;
-					left: 20px;
-					font-size: 16px;
-					margin-top: 6px;
-				}
-	
-				#correct, #wrong {
-					position: absolute;
-					opacity: 0;
-					transition: opacity 0.5s;
-					right: 20px;
-				}
-			}
 	
 			#options {
 				width: 100%;
-				background: @white;
 
 				.option {
 					cursor: pointer;
-					height: 80px;
-					line-height: 80px;
-					text-align: center;
-					background: @blue;
+					text-indent: 10px;
+					height: 52px;
+					background: rgba(0, 0, 0, 0.2);
+					border-radius: @border-radius;
+					width: calc(~"100% - 60px");
+					margin-left: 30px;
+					margin-bottom: 10px;
+					transition: all 0.2s;
 		
 					.letter {
 						display: none;
@@ -299,19 +339,62 @@ html, body {
 					label {
 						display: inline-block;
 						color: @white;
-						font-family: 'Helvetica Neue', 'Helvetica';
+						font-family: 'Helvetica Neue';
+						font-style: normal;
 						font-weight: bold;
-						font-size: 24px;
+						font-size: 18px;
+						line-height: 52px;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						width: calc(100% - 20px);
 						pointer-events: none;
 						cursor: pointer;
+						overflow: hidden;
+						transition: all 0.2s;
+
+						&.hidden {
+							opacity: 0;
+						}
 					}
 
 					&:active, &:focus {
-						background: @orange;
+						background: rgba(255, 255, 255, 0.2);
 					}
 
 					&:last-child {
 						margin-bottom: 0;
+					}
+
+					&.selectedAnswer {
+						background: rgba(255, 255, 255, 0.2);
+
+						&:after {
+							&:extend(.material-icons);
+							content: 'clear';
+							position: absolute;
+							right: 45px;
+							margin-top: 14px;
+							color: @white;
+							font-size: 24px;
+						}
+					}
+
+					&.correctAnswer {
+						background: @white!important;
+
+						label {
+							color: @black!important;
+						}
+
+						&:after {
+							&:extend(.material-icons);
+							content: 'check_circle';
+							position: absolute;
+							right: 45px;
+							margin-top: 14px;
+							color: @blue;
+							font-size: 24px;
+						}
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 const config = {
-    maxNumLevels: 10,
+    maxNumLevels: 2,
     colors: {
         'blue': '#0075FF',
         'orange': '#FF6600',

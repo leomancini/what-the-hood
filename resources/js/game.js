@@ -1,3 +1,9 @@
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    window.deviceType = 'mobile';
+} else {
+    window.deviceType = 'desktop';
+}
+
 function getSelectedBoroughs() {
     var selectedBoroughs = [];
     var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
@@ -46,9 +52,9 @@ function getNeighborhoodCoordsCenter(neighborhoodData) {
 
     const neighborhoodCoordsCenter = averageGeolocation(neighborhoodCoords);
 
-    const offsetMapCenter = [neighborhoodCoordsCenter[0], neighborhoodCoordsCenter[1]-0.02];
+    // const offsetMapCenter = [neighborhoodCoordsCenter[0], neighborhoodCoordsCenter[1]-0.02];
 
-    return offsetMapCenter;
+    return neighborhoodCoordsCenter;
 }
 
 function getAnswerOptions(neighborhoodData) {
@@ -79,15 +85,19 @@ function getAnswerOptions(neighborhoodData) {
 }
 
 function populateAnswerOptions(answerOptions, neighborhoodData) {
+    document.querySelector('.option#A label').classList.remove('hidden');
     document.querySelector('.option#A label').innerHTML = answerOptions[0];
     document.querySelector('.option#A').setAttribute('data-neighborhood-name', answerOptions[0]);
 
+    document.querySelector('.option#B label').classList.remove('hidden');
     document.querySelector('.option#B label').innerHTML = answerOptions[1];
     document.querySelector('.option#B').setAttribute('data-neighborhood-name', answerOptions[1]);
 
+    document.querySelector('.option#C label').classList.remove('hidden');
     document.querySelector('.option#C label').innerHTML = answerOptions[2];
     document.querySelector('.option#C').setAttribute('data-neighborhood-name', answerOptions[2]);
 
+    document.querySelector('.option#D label').classList.remove('hidden');
     document.querySelector('.option#D label').innerHTML = answerOptions[3];
     document.querySelector('.option#D').setAttribute('data-neighborhood-name', answerOptions[3]);
 
@@ -106,25 +116,16 @@ function clearAnswerOptions() {
     for (var i = 0; i < optionsDivs.length; ++i) {
         optionsDivs[i].style.pointerEvents = 'none';
         optionsDivs[i].setAttribute('data-neighborhood-name', '');
-        optionsDivs[i].querySelector('label').innerHTML = '';
+        optionsDivs[i].classList.remove('selectedAnswer');
+        optionsDivs[i].classList.remove('correctAnswer');
+        optionsDivs[i].querySelector('label').classList.add('hidden');
     }
-}
 
-function updateStatusBar(status) {
-    const delayToShowStatus = 500;
-
-    if (status === 'correct') {
-        document.querySelector('#statusBar #correct').style.opacity = 1;
-        setTimeout(function() {
-            document.querySelector('#statusBar #correct').style.opacity = 0;
-        }, delayToShowStatus);
-    } else if (status === 'wrong') {
-        document.querySelector('#statusBar #wrong').style.opacity = 1;
-
-        setTimeout(function() {
-            document.querySelector('#statusBar #wrong').style.opacity = 0;
-        }, delayToShowStatus);
-    }
+    setTimeout(function(optionDiv) {
+        for (var i = 0; i < optionsDivs.length; ++i) {
+            optionsDivs[i].querySelector('label').innerHTML = '';
+        }
+    }, 300);
 }
 
 function getShapeColor(type) {
@@ -176,76 +177,103 @@ function stopTimer(timer) {
 }
 
 function goToNextLevel(e) {
-    if (e && e.type === 'click') {
+    if (e && (e.type === 'touchend' || e.type === 'click')) {
         if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
-            updateStatusBar('correct');
-
             gameState.answeredCorrectly++;
         } else {
-            updateStatusBar('wrong');
-
             gameState.answeredIncorrectly++;
+        }
+
+        e.target.classList.add('selectedAnswer');
+
+        const optionDivs = document.querySelectorAll('.option');
+        for (const optionDiv of optionDivs) {
+            if (optionDiv.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
+                optionDiv.classList.add('correctAnswer');
+            }
         }
     }
 
     if(window.levelNumber === 0) {
         startTimer();
+        document.querySelector('#statusBar #level').textContent = `1 of ${config.maxNumLevels}`;
     }
+
+    delayToHideCurrentLevelFirstLevel = 0;
+    delayToHideCurrentLevelSubsequentLevels = 1500;
+
+    delayToShowNextLevelFirstLevel = 500;
+    delayToShowNextLevelSubsequentLevels = 500;
+
+    delayToShowAnswerOptionsFirstLevel = 0;
+    delayToShowAnswerOptionsSubsequentLevels = 500;
 
     if (window.levelNumber === config.maxNumLevels) {
         // Stop game
+        setTimeout(function() {
+            mapDiv.style.opacity = 0;
+            clearAnswerOptions();
 
-        stopGame();
+            setTimeout(function() {            
+                stopGame();
+            }, delayToShowNextLevel);
+        }, delayToHideCurrentLevel);
     } else {
         // Go to next level
-        updateStatusBar();
-
         window.levelNumber++;
-
-        document.querySelector('#statusBar #info').textContent = `Level ${window.levelNumber} of ${config.maxNumLevels}`;
     
         const neighborhoodData = getNextNeighborhoodData();
-        const offsetMapCenter = getNeighborhoodCoordsCenter(neighborhoodData);
+        const mapCenter = getNeighborhoodCoordsCenter(neighborhoodData);
         const answerOptions = getAnswerOptions(neighborhoodData);
 
-        if (window.levelNumber !== 0) {
-            mapContainer.style.opacity = 0;
+        if (window.levelNumber === 1) {
+            delayToHideCurrentLevel = delayToHideCurrentLevelFirstLevel;
+            delayToShowNextLevel = delayToShowNextLevelFirstLevel;
+            delayToShowAnswerOptions = delayToShowAnswerOptionsFirstLevel;
+        } else {
+            delayToHideCurrentLevel = delayToHideCurrentLevelSubsequentLevels;
+            delayToShowNextLevel = delayToShowNextLevelSubsequentLevels;
+            delayToShowAnswerOptions = delayToShowAnswerOptionsSubsequentLevels;
         }
     
         setTimeout(function() {
-            if(map.getLayer('neighborhood')) map.removeLayer('neighborhood');
-            if(map.getSource('neighborhood')) map.removeSource('neighborhood');
-    
-            map.setCenter(offsetMapCenter);
-    
-            map.addSource('neighborhood', {
-                'type': 'geojson',
-                'data': neighborhoodData.randomlySelectedNeighborhood
-            });
+            if (window.levelNumber !== 0) {
+                mapDiv.style.opacity = 0;
+                clearAnswerOptions();
+            }
 
-            const fillColor = getShapeColor('order');
-        
-            map.addLayer({
-                'id': 'neighborhood',
-                'type': 'fill',
-                'source': 'neighborhood',
-                'layout': {},
-                'paint': {
-                    'fill-color': fillColor,
-                    'fill-opacity': 1
-                }
-            });
-        
             setTimeout(function() {
-                mapContainer.style.opacity = 1;
+                if(map.getLayer('neighborhood')) map.removeLayer('neighborhood');
+                if(map.getSource('neighborhood')) map.removeSource('neighborhood');
+        
+                map.setCenter(mapCenter);
+        
+                map.addSource('neighborhood', {
+                    'type': 'geojson',
+                    'data': neighborhoodData.randomlySelectedNeighborhood
+                });
+    
+                const fillColor = config.colors.orange;
+            
+                map.addLayer({
+                    'id': 'neighborhood',
+                    'type': 'fill',
+                    'source': 'neighborhood',
+                    'layout': {},
+                    'paint': {
+                        'fill-color': fillColor,
+                        'fill-opacity': 1
+                    }
+                });
 
-                if (window.levelNumber !== 0) {
-                    clearAnswerOptions();
-                }
+                document.querySelector('#statusBar #level').textContent = `${window.levelNumber} of ${config.maxNumLevels}`;
 
-                populateAnswerOptions(answerOptions, neighborhoodData);  
-            }, 300);
-        }, 500);
+                setTimeout(function() {
+                    mapDiv.style.opacity = 1;
+                    populateAnswerOptions(answerOptions, neighborhoodData);  
+                }, delayToShowAnswerOptions);
+            }, delayToShowNextLevel);
+        }, delayToHideCurrentLevel);
     }
 }
 
@@ -255,7 +283,7 @@ function initalizeMap() {
         style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
         center: [-73.935242, 40.730610],
         interactive: false,
-        zoom: 12
+        zoom: 11
     });
 
     return map;
@@ -278,7 +306,11 @@ function initalizeGame() {
     
     const optionDivs = document.querySelectorAll('.option');
     for (const optionDiv of optionDivs) {
-        optionDiv.addEventListener('click', goToNextLevel);
+        if (window.deviceType === 'mobile') {
+            optionDiv.addEventListener('touchend', goToNextLevel);
+        } else {
+            optionDiv.addEventListener('click', goToNextLevel);
+        }
     }
 }
 
@@ -289,10 +321,8 @@ function startGame() {
 }
 
 function stopGame() {
+    const delayToShowGameOverScreen = 0;
     stopTimer(timer);
-
-    mapContainer.style.opacity = 0;
-    clearAnswerOptions();
 
     answeredCorrectlyPercentage = gameState.answeredCorrectly / (gameState.answeredCorrectly + gameState.answeredIncorrectly);
     gameState.answeredCorrectlyPercentage = answeredCorrectlyPercentage;
@@ -306,7 +336,7 @@ function stopGame() {
         document.querySelector('#gameOverScreen #content #clock').textContent = gameState.totalTimeFormatted;
         document.querySelector('#gameOverScreen #content #answerTotals #answeredCorrectly').textContent = gameState.answeredCorrectly;
         document.querySelector('#gameOverScreen #content #answerTotals #answeredIncorrectly').textContent = gameState.answeredIncorrectly;
-    }, 1000);
+    }, delayToShowGameOverScreen);
 }
 
 let gameState = {
@@ -327,7 +357,7 @@ for (const boroughCheckbox of boroughCheckboxes) {
 }
 
 let map;
-const mapContainer = document.querySelector('#map');
+const mapDiv = document.querySelector('#map');
 window.selectedBoroughs = [];
 window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase;
 
