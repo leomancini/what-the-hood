@@ -1,22 +1,109 @@
-// function renderAllNeighborhoodShapes() {
-//     // Top
-//     renderNeighborhoodShape('g#neighborhood1', { x: 0, y: 0 }, { width: 350, height: 350 }, 'black', 'Lower East Side');
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    window.deviceType = 'mobile';
+} else {
+    window.deviceType = 'desktop';
+}
 
-//     // Left
-//     renderNeighborhoodShape('g#neighborhood2', { x: 200, y: 0 }, { width: 370, height: 500 }, 'orange', 'Red Hook');
-//     renderNeighborhoodShape('g#neighborhood3', { x: 10, y: 180 }, { width: 270, height: 240 }, 'blue', 'Governors Island');
-//     renderNeighborhoodShape('g#neighborhood4', { x: 200, y: 550 }, { width: 580, height: 570 }, 'black', 'Sunnyside');
-//     renderNeighborhoodShape('g#neighborhood5', { x: 80, y: 30 }, { width: 350, height: 420 }, 'orange', 'Financial District');
-//     renderNeighborhoodShape('g#neighborhood6', { x: 0, y: 600 }, { width: 450, height: 600 }, 'blue', 'Williamsburg');
+function selectGame(tappedGameSelector) {
+    const selectedGameSelector = tappedGameSelector.target.closest('.gameSelector');
 
-//     // Right
-//     renderNeighborhoodShape('g#neighborhood7', { x: 600, y: 600 }, { width: 820, height: 800 }, 'blue', 'Hunters Point/Long Island City');
-//     renderNeighborhoodShape('g#neighborhood8', { x: 80, y: 200 }, { width: 400, height: 440 }, 'orange', 'Inwood');
-//     renderNeighborhoodShape('g#neighborhood9', { x: 120, y: 200 }, { width: 400, height: 400 }, 'black', 'College Point');
-//     renderNeighborhoodShape('g#neighborhood10', { x: 0, y: 560 }, { width: 600, height: 640 }, 'blue', 'Midtown');
+    if (selectedGameSelector.classList.contains('enabled')) {
+        const gameSelectors = document.querySelectorAll('.gameSelector');
+    
+        for (const gameSelector of gameSelectors) {
+            if (selectedGameSelector !== gameSelector) {
+                gameSelector.classList.add('notSelected');
+            }
+        }
+    
+        setTimeout(function() {
+            document.getElementById('gameSelectionScreen').classList.add('zoom');
+            selectedGameSelector.classList.add('selected');
+            selectedGameSelector.style.height = `${window.innerHeight}px`;
+    
+            selectedGameSelector.style.top = `${document.querySelector('#gameSelectionScreen').scrollTop}px`;
+    
+            setTimeout(function() {
+                selectedGameSelector.classList.add('selectedFullScreen');
+                document.getElementById('gameSelectionScreen').classList.add('gameSelected');
+            }, 400);
+        }, 500);
+    
+        document.querySelector('body').classList.add('fixScrollDuringGame');
+        document.getElementById('preGameOptionsScreen').classList.add('visible');
+    
+        setTimeout(function() {
+            document.querySelector('.gameSelectorContents').classList.add('hidden');
+    
+            setTimeout(function() {
+                document.getElementById('gameSelectionScreen').classList.add('done');
+            }, 800);
+        }, 500);
+    }
+}
 
-//     // Bottom
-//     renderNeighborhoodShape('g#neighborhood11', { x: 0, y: 550 }, { width: 500, height: 600 }, 'orange', 'Wakefield');
-// }
+function renderGameSelectors() {
+    const gameSelectors = document.querySelectorAll('.gameSelector');
 
-// renderAllNeighborhoodShapes();
+    let gameSelectorIndex = 0;
+    const gameSelectorCardHeight = 300;
+    const gameSelectorCardMarginBottom = 30;
+    
+    for (const gameSelector of gameSelectors) {
+        gameSelector.style.top = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom}px`;
+        gameSelector.style.height = `${gameSelectorCardHeight}px`;
+        gameSelectorIndex++;
+        
+        gameSelector.addEventListener('click', selectGame);
+    }
+    
+    document.querySelector('#gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom}px`;
+    
+    setTimeout(function() {
+        document.querySelector('#gameSelectionScreenContents').style.opacity = 1;
+    }, 500);
+}
+
+function toggleBoroughCheckbox(e) {
+    const tappedBoroughCheckboxWrapper = e.target.closest('.boroughCheckboxWrapper');
+
+    if (tappedBoroughCheckboxWrapper.classList.contains('on')) {
+        if(document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked').length > 1) {
+            tappedBoroughCheckboxWrapper.classList.remove('on');
+            tappedBoroughCheckboxWrapper.classList.add('off');
+            tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = false;
+        }
+    } else if (tappedBoroughCheckboxWrapper.classList.contains('off')) {
+        tappedBoroughCheckboxWrapper.classList.remove('off');
+        tappedBoroughCheckboxWrapper.classList.add('on');
+        tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = true;
+    }
+}
+
+function getSelectedBoroughs() {
+    var selectedBoroughs = [];
+    var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
+    
+    for (var i = 0; i < checkboxes.length; i++) {
+        selectedBoroughs.push(checkboxes[i].value);
+    }
+
+    window.selectedBoroughs = selectedBoroughs;
+    
+    initalizeGame();
+}
+
+function renderBoroughCheckboxes() {
+    const boroughCheckboxes = document.querySelectorAll('.boroughCheckboxWrapper');
+
+    for (const boroughCheckbox of boroughCheckboxes) {
+        if (window.deviceType === 'mobile') {
+            boroughCheckbox.addEventListener('touchend', toggleBoroughCheckbox);
+        } else {
+            boroughCheckbox.addEventListener('click', toggleBoroughCheckbox);
+        }
+    }
+}
+
+renderGameSelectors();
+renderBoroughCheckboxes();

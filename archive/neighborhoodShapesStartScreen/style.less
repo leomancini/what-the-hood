@@ -1,0 +1,59 @@
+.neighborhoodWrappersContainer {
+    position: fixed;
+    overflow: visible;
+
+    .neighborhoodWrapper {
+        transform: scale(0.75);
+        transform-origin: top left;
+
+        svg {
+            // background: rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    &#top {
+        top: @offset;
+        left: @size + @offset;
+        width: calc(~"100% - "(@size*2) + (@offset*2));
+        height: @size;
+
+        .neighborhoodWrapper {
+            display: inline-block;
+        }
+    }
+
+    &#left {
+        left: @offset;
+        width: @size;
+        height: 100%;
+
+        .neighborhoodWrapper {
+            display: block;
+
+            #neighborhood2 {
+                top: -60px;
+            }
+        }
+    }
+
+    &#right {
+        right: @offset;
+        width: @size;
+        height: 100%;
+
+        .neighborhoodWrapper {
+            display: block;
+        }
+    }
+
+    &#bottom {
+        bottom: @offset;
+        left: @size + @offset;
+        width: calc(~"100% - "(@size*2) + (@offset*2));
+        height: @size;
+
+        .neighborhoodWrapper {
+            display: inline-block;
+        }
+    }
+}

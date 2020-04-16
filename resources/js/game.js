@@ -1,38 +1,3 @@
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.deviceType = 'mobile';
-} else {
-    window.deviceType = 'desktop';
-}
-
-function toggleBoroughCheckbox(e) {
-    const tappedBoroughCheckboxWrapper = e.target.closest('.boroughCheckboxWrapper');
-
-    if (tappedBoroughCheckboxWrapper.classList.contains('on')) {
-        if(document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked').length > 1) {
-            tappedBoroughCheckboxWrapper.classList.remove('on');
-            tappedBoroughCheckboxWrapper.classList.add('off');
-            tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = false;
-        }
-    } else if (tappedBoroughCheckboxWrapper.classList.contains('off')) {
-        tappedBoroughCheckboxWrapper.classList.remove('off');
-        tappedBoroughCheckboxWrapper.classList.add('on');
-        tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = true;
-    }
-}
-
-function getSelectedBoroughs() {
-    var selectedBoroughs = [];
-    var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
-    
-    for (var i = 0; i < checkboxes.length; i++) {
-        selectedBoroughs.push(checkboxes[i].value);
-    }
-
-    window.selectedBoroughs = selectedBoroughs;
-    
-    initalizeGame();
-}
-
 function getNextNeighborhoodData() {
     const selectedBoroughs = window.selectedBoroughs;
 
@@ -222,7 +187,7 @@ function goToNextLevel(e) {
     if(window.levelNumber === 0) {
         document.getElementById('gameScreen').classList.add('gameInProgress');
         document.querySelector('#statusBar #level').textContent = `1 of ${config.maxNumLevels}`;
-        
+
         startTimer();
     }
 
@@ -334,9 +299,10 @@ function initalizeGame() {
 }
 
 function startGame() {
-    goToNextLevel();
+    window.scrollTo(0, 0);
+    document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
 
-    document.getElementById('startScreen').classList.add('gameStarted');
+    goToNextLevel();
 }
 
 function stopGame() {
@@ -353,9 +319,9 @@ function stopGame() {
         document.getElementById('gameScreen').classList.add('gameOver');
         document.getElementById('gameOverScreen').classList.add('visible');
 
-        document.querySelector('#gameOverScreen #content #clock').textContent = gameState.totalTimeFormatted;
-        document.querySelector('#gameOverScreen #content #answerTotals #answeredCorrectly').textContent = gameState.answeredCorrectly;
-        document.querySelector('#gameOverScreen #content #answerTotals #answeredIncorrectly').textContent = gameState.answeredIncorrectly;
+        document.querySelector('#gameOverScreen #gameOverScreenContents #clock').textContent = gameState.totalTimeFormatted;
+        document.querySelector('#gameOverScreen #gameOverScreenContents #answerTotals #answeredCorrectly').textContent = gameState.answeredCorrectly;
+        document.querySelector('#gameOverScreen #gameOverScreenContents #answerTotals #answeredIncorrectly').textContent = gameState.answeredIncorrectly;
     }, delayToShowGameOverScreen);
 }
 
@@ -369,16 +335,6 @@ let gameState = {
 };
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
-
-const boroughCheckboxes = document.querySelectorAll('.boroughCheckboxWrapper');
-
-for (const boroughCheckbox of boroughCheckboxes) {
-    if (window.deviceType === 'mobile') {
-        boroughCheckbox.addEventListener('touchend', toggleBoroughCheckbox);
-    } else {
-        boroughCheckbox.addEventListener('click', toggleBoroughCheckbox);
-    }
-}
 
 let map;
 const mapDiv = document.querySelector('#map');

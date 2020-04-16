@@ -1,72 +1,46 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>NYC Neighborhood Quiz</title>
+		<title>What the Hood?</title>
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Tangerine'>
 		<link rel='stylesheet/less' href='resources/css/style.less?v=13'>
 		<script src='resources/js/lib/less.js'></script>
-		<script src='resources/data/neighborhoods/new-york-city.js'></script>
-		<script src='resources/js/functions/averageGeolocation.js'></script>
-		<script src='resources/js/functions/renderNeighborhoodShape.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js'></script>
-		<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
-		<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
-		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<meta charset='UTF-8'>
 	</head>
-	<body ontouchstart=''>
-		<div id='startScreen'>
-			<!-- <div class='neighborhoodWrappersContainer' id='top'>
-				<div class='neighborhoodWrapper' style='margin-top: -110px; margin-left: 0px;'>
-					<svg><g id='neighborhood1'></g></svg>
+	<body ontouchstart='' class='fixScrollDuringGame'>
+		<div id='preloadImages'>
+			<div id='preloadImage1'></div>
+			<div id='preloadImage2'></div>
+			<div id='preloadImage3'></div>
+		</div>
+		<div id='gameSelectionScreen'>
+			<div id='gameSelectionScreenContents'>
+				<div class='gameSelector enabled' id='new-york-city'>
+					<div class='gameSelectorContents'>
+						<h1>New York City</h1>
+						<div class='playButton'>Play</div>
+					</div>
+				</div>
+				<div class='gameSelector disabled' id='san-francisco'>
+					<div class='gameSelectorContents'>
+						<h1>San Francisco</h1>
+						<div class='comingSoon'>Coming Soon</div>
+					</div>
+				</div>
+				<div class='gameSelector disabled' id='london'>
+					<div class='gameSelectorContents'>
+						<h1>London</h1>
+						<div class='comingSoon'>Coming Soon</div>
+					</div>
 				</div>
 			</div>
-			<div class='neighborhoodWrappersContainer' id='left'>
-				<div class='neighborhoodWrapper' style='margin-top: -200px; margin-left: -50px;'>
-					<svg><g id='neighborhood2'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -180px; margin-left: -10px;'>
-					<svg><g id='neighborhood3'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -120px; margin-left: -230px;'>
-					<svg><g id='neighborhood4'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -435px; margin-left: -70px;'>
-					<svg><g id='neighborhood5'></g></svg>
-				</div>	
-				<div class='neighborhoodWrapper' style='margin-top: -270px; margin-left: -110px;'>
-					<svg><g id='neighborhood6'></g></svg>
-				</div>
-			</div>
-			<div class='neighborhoodWrappersContainer' id='right'>
-				<div class='neighborhoodWrapper' style='margin-top: -345px; margin-left: 20px;'>
-					<svg><g id='neighborhood7'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -390px; margin-left: 5px;'>
-					<svg><g id='neighborhood8'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -230px; margin-left: 40px;'>
-					<svg><g id='neighborhood9'></g></svg>
-				</div>
-				<div class='neighborhoodWrapper' style='margin-top: -140px; margin-left: -20px;'>
-					<svg><g id='neighborhood10'></g></svg>
-				</div>
-			</div>
-			<div class='neighborhoodWrappersContainer' id='bottom'>
-				<div class='neighborhoodWrapper' style='margin-top: -10px; margin-left: -130px;'>
-					<svg><g id='neighborhood11'></g></svg>
-				</div>
-			</div>
-			<div id='titleWrapper'>
-				<h1>
-					<span id='what'>WHAT</span>
-					<span id='the'>THE</span>
-					<span id='hood'>HOOD?</span>
-				</h1>
-			</div> -->
-			<div id='startScreenContentContainer'>
-				<form>
+		</div>
+		<div id='preGameOptionsScreen'>
+			<div id='preGameOptionsScreenContents'>
+					<div id='titleWrapper'>
+						<h2>What boroughs do you want to play?</h2>
+					</div>
 					<div id='boroughCheckboxesWrapper'>
 						<div class='boroughCheckboxWrapper on'>
 							<input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
@@ -109,12 +83,11 @@
 							</div>
 						</div>
 					</div>
-				</form>
-				<a href='#start' id='startButton'>Start</a>
+				<div id='startButton'>Start</div>
 			</div>
 		</div>
 		<div id='gameScreen'>
-			<div id='gameContents'>
+			<div id='gameScreenContents'>
 				<div id='statusBar'>
 					<div id='info'>NYC</div>
 					<div id='clock'>
@@ -146,7 +119,7 @@
 			</div>
 		</div>
 		<div id='gameOverScreen'>
-			<div id='content'>
+			<div id='gameOverScreenContents'>
 				<div id='answerTotals'>
 					✅ <div id='answeredCorrectly'>0</div>
 					<br>
@@ -158,8 +131,14 @@
 				</div>
 			</div>
 		</div>
-		<script src='resources/js/config.js?v=13'></script>
-		<script src='resources/js/game.js?v=13'></script>
-		<script src='resources/js/index.js?v=13'></script>
+		<script src='resources/data/neighborhoods/new-york-city.js'></script>
+		<script src='resources/js/functions/averageGeolocation.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js'></script>
+		<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
+		<script src='resources/js/config.js?hash=<?php echo rand(0, 9999); ?>'></script>
+		<script src='resources/js/index.js?hash=<?php echo rand(0, 9999); ?>'></script>
+		<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
+		<script src='resources/js/game.js?hash=<?php echo rand(0, 9999); ?>'></script>
 	</body>
 </html>

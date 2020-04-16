@@ -17,6 +17,7 @@
 
 @border-radius: 8px;
 @standard-row-height: 52px;
+@standard-padding: 30px;
 
 .material-icons {
     direction: ltr;
@@ -51,156 +52,223 @@
 
 html, body {
 	margin: 0;
-	overflow: hidden;
-	position: fixed;
 	width: 100%;
 	height: 100%;
-	
-	#startScreen {
-		z-index: 2;
+
+	&.fixScrollDuringGame {
+		overflow: hidden;
+		position: fixed;
+	}
+
+	#preGameOptionsScreen,
+	#gameScreen,
+	#gameOverScreen {
+		min-width: 320px;
+	}
+
+	// @media only screen and (max-height: 640px) {
+	// 	&.fixScrollDuringGame {
+	// 		overflow: auto;
+	// 		position: absolute;
+	// 	}
+
+	// 	#preGameOptionsScreen,
+	// 	#gameScreen,
+	// 	#gameOverScreen {
+	// 		position: absolute!important;
+	// 	}
+	// }
+
+	#preloadImages {
+		opacity: 0;
+		width: 0;
+		height: 0;
+		pointer-events: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		#preloadImage1 {
+			&:extend(.material-icons);
+			content: 'clear';
+		}
+		
+		#preloadImage2 {
+			&:extend(.material-icons);
+			content: 'check_circle';
+		}
+	}
+
+	#gameSelectionScreen {
+		z-index: 4;
 		width: 100%;
 		height: 100%;
 		position: fixed;
-		background: white;
+		background: @black;
 		pointer-events: auto;
+		opacity: 1;
 		transition: all 0.5s;
-		transform: translateY(0);
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+
+		// &.zoom {
+		// 	transform: scale(1.05);
+		// }
+
+		&.gameSelected {
+			pointer-events: none;
+		}
+
+		&.done {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		#gameSelectionScreenContents {
+			position: absolute;
+			width: 100%;
+			opacity: 0;
+			transition: opacity 0.5s;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+
+			&.visible {
+				opacity: 1;
+			}
+
+			.gameSelector {
+				width: calc(~"100% - 60px");
+				background: @white;
+				margin-left: @standard-padding;
+				margin-bottom: @standard-padding;
+				border-radius: @border-radius;
+				transition: all 0.3s ease-in-out;
+				position: absolute;
+
+				&:active {
+					transform: scale(0.98);
+				}
+
+				&.selected {
+					// position: absolute!important;
+					width: 100%;
+					margin-bottom: 0!important;
+					margin-left: 0;
+					border-radius: 0;
+
+					&:active {
+						transform: scale(1)!important;
+					}
+
+					&.selectedFullScreen {
+						// top: 0!important;
+						// position: fixed!important;
+					}
+				}
+
+				&.notSelected {
+					opacity: 0;
+				}
+
+				.gameSelectorContents {
+					opacity: 1;
+					transition: opacity 0.5s;
+
+					&.hidden {
+						opacity: 0;
+					}
+				}
+				
+				h1 {	
+					font-family: 'Helvetica Neue';
+					font-weight: bold;
+					font-size: 32px;
+					line-height: 38px;
+					margin: @standard-padding 0 0 @standard-padding;
+					width: 50%;
+				}
+
+				.playButton {
+					background: rgba(0, 0, 0, 0.5);
+					color: @white;
+					position: absolute;
+					top: @standard-padding;
+					right: @standard-padding;
+					display: inline-block;
+					padding: 10px 20px;
+					border-radius: @border-radius;
+					font-family: 'Helvetica Neue';
+					font-weight: bold;
+					font-size: 18px;
+				}
+
+				.comingSoon {
+					color: rgba(0, 0, 0, 0.5);
+					display: inline-block;
+					border-radius: @border-radius;
+					font-family: 'Helvetica Neue';
+					font-weight: normal;
+					font-size: 18px;
+					margin-left: @standard-padding;
+					margin-top: 15px;
+				}
+			}
+		}
+	}
+
+	#preGameOptionsScreen {
+		z-index: 3;
+		width: 100%;
+		height: 100%;
+		min-height: 592px;
+		position: fixed;
+		background: @white;
+		pointer-events: none;
+		transition: transform 0.5s;
+		transform: translate3d(0, 0, 0);
+		box-shadow: 0px 2px 50px rgba(0, 0, 0, 0.2);
 
 		@offset: -105px;
 		@size: 240px;
 
-		&.gameStarted {
+		&.visible {
+			pointer-events: auto;
+		}
+
+		&.gameInProgress {
 			pointer-events: none;
-			transform: translateY(-100%);
+			transform: translate3d(0, -120%, 0);
 
 			* {
 				pointer-events: none!important;
 			}
 		}
 
-		.neighborhoodWrappersContainer {
-			position: fixed;
-			overflow: visible;
-
-			.neighborhoodWrapper {
-				transform: scale(0.75);
-				transform-origin: top left;
-
-				svg {
-					// background: rgba(0, 0, 0, 0.1);
-				}
-			}
-
-			&#top {
-				top: @offset;
-				left: @size + @offset;
-				width: calc(~"100% - "(@size*2) + (@offset*2));
-				height: @size;
-
-				.neighborhoodWrapper {
-					display: inline-block;
-				}
-			}
-
-			&#left {
-				left: @offset;
-				width: @size;
-				height: 100%;
-
-				.neighborhoodWrapper {
-					display: block;
-
-					#neighborhood2 {
-						top: -60px;
-					}
-				}
-			}
-
-			&#right {
-				right: @offset;
-				width: @size;
-				height: 100%;
-
-				.neighborhoodWrapper {
-					display: block;
-				}
-			}
-
-			&#bottom {
-				bottom: @offset;
-				left: @size + @offset;
-				width: calc(~"100% - "(@size*2) + (@offset*2));
-				height: @size;
-
-				.neighborhoodWrapper {
-					display: inline-block;
-				}
-			}
-		}
-
 		#titleWrapper {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			margin-left: -140px;
-			margin-top: -270px;
+			margin-bottom: 40px;
 
-			h1 {
-				font-family: 'Permanent Marker';
-				text-align: center;
-
-				#what, #the, #hood {
-					display: block;
-					font-size: 80px;
-				}
-
-				#what {
-					color: @orange;
-					margin-bottom: -35px;
-					margin-left: -30px;
-				}
-
-				#the {
-					color: @black;
-					margin-bottom: -35px;
-				}
-
-				#hood {
-					color: @blue;
-					margin-left: 30px;
-				}
+			h2 {
+				width: calc(~"100% - 60px");
+				font-family: 'Helvetica Neue';
+				font-weight: bold;
+				font-size: 32px;
+				line-height: 38px;
+				letter-spacing: -0.25px;
+				margin: 0;
 			}
 		}
 
-		background: @black;
-
-		#startScreenContentContainer {
+		#preGameOptionsScreenContents {
 			text-align: left;
 			position: absolute;
-			top: 50%;
+			top: @standard-padding;
+			left: @standard-padding;
 			width: calc(~"100% - 60px");
-			height: 300px;
-			margin-top: -200px;
-			padding: 0 30px;
-
-			@keyframes colorchange {
-				0% {
-					background: @blue;
-				}
-				
-				50% {
-					background: @black;
-				}
-
-				100% {
-					background: @orange;
-				}
-			}
+			height: calc(~"100% - 60px");
 
 			#boroughCheckboxesWrapper {
 				width: 100%;
 				height: auto;
-				background: @black;
 
 				.boroughCheckboxWrapper {
 					border-radius: @border-radius;
@@ -212,9 +280,10 @@ html, body {
 						width: 36px;
 						height: 36px;
 						margin-top: 8px;
-						margin-left: 10px;
+						margin-left: 12px;
 						float: left;
 						transition: all 0.2s;
+						filter: brightness(0%);
 					}
 
 					label {
@@ -223,7 +292,7 @@ html, body {
 						font-size: 18px;
 						line-height: @standard-row-height;
 						vertical-align: middle;
-						margin-left: 10px;
+						margin-left: 12px;
 						transition: all 0.2s;
 					}
 
@@ -250,18 +319,18 @@ html, body {
 					}
 
 					&.on {
-						background: rgba(255, 255, 255, 0.1);
+						background: rgba(0, 0, 0, 0.03);
 
 						.boroughCheckboxThumbnail {
-							opacity: 1;
+							opacity: 0.8;
 						}
 
 						label {
-							color: rgba(255, 255, 255, 1);
+							color: rgba(0, 0, 0, 0.8);
 						}
 
 						.toggleSwitch {
-							background: rgba(255, 255, 255, 0.15);
+							background: @blue;
 
 							.toggleSwitchHandle {
 								background: rgba(255, 255, 255, 1);
@@ -278,21 +347,21 @@ html, body {
 					}
 
 					&.off {
-						background: rgba(255, 255, 255, 0.05);
+						background: rgba(0, 0, 0, 0);
 
 						.boroughCheckboxThumbnail {
-							opacity: 0.2;
+							opacity: 0.3;
 						}
 
 						label {
-							color: rgba(255, 255, 255, 0.2);
+							color: rgba(0, 0, 0, 0.3);
 						}
 
 						.toggleSwitch {
-							background: rgba(255, 255, 255, 0.08);
+							background: rgba(0, 0, 0, 0.1);
 
 							.toggleSwitchHandle {
-								background: rgba(255, 255, 255, 0.8);
+								background: @white;
 								margin-left: 4px;
 							}
 						}
@@ -308,25 +377,24 @@ html, body {
 
 			#startButton {
 				width: 100%;
-				background: @white;
-				// animation: colorchange 5s alternate ease-in-out infinite;
+				background: @black;
 				font-family: 'Helvetica Neue', 'Helvetica';
 				display: block;
 				height: @standard-row-height - 4px;
-				color: @black;
+				color: @white;
 				text-align: center;
 				line-height: @standard-row-height - 4px;
 				border-radius: @border-radius;
 				text-decoration: none;
 				font-weight: bold;
 				font-size: 18px;
-				position: relative;
-				margin-top: 20px;
-				transition: all 0.5s;
-				transform: scale(1);
+				position: absolute;
+				bottom: 0;
+				transition: all 0.2s;
+				cursor: pointer;
 
 				&:focus, &:active {
-					transform: scale(0.99);
+					opacity: 0.8;
 				}
 			}
 		}
@@ -336,8 +404,7 @@ html, body {
 		z-index: 1;
 		width: 100%;
 		height: 100%;
-		min-width: 320px;
-		min-height: 480px;
+		min-height: 568px;
 		position: fixed;
 		background: @blue;
 		pointer-events: none;
@@ -353,7 +420,7 @@ html, body {
 				pointer-events: auto;
 			}
 
-			#gameContents{
+			#gameScreenContents{
 				transform: scale(1);
 				opacity: 1;
 			}
@@ -364,12 +431,16 @@ html, body {
 			pointer-events: none;
 		}
 
-		#gameContents {
+		#gameScreenContents {
 			width: 100%;
 			height: 100%;
-			transition: all 0.8s;
+			transition: transform 0.8s;
 			transform: scale(0.8);
 			opacity: 0;
+
+			@media only screen and (max-height: 568px) {
+				height: calc(~"100% - 30px");
+			}
 
 			#statusBar {
 				width: calc(~"100% - 60px");
@@ -378,7 +449,7 @@ html, body {
 				font-family: 'Helvetica Neue', 'Helvetica';
 				position: relative;
 				margin-top: 25px;
-				margin-left: 30px;
+				margin-left: @standard-padding;
 				margin-bottom: 25px;
 	
 				#info, #level {
@@ -416,9 +487,9 @@ html, body {
 				height: calc(~"100% - 368px");
 				border-radius: @border-radius;
 				box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
-				margin-left: 30px;
-				margin-bottom: 30px;
-				min-height: 100px;
+				margin-left: @standard-padding;
+				margin-bottom: @standard-padding;
+				min-height: 200px;
 	
 				#mapWrapper {
 					width: 100%;
@@ -451,7 +522,7 @@ html, body {
 						background: rgba(0, 0, 0, 0.2);
 						border-radius: @border-radius;
 						width: calc(~"100% - 60px");
-						margin-left: 30px;
+						margin-left: @standard-padding;
 						margin-bottom: 10px;
 						transition: all 0.2s;
 			
@@ -530,7 +601,7 @@ html, body {
 		height: 100%;
 		position: fixed;
 		background: black;
-		z-index: 3;
+		z-index: 2;
 		pointer-events: none;
 		opacity: 0;
 		transition: opacity 0.5s;
@@ -540,7 +611,7 @@ html, body {
 			opacity: 1;
 		}
 
-		#content {
+		#gameOverScreenContents {
 			width: 200px;
 			height: 200px;
 			padding: 50px;
@@ -548,7 +619,7 @@ html, body {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			border-radius: 8px;
+			border-radius: @border-radius;
 			margin-left: -150px;
 			margin-top: -150px;
 			text-align: center;
