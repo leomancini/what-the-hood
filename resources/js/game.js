@@ -4,6 +4,22 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
     window.deviceType = 'desktop';
 }
 
+function toggleBoroughCheckbox(e) {
+    const tappedBoroughCheckboxWrapper = e.target.closest('.boroughCheckboxWrapper');
+
+    if (tappedBoroughCheckboxWrapper.classList.contains('on')) {
+        if(document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked').length > 1) {
+            tappedBoroughCheckboxWrapper.classList.remove('on');
+            tappedBoroughCheckboxWrapper.classList.add('off');
+            tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = false;
+        }
+    } else if (tappedBoroughCheckboxWrapper.classList.contains('off')) {
+        tappedBoroughCheckboxWrapper.classList.remove('off');
+        tappedBoroughCheckboxWrapper.classList.add('on');
+        tappedBoroughCheckboxWrapper.querySelector('input.boroughCheckbox').checked = true;
+    }
+}
+
 function getSelectedBoroughs() {
     var selectedBoroughs = [];
     var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
@@ -13,7 +29,7 @@ function getSelectedBoroughs() {
     }
 
     window.selectedBoroughs = selectedBoroughs;
-
+    
     initalizeGame();
 }
 
@@ -194,19 +210,21 @@ function goToNextLevel(e) {
         }
     }
 
+    delayToHideFirstLevel = 0;
+    delayToHideCurrentLevelForEachSubsequentLevel = 1500;
+
+    delayToShowFirstLevel = 500;
+    delayToShowNextLevelForEachSubsequentLevel = 500;
+
+    delayToShowAnswerOptionsForFirstLevel = 0;
+    delayToShowAnswerOptionsForEachSubsequentLevel = 500;
+
     if(window.levelNumber === 0) {
-        startTimer();
+        document.getElementById('gameScreen').classList.add('gameInProgress');
         document.querySelector('#statusBar #level').textContent = `1 of ${config.maxNumLevels}`;
+        
+        startTimer();
     }
-
-    delayToHideCurrentLevelFirstLevel = 0;
-    delayToHideCurrentLevelSubsequentLevels = 1500;
-
-    delayToShowNextLevelFirstLevel = 500;
-    delayToShowNextLevelSubsequentLevels = 500;
-
-    delayToShowAnswerOptionsFirstLevel = 0;
-    delayToShowAnswerOptionsSubsequentLevels = 500;
 
     if (window.levelNumber === config.maxNumLevels) {
         // Stop game
@@ -227,13 +245,13 @@ function goToNextLevel(e) {
         const answerOptions = getAnswerOptions(neighborhoodData);
 
         if (window.levelNumber === 1) {
-            delayToHideCurrentLevel = delayToHideCurrentLevelFirstLevel;
-            delayToShowNextLevel = delayToShowNextLevelFirstLevel;
-            delayToShowAnswerOptions = delayToShowAnswerOptionsFirstLevel;
+            delayToHideCurrentLevel = delayToHideFirstLevel;
+            delayToShowNextLevel = delayToShowFirstLevel;
+            delayToShowAnswerOptions = delayToShowAnswerOptionsForFirstLevel;
         } else {
-            delayToHideCurrentLevel = delayToHideCurrentLevelSubsequentLevels;
-            delayToShowNextLevel = delayToShowNextLevelSubsequentLevels;
-            delayToShowAnswerOptions = delayToShowAnswerOptionsSubsequentLevels;
+            delayToHideCurrentLevel = delayToHideCurrentLevelForEachSubsequentLevel;
+            delayToShowNextLevel = delayToShowNextLevelForEachSubsequentLevel;
+            delayToShowAnswerOptions = delayToShowAnswerOptionsForEachSubsequentLevel;
         }
     
         setTimeout(function() {
@@ -293,16 +311,17 @@ function initalizeGame() {
     window.levelNumber = 0; // need to redo this
     map = initalizeMap();
 
-    document.getElementById('startScreen').classList.remove('mapReady');
-    document.getElementById('startButton').innerHTML = 'Loading...';
-    
     map.on('load', function() {
         map.resize();  
     });
 
-    document.getElementById('startScreen').classList.add('mapReady');
-    document.getElementById('startButton').innerHTML = 'Start';
-    document.getElementById('startButton').addEventListener('click', startGame); 
+    if (window.deviceType === 'mobile') {
+        document.getElementById('startButton').addEventListener('touchend', getSelectedBoroughs);
+        document.getElementById('startButton').addEventListener('touchend', startGame);
+    } else {
+        document.getElementById('startButton').addEventListener('click', getSelectedBoroughs);
+        document.getElementById('startButton').addEventListener('click', startGame);
+    }
     
     const optionDivs = document.querySelectorAll('.option');
     for (const optionDiv of optionDivs) {
@@ -330,6 +349,7 @@ function stopGame() {
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
 
     setTimeout(function() {
+        document.getElementById('gameScreen').classList.remove('gameInProgress');
         document.getElementById('gameScreen').classList.add('gameOver');
         document.getElementById('gameOverScreen').classList.add('visible');
 
@@ -350,10 +370,14 @@ let gameState = {
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
 
-const boroughCheckboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox');
+const boroughCheckboxes = document.querySelectorAll('.boroughCheckboxWrapper');
 
 for (const boroughCheckbox of boroughCheckboxes) {
-    boroughCheckbox.addEventListener('click', getSelectedBoroughs);
+    if (window.deviceType === 'mobile') {
+        boroughCheckbox.addEventListener('touchend', toggleBoroughCheckbox);
+    } else {
+        boroughCheckbox.addEventListener('click', toggleBoroughCheckbox);
+    }
 }
 
 let map;

@@ -16,6 +16,7 @@
 @white: #FFFFFF;
 
 @border-radius: 8px;
+@standard-row-height: 52px;
 
 .material-icons {
     direction: ltr;
@@ -62,10 +63,20 @@ html, body {
 		position: fixed;
 		background: white;
 		pointer-events: auto;
-		// opacity: 0;
+		transition: all 0.5s;
+		transform: translateY(0);
 
 		@offset: -105px;
 		@size: 240px;
+
+		&.gameStarted {
+			pointer-events: none;
+			transform: translateY(-100%);
+
+			* {
+				pointer-events: none!important;
+			}
+		}
 
 		.neighborhoodWrappersContainer {
 			position: fixed;
@@ -127,31 +138,13 @@ html, body {
 			}
 		}
 
-		&.mapReady {
-			#startScreenContentContainer {
-				#startButton {
-					pointer-events: auto;
-					opacity: 1;
-				}
-			}
-		}
-
-		&.gameStarted {
-			opacity: 0;
-			pointer-events: none;
-
-			* {
-				pointer-events: none!important;
-			}
-		}
-
 		#titleWrapper {
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			margin-left: -140px;
 			margin-top: -270px;
-			
+
 			h1 {
 				font-family: 'Permanent Marker';
 				text-align: center;
@@ -179,14 +172,16 @@ html, body {
 			}
 		}
 
+		background: @black;
+
 		#startScreenContentContainer {
 			text-align: left;
 			position: absolute;
 			top: 50%;
-			width: calc(~"100% - 40px");
+			width: calc(~"100% - 60px");
 			height: 300px;
-			margin-top: -150px;
-			padding: 0 20px;
+			margin-top: -200px;
+			padding: 0 30px;
 
 			@keyframes colorchange {
 				0% {
@@ -202,32 +197,136 @@ html, body {
 				}
 			}
 
-			#startButton {
-				opacity: 0.5;
-				pointer-events: none;
-
-				width: 120px;
+			#boroughCheckboxesWrapper {
+				width: 100%;
+				height: auto;
 				background: @black;
+
+				.boroughCheckboxWrapper {
+					border-radius: @border-radius;
+					height: @standard-row-height;
+					margin-bottom: 10px;
+					transition: all 0.2s;
+
+					.boroughCheckboxThumbnail {
+						width: 36px;
+						height: 36px;
+						margin-top: 8px;
+						margin-left: 10px;
+						float: left;
+						transition: all 0.2s;
+					}
+
+					label {
+						font-family: 'Helvetica Neue';
+						font-weight: bold;
+						font-size: 18px;
+						line-height: @standard-row-height;
+						vertical-align: middle;
+						margin-left: 10px;
+						transition: all 0.2s;
+					}
+
+					input[type='checkbox'] {
+						display: none;
+					}
+
+					.toggleSwitch {
+						width: 56px;
+						height: 32px;
+						float: right;
+						margin-right: 10px;
+						margin-top: 10px;
+						border-radius: 32px;
+
+						.toggleSwitchHandle {
+							width: 24px;
+							height: 24px;
+							border-radius: 24px;
+							margin-top: 4px;
+							box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+							transition: all 0.2s;
+						}
+					}
+
+					&.on {
+						background: rgba(255, 255, 255, 0.1);
+
+						.boroughCheckboxThumbnail {
+							opacity: 1;
+						}
+
+						label {
+							color: rgba(255, 255, 255, 1);
+						}
+
+						.toggleSwitch {
+							background: rgba(255, 255, 255, 0.15);
+
+							.toggleSwitchHandle {
+								background: rgba(255, 255, 255, 1);
+								margin-left: 28px;
+							}
+						}
+
+						&:active {
+							.toggleSwitch .toggleSwitchHandle {
+								width: 32px;
+								margin-left: 20px;
+							}
+						}
+					}
+
+					&.off {
+						background: rgba(255, 255, 255, 0.05);
+
+						.boroughCheckboxThumbnail {
+							opacity: 0.2;
+						}
+
+						label {
+							color: rgba(255, 255, 255, 0.2);
+						}
+
+						.toggleSwitch {
+							background: rgba(255, 255, 255, 0.08);
+
+							.toggleSwitchHandle {
+								background: rgba(255, 255, 255, 0.8);
+								margin-left: 4px;
+							}
+						}
+
+						&:active {
+							.toggleSwitch .toggleSwitchHandle {
+								width: 32px;
+							}
+						}
+					}
+				}
+			}
+
+			#startButton {
+				width: 100%;
+				background: @white;
 				// animation: colorchange 5s alternate ease-in-out infinite;
 				font-family: 'Helvetica Neue', 'Helvetica';
 				display: block;
-				height: 120px;
-				color: white;
+				height: @standard-row-height - 4px;
+				color: @black;
 				text-align: center;
-				line-height: 120px;
-				border-radius: 120px;
+				line-height: @standard-row-height - 4px;
+				border-radius: @border-radius;
 				text-decoration: none;
 				font-weight: bold;
-				font-size: 28px;
+				font-size: 18px;
 				position: relative;
-				left: 50%;
-				margin-top: 120px;
-				margin-left: -60px;
+				margin-top: 20px;
 				transition: all 0.5s;
 				transform: scale(1);
 
 				&:focus, &:active {
-					transform: scale(0.9);
+					transform: scale(0.99);
 				}
 			}
 		}
@@ -240,166 +339,190 @@ html, body {
 		min-width: 320px;
 		min-height: 480px;
 		position: fixed;
-		transition: opacity 0.5s;
 		background: @blue;
+		pointer-events: none;
+
+		* {
+			pointer-events: none;
+		}
+
+		&.gameInProgress {
+			pointer-events: auto;
+
+			* {
+				pointer-events: auto;
+			}
+
+			#gameContents{
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
 
 		&.gameOver {
 			opacity: 0;
 			pointer-events: none;
 		}
 
-		#statusBar {
-			width: calc(~"100% - 60px");
-			font-size: 18px;
-			height: 20px;
-			font-family: 'Helvetica Neue', 'Helvetica';
-			position: relative;
-			margin-top: 25px;
-			margin-left: 30px;
-			margin-bottom: 25px;
+		#gameContents {
+			width: 100%;
+			height: 100%;
+			transition: all 0.8s;
+			transform: scale(0.8);
+			opacity: 0;
 
-			#info, #level {
-				position: absolute;
+			#statusBar {
+				width: calc(~"100% - 60px");
 				font-size: 18px;
-				line-height: 20px;
-				color: rgba(0, 0, 0, 0.5);
-				font-weight: normal;
-			}
-
-			#info {
-				left: 0;
-			}
-
-			#level {
-				right: 0;
-			}
-
-			#clock {
-				position: absolute;
-				left: 50%;
-				margin-left: -60px;
-				width: 120px;
-				z-index: 2;
-				font-size: 18px;
-				line-height: 20px;
-				font-weight: bold;
-				text-align: center;
-				color: #FFFFFF;
-			}
-		}
-
-		#mapWrapperContainer {
-			width: calc(~"100% - 60px");
-			height: calc(~"100% - 368px");
-			border-radius: @border-radius;
-			box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
-			margin-left: 30px;
-			margin-bottom: 30px;
-			min-height: 100px;
-
-			#mapWrapper {
-				width: 100%;
-				height: 100%;
-				overflow: hidden;
-				background: rgba(255, 255, 255, 0.2);
-				border-radius: @border-radius;
-				-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+				height: 20px;
+				font-family: 'Helvetica Neue', 'Helvetica';
+				position: relative;
+				margin-top: 25px;
+				margin-left: 30px;
+				margin-bottom: 25px;
 	
-				#map {
-					opacity: 0;
-					transition: opacity 0.5s;
+				#info, #level {
+					position: absolute;
+					font-size: 18px;
+					line-height: 20px;
+					color: rgba(0, 0, 0, 0.5);
+					font-weight: normal;
+				}
+	
+				#info {
+					left: 0;
+				}
+	
+				#level {
+					right: 0;
+				}
+	
+				#clock {
+					position: absolute;
+					left: 50%;
+					margin-left: -60px;
+					width: 120px;
+					z-index: 2;
+					font-size: 18px;
+					line-height: 20px;
+					font-weight: bold;
+					text-align: center;
+					color: #FFFFFF;
+				}
+			}
+	
+			#mapWrapperContainer {
+				width: calc(~"100% - 60px");
+				height: calc(~"100% - 368px");
+				border-radius: @border-radius;
+				box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
+				margin-left: 30px;
+				margin-bottom: 30px;
+				min-height: 100px;
+	
+				#mapWrapper {
 					width: 100%;
 					height: 100%;
-				}
-			}
-		}
-	
-		#questions {
-			width: 100%;
-			z-index: 3;
-	
-			#options {
-				width: 100%;
-
-				.option {
-					cursor: pointer;
-					text-indent: 10px;
-					height: 52px;
-					background: rgba(0, 0, 0, 0.2);
+					overflow: hidden;
+					background: rgba(255, 255, 255, 0.2);
 					border-radius: @border-radius;
-					width: calc(~"100% - 60px");
-					margin-left: 30px;
-					margin-bottom: 10px;
-					transition: all 0.2s;
+					-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 		
-					.letter {
-						display: none;
-					}
-
-					label {
-						display: inline-block;
-						color: @white;
-						font-family: 'Helvetica Neue';
-						font-style: normal;
-						font-weight: bold;
-						font-size: 18px;
-						line-height: 52px;
-						white-space: nowrap;
-						text-overflow: ellipsis;
-						width: calc(100% - 20px);
-						pointer-events: none;
-						cursor: pointer;
-						overflow: hidden;
-						transition: all 0.2s;
-
-						&.hidden {
-							opacity: 0;
-						}
-					}
-
-					&:active, &:focus {
-						background: rgba(255, 255, 255, 0.2);
-					}
-
-					&:last-child {
-						margin-bottom: 0;
-					}
-
-					&.selectedAnswer {
-						background: rgba(255, 255, 255, 0.2);
-
-						&:after {
-							&:extend(.material-icons);
-							content: 'clear';
-							position: absolute;
-							right: 45px;
-							margin-top: 14px;
-							color: @white;
-							font-size: 24px;
-						}
-					}
-
-					&.correctAnswer {
-						background: @white!important;
-
-						label {
-							color: @black!important;
-						}
-
-						&:after {
-							&:extend(.material-icons);
-							content: 'check_circle';
-							position: absolute;
-							right: 45px;
-							margin-top: 14px;
-							color: @blue;
-							font-size: 24px;
-						}
+					#map {
+						opacity: 0;
+						transition: opacity 0.5s;
+						width: 100%;
+						height: 100%;
 					}
 				}
 			}
-		}
 		
+			#questions {
+				width: 100%;
+				z-index: 3;
+		
+				#options {
+					width: 100%;
+	
+					.option {
+						cursor: pointer;
+						text-indent: 10px;
+						height: @standard-row-height;
+						background: rgba(0, 0, 0, 0.2);
+						border-radius: @border-radius;
+						width: calc(~"100% - 60px");
+						margin-left: 30px;
+						margin-bottom: 10px;
+						transition: all 0.2s;
+			
+						.letter {
+							display: none;
+						}
+	
+						label {
+							display: inline-block;
+							color: @white;
+							font-family: 'Helvetica Neue';
+							font-style: normal;
+							font-weight: bold;
+							font-size: 18px;
+							line-height: @standard-row-height;
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							width: calc(100% - 20px);
+							pointer-events: none;
+							cursor: pointer;
+							overflow: hidden;
+							transition: all 0.2s;
+	
+							&.hidden {
+								opacity: 0;
+							}
+						}
+	
+						&:active, &:focus {
+							background: rgba(255, 255, 255, 0.2);
+						}
+	
+						&:last-child {
+							margin-bottom: 0;
+						}
+	
+						&.selectedAnswer {
+							background: rgba(255, 255, 255, 0.2);
+	
+							&:after {
+								&:extend(.material-icons);
+								content: 'clear';
+								position: absolute;
+								right: 45px;
+								margin-top: 14px;
+								color: @white;
+								font-size: 24px;
+							}
+						}
+	
+						&.correctAnswer {
+							background: @white!important;
+	
+							label {
+								color: @black!important;
+							}
+	
+							&:after {
+								&:extend(.material-icons);
+								content: 'check_circle';
+								position: absolute;
+								right: 45px;
+								margin-top: 14px;
+								color: @blue;
+								font-size: 24px;
+							}
+						}
+					}
+				}
+			}	
+		}
 	}
 
 	#gameOverScreen {
