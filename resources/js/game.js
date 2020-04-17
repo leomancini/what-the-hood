@@ -158,6 +158,12 @@ function stopTimer(timer) {
 }
 
 function goToNextLevel(e) {
+    const optionsDivs = document.querySelectorAll('.option');
+    
+    for (var i = 0; i < optionsDivs.length; ++i) {
+        optionsDivs[i].style.pointerEvents = 'none';
+    }
+
     if (e && (e.type === 'touchend' || e.type === 'click')) {
         if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
             gameState.answeredCorrectly++;

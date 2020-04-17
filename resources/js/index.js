@@ -16,8 +16,11 @@ function selectGame(tappedGameSelector) {
             }
         }
     
+        selectedGameSelector.children[0].classList.add('hidden');
+        
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
+            selectedGameSelector.children[0].classList.add('selected');
             selectedGameSelector.classList.add('selected');
             selectedGameSelector.style.height = `${window.innerHeight}px`;
     
@@ -26,19 +29,15 @@ function selectGame(tappedGameSelector) {
             setTimeout(function() {
                 selectedGameSelector.classList.add('selectedFullScreen');
                 document.getElementById('gameSelectionScreen').classList.add('gameSelected');
-            }, 400);
-        }, 500);
+            }, 200);
+        }, 100);
     
         document.querySelector('body').classList.add('fixScrollDuringGame');
-        document.getElementById('preGameOptionsScreen').classList.add('visible');
     
         setTimeout(function() {
-            document.querySelector('.gameSelectorContents').classList.add('hidden');
-    
-            setTimeout(function() {
-                document.getElementById('gameSelectionScreen').classList.add('done');
-            }, 800);
-        }, 500);
+            document.getElementById('gameSelectionScreen').classList.add('done');
+            document.getElementById('preGameOptionsScreen').classList.add('visible');
+        }, 800);
     }
 }
 
