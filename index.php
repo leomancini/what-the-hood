@@ -19,6 +19,7 @@
 				<div class='gameSelector enabled' id='new-york-city'>
 					<div class='gameSelectorContents'>
 						<h1>New York City</h1>
+						<img src='resources/images/nyc/city-thumbnail.png' class='city-thumbnail'>
 						<div class='playButton'>Play</div>
 					</div>
 				</div>

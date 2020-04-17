@@ -144,9 +144,19 @@ html, body {
 				border-radius: @border-radius;
 				transition: all 0.3s ease-in-out;
 				position: absolute;
+				overflow: hidden;
+				-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 
-				&:active {
-					transform: scale(0.98);
+				&.enabled {
+					cursor: pointer;
+
+					&:active {
+						transform: scale(0.98);
+					}
+				}
+				
+				&.disabled {
+					opacity: 0.3;
 				}
 
 				&.selected {
@@ -177,40 +187,49 @@ html, body {
 					&.hidden {
 						opacity: 0;
 					}
-				}
-				
-				h1 {	
-					font-family: 'Helvetica Neue';
-					font-weight: bold;
-					font-size: 32px;
-					line-height: 38px;
-					margin: @standard-padding 0 0 @standard-padding;
-					width: 50%;
+
+					h1 {	
+						font-family: 'Helvetica Neue';
+						font-weight: bold;
+						font-size: 32px;
+						line-height: 38px;
+						margin: 20px 0 0 25px;
+						width: 50%;
+					}
+
+					.playButton {
+						background: rgba(0, 0, 0, 0.8);
+						color: #FFFFFF;
+						display: inline-block;
+						padding: 10px 20px;
+						border-radius: 8px;
+						font-family: 'Helvetica Neue';
+						font-weight: bold;
+						font-size: 18px;
+						margin-left: 25px;
+						margin-top: 20px;
+					}
+
+					.comingSoon {
+						color: rgba(0, 0, 0, 0.5);
+						display: inline-block;
+						border-radius: @border-radius;
+						font-family: 'Helvetica Neue';
+						font-weight: normal;
+						font-size: 18px;
+						margin-left: 25px;
+						margin-top: 15px;
+					}
 				}
 
-				.playButton {
-					background: rgba(0, 0, 0, 0.5);
-					color: @white;
-					position: absolute;
-					top: @standard-padding;
-					right: @standard-padding;
-					display: inline-block;
-					padding: 10px 20px;
-					border-radius: @border-radius;
-					font-family: 'Helvetica Neue';
-					font-weight: bold;
-					font-size: 18px;
-				}
-
-				.comingSoon {
-					color: rgba(0, 0, 0, 0.5);
-					display: inline-block;
-					border-radius: @border-radius;
-					font-family: 'Helvetica Neue';
-					font-weight: normal;
-					font-size: 18px;
-					margin-left: @standard-padding;
-					margin-top: 15px;
+				&#new-york-city .gameSelectorContents {
+					.city-thumbnail {
+						position: absolute;
+						right: -65px;
+						top: -30px;
+						width: 384px;
+						height: 383px;
+					}
 				}
 			}
 		}
