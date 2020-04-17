@@ -19,6 +19,15 @@
 @standard-row-height: 52px;
 @standard-padding: 30px;
 
+.desktop {
+	@desktop-width: 600px;
+
+	width: @desktop-width;
+	left: 50%;
+	margin-left: @desktop-width / -2;
+	position: absolute;
+}
+
 .material-icons {
     direction: ltr;
     display: inline-block;
@@ -55,30 +64,9 @@ html, body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
-
-	&.fixScrollDuringGame {
-		overflow: hidden;
-		position: fixed;
-	}
-
-	#preGameOptionsScreen,
-	#gameScreen,
-	#gameOverScreen {
-		min-width: 320px;
-	}
-
-	// @media only screen and (max-height: 640px) {
-	// 	&.fixScrollDuringGame {
-	// 		overflow: auto;
-	// 		position: absolute;
-	// 	}
-
-	// 	#preGameOptionsScreen,
-	// 	#gameScreen,
-	// 	#gameOverScreen {
-	// 		position: absolute!important;
-	// 	}
-	// }
+	overflow: hidden;
+	position: fixed;
+	background: @black;
 
 	#preloadImages {
 		opacity: 0;
@@ -100,609 +88,638 @@ html, body {
 		}
 	}
 
-	#gameSelectionScreen {
-		z-index: 4;
+	#container {
 		width: 100%;
 		height: 100%;
+		min-width: 320px;
 		position: fixed;
-		background: @black;
-		pointer-events: auto;
-		opacity: 1;
-		transition: all 0.5s;
-		overflow-y: scroll;
-		-webkit-overflow-scrolling: touch;
+		overflow: hidden;
 
-		// &.zoom {
-		// 	transform: scale(1.05);
-		// }
-
-		&.gameSelected {
-			pointer-events: none;
-		}
-
-		&.done {
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		#gameSelectionScreenContents {
-			position: absolute;
+		#gameSelectionScreen {
+			z-index: 4;
 			width: 100%;
-			opacity: 0;
-			transition: opacity 0.5s;
+			height: 100%;
+			position: absolute;
+			background: @black;
+			pointer-events: auto;
+			opacity: 1;
+			transition: all 0.5s;
 			overflow-y: scroll;
 			-webkit-overflow-scrolling: touch;
+	
+			// &.zoom {
+			// 	transform: scale(1.05);
+			// }
+	
+			&.gameSelected {
+				pointer-events: none;
+			}
+	
+			&.done {
+				opacity: 0;
+				pointer-events: none;
+			}
+	
+			#gameSelectionScreenContents {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				transition: opacity 0.5s;
+				overflow-y: scroll;
+				-webkit-overflow-scrolling: touch;
+	
+				&.visible {
+					opacity: 1;
+				}
+	
+				.gameSelector {
+					width: calc(~"100% - 60px");
+					background: @white;
+					margin-left: @standard-padding;
+					margin-bottom: @standard-padding;
+					border-radius: @border-radius;
+					transition: all 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+					position: absolute;
+					overflow: hidden;
+					mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+					-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+					
+					@media @desktop {
+						.desktop();
+					}
 
+					&.enabled {
+						cursor: pointer;
+					}
+	
+					&.disabled {
+						opacity: 0.3;
+					}
+	
+					&:active {
+						transform: scale(0.95);
+					}
+	
+					&.selected {
+						// position: absolute!important;
+						// width: 100%;
+						margin-bottom: 0!important;
+						// margin-left: 0;
+						border-radius: 0;
+						transform-origin: top center;
+						z-index: 2;
+						transform: scale(1.2);
+
+						@media @desktop {
+							width: 100%;
+							left: 0;
+							margin-left: 0;
+						}
+	
+						&:active {
+							transform: scale(1)!important;
+						}
+	
+						&.selectedFullScreen {
+							// top: 0!important;
+							// position: fixed!important;
+						}
+					}
+	
+					&.notSelected {
+						opacity: 0;
+						z-index: 1;
+						// transform: scale(0.9);
+					}
+	
+					.gameSelectorContents {
+						opacity: 1;
+						transition: all 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+						left: 0;
+						top: 0;
+						position: absolute;
+						width: 100%;
+	
+						&.selected {
+							opacity: 0;
+						}
+	
+						h1 {	
+							font-family: 'Helvetica Neue';
+							font-weight: bold;
+							font-size: 32px;
+							line-height: 38px;
+							margin: 20px 0 0 25px;
+						}
+	
+						.playButton {
+							background: rgba(0, 0, 0, 0.8);
+							color: #FFFFFF;
+							display: inline-block;
+							padding: 10px 20px;
+							border-radius: 8px;
+							font-family: 'Helvetica Neue';
+							font-weight: bold;
+							font-size: 18px;
+							margin-left: 25px;
+							margin-top: 20px;
+						}
+	
+						.comingSoon {
+							color: rgba(0, 0, 0, 0.5);
+							display: inline-block;
+							border-radius: @border-radius;
+							font-family: 'Helvetica Neue';
+							font-weight: normal;
+							font-size: 18px;
+							margin-left: 25px;
+							margin-top: 10px;
+						}
+					}
+	
+					&#new-york-city .gameSelectorContents {
+						.city-thumbnail {
+							position: absolute;
+							right: -75px;
+							top: -30px;
+							width: 384px;
+						}
+					}
+	
+					&#san-francisco .gameSelectorContents {
+						.city-thumbnail {
+							position: absolute;
+							width: 265px;
+							left: 50%;
+							margin-left: -132px;
+							bottom: -300px;
+							z-index: -1;
+						}
+					}
+				}
+	
+				#bottomLinks {
+					color: white;
+					position: absolute;
+					margin-left: 30px;
+					height: 30px;
+
+					@media @desktop {
+						.desktop();
+					}
+
+					a {
+						font-family: 'Helvetica Neue';
+						font-weight: normal;
+						font-size: 14px;
+						color: rgba(255, 255, 255, 0.4);
+	
+						&:hover {
+							text-decoration: none;
+						}
+					}
+				}
+			}
+		}
+	
+		#preGameOptionsScreen {
+			z-index: 3;
+			width: 100%;
+			height: 100%;
+			min-height: 592px;
+			position: absolute;
+			background: @white;
+			pointer-events: none;
+			transition: transform 0.5s;
+			opacity: 0;
+			transform: translate3d(0, 0, 0);
+			box-shadow: 0px 2px 50px rgba(0, 0, 0, 0.2);
+	
+			@offset: -105px;
+			@size: 240px;
+	
 			&.visible {
 				opacity: 1;
+				pointer-events: auto;
+				transform: translate3d(0, 0, 0);
+	
+				#preGameOptionsScreenContents {
+					transform: scale(1);
+				}
 			}
-
-			.gameSelector {
-				width: calc(~"100% - 60px");
-				background: @white;
-				margin-left: @standard-padding;
-				margin-bottom: @standard-padding;
-				border-radius: @border-radius;
-				transition: all 0.4s ease-in-out;
+	
+			&.gameInProgress {
+				pointer-events: none;
+				transform: translate3d(0, -120%, 0);
+	
+				* {
+					pointer-events: none!important;
+				}
+			}
+	
+			#preGameOptionsScreenContents {
+				text-align: left;
 				position: absolute;
-				overflow: hidden;
-				mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-				-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+				top: @standard-padding;
+				left: @standard-padding;
+				width: calc(~"100% - 60px");
+				height: calc(~"100% - 60px");
+				transition: all 0.5s;
+				transform: scale(0.95);
 				
-				&.enabled {
-					cursor: pointer;
-
+				@media @desktop {
+					width: 500px;
+					left: 50%;
+					margin-left: -250px;
 				}
 
-				&.disabled {
-					opacity: 0.3;
-				}
-
-				&:active {
-					transform: scale(0.98);
-				}
-
-				&.selected {
-					// position: absolute!important;
-					width: 100%;
-					margin-bottom: 0!important;
-					margin-left: 0;
-					border-radius: 0;
-					// transform-origin: top center;
-					transform: scale(1.1);
-
-					&:active {
-						transform: scale(1)!important;
-					}
-
-					&.selectedFullScreen {
-						// top: 0!important;
-						// position: fixed!important;
-					}
-				}
-
-				&.notSelected {
-					opacity: 0;
-				}
-
-				.gameSelectorContents {
-					opacity: 1;
-					transition: all 0.4s ease-in-out;
-					left: 0;
-					top: 0;
-					position: absolute;
-
-					&.selected {
-						opacity: 0;
-						left: 30px;
-						top: 30px;
-					}
-
-					&.hidden {
-						opacity: 0;
-					}
-
-					h1 {	
+				#titleWrapper {
+					margin-bottom: 40px;
+		
+					h2 {
+						width: calc(~"100% - 100px");
 						font-family: 'Helvetica Neue';
 						font-weight: bold;
 						font-size: 32px;
 						line-height: 38px;
-						margin: 20px 0 0 25px;
+						letter-spacing: -0.25px;
+						margin: 0;
 					}
-
-					.playButton {
-						background: rgba(0, 0, 0, 0.8);
-						color: #FFFFFF;
-						display: inline-block;
-						padding: 10px 20px;
-						border-radius: 8px;
-						font-family: 'Helvetica Neue';
-						font-weight: bold;
-						font-size: 18px;
-						margin-left: 25px;
-						margin-top: 20px;
-					}
-
-					.comingSoon {
-						color: rgba(0, 0, 0, 0.5);
-						display: inline-block;
+				}
+	
+				#boroughCheckboxesWrapper {
+					width: 100%;
+					height: auto;
+	
+					.boroughCheckboxWrapper {
 						border-radius: @border-radius;
-						font-family: 'Helvetica Neue';
-						font-weight: normal;
-						font-size: 18px;
-						margin-left: 25px;
-						margin-top: 10px;
-					}
-				}
-
-				&#new-york-city .gameSelectorContents {
-					.city-thumbnail {
-						position: absolute;
-						right: -205px;
-						top: -30px;
-						width: 384px;
-					}
-				}
-
-				&#san-francisco .gameSelectorContents {
-					.city-thumbnail {
-						position: absolute;
-						width: 265px;
-						left: 50%;
-						margin-left: -94px;
-						bottom: -300px;
-						z-index: -1;
-					}
-				}
-			}
-
-			#bottomLinks {
-				color: white;
-				position: absolute;
-				bottom: 0;
-				margin-left: 30px;
-				margin-bottom: 15px;
-				height: 30px;
-
-				a {
-					font-family: 'Helvetica Neue';
-					font-weight: normal;
-					font-size: 14px;
-					color: rgba(255, 255, 255, 0.4);
-
-					&:hover {
-						text-decoration: none;
-					}
-				}
-			}
-		}
-	}
-
-	#preGameOptionsScreen {
-		z-index: 3;
-		width: 100%;
-		height: 100%;
-		min-height: 592px;
-		position: fixed;
-		background: @white;
-		pointer-events: none;
-		transition: transform 0.5s;
-		opacity: 0;
-		transform: translate3d(0, 0, 0);
-		box-shadow: 0px 2px 50px rgba(0, 0, 0, 0.2);
-
-		@offset: -105px;
-		@size: 240px;
-
-		&.visible {
-			opacity: 1;
-			pointer-events: auto;
-			transform: translate3d(0, 0, 0);
-
-			#preGameOptionsScreenContents {
-				transform: scale(1);
-			}
-		}
-
-		&.gameInProgress {
-			pointer-events: none;
-			transform: translate3d(0, -120%, 0);
-
-			* {
-				pointer-events: none!important;
-			}
-		}
-
-		#preGameOptionsScreenContents {
-			text-align: left;
-			position: absolute;
-			top: @standard-padding;
-			left: @standard-padding;
-			width: calc(~"100% - 60px");
-			height: calc(~"100% - 60px");
-			transition: all 0.5s;
-			transform: scale(1.1);
-
-			#titleWrapper {
-				margin-bottom: 40px;
-	
-				h2 {
-					width: calc(~"100% - 60px");
-					font-family: 'Helvetica Neue';
-					font-weight: bold;
-					font-size: 32px;
-					line-height: 38px;
-					letter-spacing: -0.25px;
-					margin: 0;
-				}
-			}
-
-			#boroughCheckboxesWrapper {
-				width: 100%;
-				height: auto;
-
-				.boroughCheckboxWrapper {
-					border-radius: @border-radius;
-					height: @standard-row-height;
-					margin-bottom: 10px;
-					transition: all 0.2s;
-
-					.boroughCheckboxThumbnail {
-						width: 36px;
-						height: 36px;
-						margin-top: 8px;
-						margin-left: 12px;
-						float: left;
-						transition: all 0.2s;
-						filter: brightness(0%);
-					}
-
-					label {
-						font-family: 'Helvetica Neue';
-						font-weight: bold;
-						font-size: 18px;
-						line-height: @standard-row-height;
-						vertical-align: middle;
-						margin-left: 12px;
-						transition: all 0.2s;
-					}
-
-					input[type='checkbox'] {
-						display: none;
-					}
-
-					.toggleSwitch {
-						width: 56px;
-						height: 32px;
-						float: right;
-						margin-right: 10px;
-						margin-top: 10px;
-						border-radius: 32px;
-
-						.toggleSwitchHandle {
-							width: 24px;
-							height: 24px;
-							border-radius: 24px;
-							margin-top: 4px;
-							box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-							transition: all 0.2s;
-						}
-					}
-
-					&.on {
-						background: rgba(0, 0, 0, 0.03);
-
-						.boroughCheckboxThumbnail {
-							opacity: 0.8;
-						}
-
-						label {
-							color: rgba(0, 0, 0, 0.8);
-						}
-
-						.toggleSwitch {
-							background: @blue;
-
-							.toggleSwitchHandle {
-								background: rgba(255, 255, 255, 1);
-								margin-left: 28px;
-							}
-						}
-
-						&:active {
-							.toggleSwitch .toggleSwitchHandle {
-								width: 32px;
-								margin-left: 20px;
-							}
-						}
-					}
-
-					&.off {
-						background: rgba(0, 0, 0, 0);
-
-						.boroughCheckboxThumbnail {
-							opacity: 0.3;
-						}
-
-						label {
-							color: rgba(0, 0, 0, 0.3);
-						}
-
-						.toggleSwitch {
-							background: rgba(0, 0, 0, 0.1);
-
-							.toggleSwitchHandle {
-								background: @white;
-								margin-left: 4px;
-							}
-						}
-
-						&:active {
-							.toggleSwitch .toggleSwitchHandle {
-								width: 32px;
-							}
-						}
-					}
-				}
-			}
-
-			#startButton {
-				width: 100%;
-				background: @black;
-				font-family: 'Helvetica Neue', 'Helvetica';
-				display: block;
-				height: @standard-row-height - 4px;
-				color: @white;
-				text-align: center;
-				line-height: @standard-row-height - 4px;
-				border-radius: @border-radius;
-				text-decoration: none;
-				font-weight: bold;
-				font-size: 18px;
-				position: absolute;
-				bottom: 0;
-				transition: all 0.2s;
-				cursor: pointer;
-
-				&:focus, &:active {
-					opacity: 0.7;
-					transform: scale(0.98);
-				}
-			}
-		}
-	}
-
-	#gameScreen {
-		z-index: 1;
-		width: 100%;
-		height: 100%;
-		min-height: 568px;
-		position: fixed;
-		background: @blue;
-		pointer-events: none;
-
-		* {
-			pointer-events: none;
-		}
-
-		&.gameInProgress {
-			pointer-events: auto;
-
-			* {
-				pointer-events: auto;
-			}
-
-			#gameScreenContents{
-				transform: scale(1);
-				opacity: 1;
-			}
-		}
-
-		&.gameOver {
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		#gameScreenContents {
-			width: 100%;
-			height: 100%;
-			transition: transform 0.8s;
-			transform: scale(0.8);
-			opacity: 0;
-
-			@media only screen and (max-height: 568px) {
-				height: calc(~"100% - 30px");
-			}
-
-			#statusBar {
-				width: calc(~"100% - 60px");
-				font-size: 18px;
-				height: 20px;
-				font-family: 'Helvetica Neue', 'Helvetica';
-				position: relative;
-				margin-top: 25px;
-				margin-left: @standard-padding;
-				margin-bottom: 25px;
-	
-				#info, #level {
-					position: absolute;
-					font-size: 18px;
-					line-height: 20px;
-					color: rgba(0, 0, 0, 0.5);
-					font-weight: normal;
-				}
-	
-				#info {
-					left: 0;
-				}
-	
-				#level {
-					right: 0;
-				}
-	
-				#clock {
-					position: absolute;
-					left: 50%;
-					margin-left: -60px;
-					width: 120px;
-					z-index: 2;
-					font-size: 18px;
-					line-height: 20px;
-					font-weight: bold;
-					text-align: center;
-					color: #FFFFFF;
-				}
-			}
-	
-			#mapWrapperContainer {
-				width: calc(~"100% - 60px");
-				height: calc(~"100% - 368px");
-				border-radius: @border-radius;
-				box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
-				margin-left: @standard-padding;
-				margin-bottom: @standard-padding;
-				min-height: 200px;
-	
-				#mapWrapper {
-					width: 100%;
-					height: 100%;
-					overflow: hidden;
-					background: rgba(255, 255, 255, 0.2);
-					border-radius: @border-radius;
-					mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-					-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-							
-					#map {
-						opacity: 0;
-						transition: opacity 0.5s;
-						width: 100%;
-						height: 100%;
-					}
-				}
-			}
-		
-			#questions {
-				width: 100%;
-				z-index: 3;
-		
-				#options {
-					width: 100%;
-	
-					.option {
-						cursor: pointer;
-						text-indent: 10px;
 						height: @standard-row-height;
-						background: rgba(0, 0, 0, 0.2);
-						border-radius: @border-radius;
-						width: calc(~"100% - 60px");
-						margin-left: @standard-padding;
 						margin-bottom: 10px;
 						transition: all 0.2s;
-			
-						.letter {
-							display: none;
+	
+						.boroughCheckboxThumbnail {
+							width: 36px;
+							height: 36px;
+							margin-top: 8px;
+							margin-left: 12px;
+							float: left;
+							transition: all 0.2s;
+							filter: brightness(0%);
 						}
 	
 						label {
-							display: inline-block;
-							color: @white;
 							font-family: 'Helvetica Neue';
-							font-style: normal;
 							font-weight: bold;
 							font-size: 18px;
 							line-height: @standard-row-height;
-							white-space: nowrap;
-							text-overflow: ellipsis;
-							width: calc(100% - 20px);
-							pointer-events: none;
-							cursor: pointer;
-							overflow: hidden;
+							vertical-align: middle;
+							margin-left: 12px;
 							transition: all 0.2s;
+						}
 	
-							&.hidden {
-								opacity: 0;
+						input[type='checkbox'] {
+							display: none;
+						}
+	
+						.toggleSwitch {
+							width: 56px;
+							height: 32px;
+							float: right;
+							margin-right: 10px;
+							margin-top: 10px;
+							border-radius: 32px;
+	
+							.toggleSwitchHandle {
+								width: 24px;
+								height: 24px;
+								border-radius: 24px;
+								margin-top: 4px;
+								box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+								transition: all 0.2s;
 							}
 						}
 	
-						&:active, &:focus {
-							background: rgba(255, 255, 255, 0.2);
-						}
+						&.on {
+							background: rgba(0, 0, 0, 0.03);
 	
-						&:last-child {
-							margin-bottom: 0;
-						}
-	
-						&.selectedAnswer {
-							background: rgba(255, 255, 255, 0.2);
-	
-							&:after {
-								&:extend(.material-icons);
-								content: 'clear';
-								position: absolute;
-								right: 45px;
-								margin-top: 14px;
-								color: @white;
-								font-size: 24px;
+							.boroughCheckboxThumbnail {
+								opacity: 0.8;
 							}
-						}
-	
-						&.correctAnswer {
-							background: @white!important;
 	
 							label {
-								color: @black!important;
+								color: rgba(0, 0, 0, 0.8);
 							}
 	
-							&:after {
-								&:extend(.material-icons);
-								content: 'check_circle';
-								position: absolute;
-								right: 45px;
-								margin-top: 14px;
-								color: @blue;
-								font-size: 24px;
+							.toggleSwitch {
+								background: @blue;
+	
+								.toggleSwitchHandle {
+									background: rgba(255, 255, 255, 1);
+									margin-left: 28px;
+								}
+							}
+	
+							&:active {
+								.toggleSwitch .toggleSwitchHandle {
+									width: 32px;
+									margin-left: 20px;
+								}
+							}
+						}
+	
+						&.off {
+							background: rgba(0, 0, 0, 0);
+	
+							.boroughCheckboxThumbnail {
+								opacity: 0.3;
+							}
+	
+							label {
+								color: rgba(0, 0, 0, 0.3);
+							}
+	
+							.toggleSwitch {
+								background: rgba(0, 0, 0, 0.1);
+	
+								.toggleSwitchHandle {
+									background: @white;
+									margin-left: 4px;
+								}
+							}
+	
+							&:active {
+								.toggleSwitch .toggleSwitchHandle {
+									width: 32px;
+								}
 							}
 						}
 					}
 				}
-			}	
-		}
-	}
-
-	#gameOverScreen {
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		background: black;
-		z-index: 2;
-		pointer-events: none;
-		opacity: 0;
-		transition: opacity 0.5s;
-
-		&.visible {
-			pointer-events: auto;
-			opacity: 1;
-		}
-
-		#gameOverScreenContents {
-			width: 200px;
-			height: 200px;
-			padding: 50px;
-			background: white;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			border-radius: @border-radius;
-			margin-left: -150px;
-			margin-top: -150px;
-			text-align: center;
-			font-size: 24px;
-			line-height: 40px;
-
-			#answerTotals * {
-				display: inline-block;
+	
+				#startButton {
+					width: 100%;
+					background: @black;
+					font-family: 'Helvetica Neue', 'Helvetica';
+					display: block;
+					height: @standard-row-height - 4px;
+					color: @white;
+					text-align: center;
+					line-height: @standard-row-height - 4px;
+					border-radius: @border-radius;
+					text-decoration: none;
+					font-weight: bold;
+					font-size: 18px;
+					position: absolute;
+					bottom: 0;
+					transition: all 0.2s;
+					cursor: pointer;
+	
+					&:focus, &:active {
+						opacity: 0.7;
+						transform: scale(0.98);
+					}
+				}
 			}
 		}
+	
+		#gameScreen {
+			z-index: 1;
+			width: 100%;
+			height: 100%;
+			min-height: 568px;
+			position: absolute;
+			background: @blue;
+			pointer-events: none;
+	
+			* {
+				pointer-events: none;
+			}
+	
+			&.gameInProgress {
+				pointer-events: auto;
+	
+				* {
+					pointer-events: auto;
+				}
+	
+				#gameScreenContents{
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+	
+			&.gameOver {
+				opacity: 0;
+				pointer-events: none;
+			}
+	
+			#gameScreenContents {
+				width: 100%;
+				height: 100%;
+				transition: transform 0.8s;
+				transform: scale(0.95);
+				opacity: 0;
+				position: absolute;
+	
+				@media @desktop {
+					.desktop();
+				}
+				
+				@media only screen and (max-height: 568px) {
+					height: calc(~"100% - 30px");
+				}
+	
+				#statusBar {
+					width: calc(~"100% - 60px");
+					font-size: 18px;
+					height: 20px;
+					font-family: 'Helvetica Neue', 'Helvetica';
+					position: relative;
+					margin-top: 25px;
+					margin-left: @standard-padding;
+					margin-bottom: 25px;
+		
+					#info, #level {
+						position: absolute;
+						font-size: 18px;
+						line-height: 20px;
+						color: rgba(0, 0, 0, 0.5);
+						font-weight: normal;
+					}
+		
+					#info {
+						left: 0;
+					}
+		
+					#level {
+						right: 0;
+					}
+		
+					#clock {
+						position: absolute;
+						left: 50%;
+						margin-left: -60px;
+						width: 120px;
+						z-index: 2;
+						font-size: 18px;
+						line-height: 20px;
+						font-weight: bold;
+						text-align: center;
+						color: #FFFFFF;
+					}
+				}
+		
+				#mapWrapperContainer {
+					width: calc(~"100% - 60px");
+					height: calc(~"100% - 368px");
+					border-radius: @border-radius;
+					box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
+					margin-left: @standard-padding;
+					margin-bottom: @standard-padding;
+					min-height: 200px;
+		
+					#mapWrapper {
+						width: 100%;
+						height: 100%;
+						overflow: hidden;
+						background: rgba(255, 255, 255, 0.2);
+						border-radius: @border-radius;
+						mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+						-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+								
+						#map {
+							opacity: 0;
+							transition: opacity 0.5s;
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+			
+				#questions {
+					width: 100%;
+					z-index: 3;
+			
+					#options {
+						width: 100%;
+		
+						.option {
+							cursor: pointer;
+							text-indent: 10px;
+							height: @standard-row-height;
+							background: rgba(0, 0, 0, 0.2);
+							border-radius: @border-radius;
+							width: calc(~"100% - 60px");
+							margin-left: @standard-padding;
+							margin-bottom: 10px;
+							transition: all 0.2s;
+				
+							.letter {
+								display: none;
+							}
+		
+							label {
+								display: inline-block;
+								color: @white;
+								font-family: 'Helvetica Neue';
+								font-style: normal;
+								font-weight: bold;
+								font-size: 18px;
+								line-height: @standard-row-height;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								width: calc(100% - 20px);
+								pointer-events: none;
+								cursor: pointer;
+								overflow: hidden;
+								transition: all 0.2s;
+		
+								&.hidden {
+									opacity: 0;
+								}
+							}
+		
+							&:active, &:focus {
+								background: rgba(255, 255, 255, 0.2);
+							}
+		
+							&:last-child {
+								margin-bottom: 0;
+							}
+		
+							&.selectedAnswer {
+								background: rgba(255, 255, 255, 0.2);
+		
+								&:after {
+									&:extend(.material-icons);
+									content: 'clear';
+									position: absolute;
+									right: 45px;
+									margin-top: 14px;
+									color: @white;
+									font-size: 24px;
+								}
+							}
+		
+							&.correctAnswer {
+								background: @white!important;
+		
+								label {
+									color: @black!important;
+								}
+		
+								&:after {
+									&:extend(.material-icons);
+									content: 'check_circle';
+									position: absolute;
+									right: 45px;
+									margin-top: 14px;
+									color: @blue;
+									font-size: 24px;
+								}
+							}
+						}
+					}
+				}	
+			}
+		}
+	
+		#gameOverScreen {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			background: black;
+			z-index: 2;
+			pointer-events: none;
+			opacity: 0;
+			transition: opacity 0.5s;
+	
+			&.visible {
+				pointer-events: auto;
+				opacity: 1;
+			}
+	
+			#gameOverScreenContents {
+				width: 200px;
+				height: 200px;
+				padding: 50px;
+				background: white;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				border-radius: @border-radius;
+				margin-left: -150px;
+				margin-top: -150px;
+				text-align: center;
+				font-size: 24px;
+				line-height: 40px;
+	
+				#answerTotals * {
+					display: inline-block;
+				}
+			}
+		}	
 	}
 
 	@media @mobile {

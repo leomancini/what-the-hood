@@ -191,9 +191,8 @@ function goToNextLevel(e) {
     delayToShowAnswerOptionsForEachSubsequentLevel = 500;
 
     if(window.levelNumber === 0) {
-        document.getElementById('gameScreen').classList.add('gameInProgress');
         document.querySelector('#statusBar #level').textContent = `1 of ${config.maxNumLevels}`;
-
+        document.getElementById('gameScreen').classList.add('gameInProgress');
         startTimer();
     }
 

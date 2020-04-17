@@ -8,125 +8,127 @@
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<meta charset='UTF-8'>
 	</head>
-	<body ontouchstart='' class='fixScrollDuringGame'>
+	<body ontouchstart=''>
 		<div id='preloadImages'>
 			<div id='preloadImage1'></div>
 			<div id='preloadImage2'></div>
 			<div id='preloadImage3'></div>
 		</div>
-		<div id='gameSelectionScreen'>
-			<div id='gameSelectionScreenContents'>
-				<div class='gameSelector enabled' id='new-york-city'>
-					<div class='gameSelectorContents'>
-						<h1>New York<br>City</h1>
-						<img src='resources/images/new-york-city/city-thumbnail.png' class='city-thumbnail'>
-						<div class='playButton'>Play</div>
+		<div id='container'>
+			<div id='gameSelectionScreen'>
+				<div id='gameSelectionScreenContents'>
+					<div class='gameSelector enabled' id='new-york-city'>
+						<div class='gameSelectorContents'>
+							<h1>New York<br>City</h1>
+							<img src='resources/images/new-york-city/city-thumbnail.png' class='city-thumbnail'>
+							<div class='playButton'>Play</div>
+						</div>
 					</div>
-				</div>
-				<div class='gameSelector disabled' id='san-francisco'>
-					<div class='gameSelectorContents'>
-						<h1>San Francisco</h1>
-						<img src='resources/images/san-francisco/city-thumbnail.png' class='city-thumbnail'>
-						<div class='comingSoon'>Coming Soon</div>
+					<div class='gameSelector disabled' id='san-francisco'>
+						<div class='gameSelectorContents'>
+							<h1>San Francisco</h1>
+							<img src='resources/images/san-francisco/city-thumbnail.png' class='city-thumbnail'>
+							<div class='comingSoon'>Coming Soon</div>
+						</div>
 					</div>
-				</div>
-				<div id='bottomLinks'>
-					<a href='credits.html'>Credits</a>
+					<div id='bottomLinks'>
+						<a href='credits.html'>Credits</a>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id='preGameOptionsScreen'>
-			<div id='preGameOptionsScreenContents'>
-					<div id='titleWrapper'>
-						<h2>What boroughs do you want to play?</h2>
-					</div>
-					<div id='boroughCheckboxesWrapper'>
-						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='manhattan' value='Manhattan' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/new-york-city/borough-thumbnails/manhattan.png' class='boroughCheckboxThumbnail'>
-							<label for='manhattan'>Manhattan</label>
-							<div class='toggleSwitch'>
-								<div class='toggleSwitchHandle'></div>
+			<div id='preGameOptionsScreen'>
+				<div id='preGameOptionsScreenContents'>
+						<div id='titleWrapper'>
+							<h2>What boroughs do you want to play?</h2>
+						</div>
+						<div id='boroughCheckboxesWrapper'>
+							<div class='boroughCheckboxWrapper on'>
+								<input type='checkbox' name='manhattan' value='Manhattan' checked='checked' class='boroughCheckbox'>
+								<img src='resources/images/new-york-city/borough-thumbnails/manhattan.png' class='boroughCheckboxThumbnail'>
+								<label for='manhattan'>Manhattan</label>
+								<div class='toggleSwitch'>
+									<div class='toggleSwitchHandle'></div>
+								</div>
+							</div>
+							<div class='boroughCheckboxWrapper on'>
+								<input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
+								<img src='resources/images/new-york-city/borough-thumbnails/queens.png' class='boroughCheckboxThumbnail'>
+								<label for='queens'>Queens</label>
+								<div class='toggleSwitch on'>
+									<div class='toggleSwitchHandle'></div>
+								</div>
+							</div>
+							<div class='boroughCheckboxWrapper on'>
+								<input type='checkbox' name='brooklyn' value='Brooklyn' checked='checked' class='boroughCheckbox'>
+								<img src='resources/images/new-york-city/borough-thumbnails/brooklyn.png' class='boroughCheckboxThumbnail'>
+								<label for='brooklyn'>Brooklyn</label>
+								<div class='toggleSwitch'>
+									<div class='toggleSwitchHandle'></div>
+								</div>
+							</div>
+							<div class='boroughCheckboxWrapper on'>
+								<input type='checkbox' name='the-bronx' value='The Bronx' checked='checked' class='boroughCheckbox'>
+								<img src='resources/images/new-york-city/borough-thumbnails/the-bronx.png' class='boroughCheckboxThumbnail'>
+								<label for='the-bronx'>The Bronx</label>
+								<div class='toggleSwitch'>
+									<div class='toggleSwitchHandle'></div>
+								</div>
+							</div>
+							<div class='boroughCheckboxWrapper on'>
+								<input type='checkbox' name='staten-island' value='Staten Island' checked='checked' class='boroughCheckbox'>
+								<img src='resources/images/new-york-city/borough-thumbnails/staten-island.png' class='boroughCheckboxThumbnail'>
+								<label for='staten-island'>Staten Island</label>
+								<div class='toggleSwitch'>
+									<div class='toggleSwitchHandle'></div>
+								</div>
 							</div>
 						</div>
-						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/new-york-city/borough-thumbnails/queens.png' class='boroughCheckboxThumbnail'>
-							<label for='queens'>Queens</label>
-							<div class='toggleSwitch on'>
-								<div class='toggleSwitchHandle'></div>
-							</div>
-						</div>
-						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='brooklyn' value='Brooklyn' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/new-york-city/borough-thumbnails/brooklyn.png' class='boroughCheckboxThumbnail'>
-							<label for='brooklyn'>Brooklyn</label>
-							<div class='toggleSwitch'>
-								<div class='toggleSwitchHandle'></div>
-							</div>
-						</div>
-						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='the-bronx' value='The Bronx' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/new-york-city/borough-thumbnails/the-bronx.png' class='boroughCheckboxThumbnail'>
-							<label for='the-bronx'>The Bronx</label>
-							<div class='toggleSwitch'>
-								<div class='toggleSwitchHandle'></div>
-							</div>
-						</div>
-						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='staten-island' value='Staten Island' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/new-york-city/borough-thumbnails/staten-island.png' class='boroughCheckboxThumbnail'>
-							<label for='staten-island'>Staten Island</label>
-							<div class='toggleSwitch'>
-								<div class='toggleSwitchHandle'></div>
-							</div>
-						</div>
-					</div>
-				<div id='startButton'>Start</div>
+					<div id='startButton'>Start</div>
+				</div>
 			</div>
-		</div>
-		<div id='gameScreen'>
-			<div id='gameScreenContents'>
-				<div id='statusBar'>
-					<div id='info'>NYC</div>
-					<div id='clock'>
+			<div id='gameScreen'>
+				<div id='gameScreenContents'>
+					<div id='statusBar'>
+						<div id='info'>NYC</div>
+						<div id='clock'>
+							<time>00:00</time>
+						</div>
+						<div id='level'></div>
+					</div>
+					<div id='mapWrapperContainer'>
+						<div id='mapWrapper'>
+							<div id='map'></div>
+						</div>
+					</div>
+					<div id='questions'>
+						<div id='options'>
+							<div class='option' id='A'>
+								<span class='letter'>A</span><label></label>
+							</div>
+							<div class='option' id='B'>
+								<span class='letter'>B</span><label></label>
+							</div>
+							<div class='option' id='C'>
+								<span class='letter'>C</span><label></label>
+							</div>
+							<div class='option' id='D'>
+								<span class='letter'>D</span><label></label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id='gameOverScreen'>
+				<div id='gameOverScreenContents'>
+					<div id='answerTotals'>
+						✅ <div id='answeredCorrectly'>0</div>
+						<br>
+						🚫 <div id='answeredIncorrectly'>0</div>
+					</div>
+					<br>
+					Total Time: <div id='clock'>
 						<time>00:00</time>
 					</div>
-					<div id='level'></div>
-				</div>
-				<div id='mapWrapperContainer'>
-					<div id='mapWrapper'>
-						<div id='map'></div>
-					</div>
-				</div>
-				<div id='questions'>
-					<div id='options'>
-						<div class='option' id='A'>
-							<span class='letter'>A</span><label></label>
-						</div>
-						<div class='option' id='B'>
-							<span class='letter'>B</span><label></label>
-						</div>
-						<div class='option' id='C'>
-							<span class='letter'>C</span><label></label>
-						</div>
-						<div class='option' id='D'>
-							<span class='letter'>D</span><label></label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id='gameOverScreen'>
-			<div id='gameOverScreenContents'>
-				<div id='answerTotals'>
-					✅ <div id='answeredCorrectly'>0</div>
-					<br>
-					🚫 <div id='answeredIncorrectly'>0</div>
-				</div>
-				<br>
-				Total Time: <div id='clock'>
-					<time>00:00</time>
 				</div>
 			</div>
 		</div>

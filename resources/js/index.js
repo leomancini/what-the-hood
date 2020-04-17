@@ -16,11 +16,10 @@ function selectGame(tappedGameSelector) {
             }
         }
     
-        selectedGameSelector.children[0].classList.add('hidden');
+        selectedGameSelector.children[0].classList.add('selected');
         
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
-            selectedGameSelector.children[0].classList.add('selected');
             selectedGameSelector.classList.add('selected');
             selectedGameSelector.style.height = `${window.innerHeight}px`;
     
@@ -31,8 +30,6 @@ function selectGame(tappedGameSelector) {
                 document.getElementById('gameSelectionScreen').classList.add('gameSelected');
             }, 200);
         }, 100);
-    
-        document.querySelector('body').classList.add('fixScrollDuringGame');
     
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('done');
@@ -57,9 +54,12 @@ function renderGameSelectors() {
     }
 
     const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
-    const bottomLinksMarginTop = 5;
-    
-    document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + bottomLinksMarginTop}px`;
+
+    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom)}px`;
+
+    if (((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight) > window.innerHeight) {
+        document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight}px`;
+    }
     
     setTimeout(function() {
         document.querySelector('#gameSelectionScreenContents').style.opacity = 1;
