@@ -30,7 +30,8 @@
     line-height: 1;
     text-transform: none;
     white-space: nowrap;
-    word-wrap: normal;
+	word-wrap: normal;
+	font-feature-settings: 'liga';
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
@@ -145,18 +146,20 @@ html, body {
 				transition: all 0.3s ease-in-out;
 				position: absolute;
 				overflow: hidden;
+				mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 				-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-
+				
 				&.enabled {
 					cursor: pointer;
 
-					&:active {
-						transform: scale(0.98);
-					}
 				}
-				
+
 				&.disabled {
 					opacity: 0.3;
+				}
+
+				&:active {
+					transform: scale(0.98);
 				}
 
 				&.selected {
@@ -218,7 +221,7 @@ html, body {
 						font-weight: normal;
 						font-size: 18px;
 						margin-left: 25px;
-						margin-top: 15px;
+						margin-top: 10px;
 					}
 				}
 
@@ -228,7 +231,37 @@ html, body {
 						right: -65px;
 						top: -30px;
 						width: 384px;
-						height: 383px;
+					}
+				}
+
+				&#san-francisco .gameSelectorContents {
+					.city-thumbnail {
+						position: absolute;
+						width: 265px;
+						left: 50%;
+						margin-left: -131px;
+						bottom: -120px;
+						z-index: -1;
+					}
+				}
+			}
+
+			#bottomLinks {
+				color: white;
+				position: absolute;
+				bottom: 0;
+				margin-left: 30px;
+				margin-bottom: 10px;
+				height: 30px;
+
+				a {
+					font-family: 'Helvetica Neue';
+					font-weight: normal;
+					font-size: 14px;
+					color: rgba(255, 255, 255, 0.4);
+
+					&:hover {
+						text-decoration: none;
 					}
 				}
 			}
@@ -516,8 +549,9 @@ html, body {
 					overflow: hidden;
 					background: rgba(255, 255, 255, 0.2);
 					border-radius: @border-radius;
+					mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 					-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-		
+							
 					#map {
 						opacity: 0;
 						transition: opacity 0.5s;
@@ -659,4 +693,32 @@ html, body {
 		
 	}
 
+	#credits {
+		width: calc(~"100% - 60px");
+		height: calc(~"100% - 60px");
+		background: @black;
+		margin: 0;
+		padding: 30px;
+		color: @white;
+		line-height: 20px;
+
+		h6 {
+			font-family: 'Helvetica Neue';
+			font-weight: bold;
+			font-size: 16px;
+			margin: 0 0 5px 0;
+		}
+		
+		.link, a {
+			font-family: 'Helvetica Neue';
+			font-weight: normal;
+			font-size: 14px;
+			margin: 0;
+			color: rgba(255, 255, 255, 0.5);
+
+			&:hover {
+				text-decoration: none;
+			}
+		}
+	}
 }

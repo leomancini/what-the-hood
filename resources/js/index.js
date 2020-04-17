@@ -56,8 +56,11 @@ function renderGameSelectors() {
         
         gameSelector.addEventListener('click', selectGame);
     }
+
+    const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
+    const bottomLinksMarginTop = 5;
     
-    document.querySelector('#gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom}px`;
+    document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + bottomLinksMarginTop}px`;
     
     setTimeout(function() {
         document.querySelector('#gameSelectionScreenContents').style.opacity = 1;
