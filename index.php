@@ -44,18 +44,18 @@
 					</div>
 					<div id='boroughCheckboxesWrapper'>
 						<div class='boroughCheckboxWrapper on'>
-							<input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
-							<img src='resources/images/nyc/borough-thumbnails/queens.png' class='boroughCheckboxThumbnail'>
-							<label for='queens'>Queens</label>
-							<div class='toggleSwitch on'>
-								<div class='toggleSwitchHandle'></div>
-							</div>
-						</div>
-						<div class='boroughCheckboxWrapper on'>
 							<input type='checkbox' name='manhattan' value='Manhattan' checked='checked' class='boroughCheckbox'>
 							<img src='resources/images/nyc/borough-thumbnails/manhattan.png' class='boroughCheckboxThumbnail'>
 							<label for='manhattan'>Manhattan</label>
 							<div class='toggleSwitch'>
+								<div class='toggleSwitchHandle'></div>
+							</div>
+						</div>
+						<div class='boroughCheckboxWrapper on'>
+							<input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
+							<img src='resources/images/nyc/borough-thumbnails/queens.png' class='boroughCheckboxThumbnail'>
+							<label for='queens'>Queens</label>
+							<div class='toggleSwitch on'>
 								<div class='toggleSwitchHandle'></div>
 							</div>
 						</div>
