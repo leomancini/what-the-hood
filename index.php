@@ -94,7 +94,7 @@
 		<div id='gameScreen'>
 			<div id='gameScreenContents'>
 				<div id='statusBar'>
-					<div id='info'>new-york-city</div>
+					<div id='info'>NYC</div>
 					<div id='clock'>
 						<time>00:00</time>
 					</div>
