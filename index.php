@@ -18,7 +18,7 @@
 			<div id='gameSelectionScreenContents'>
 				<div class='gameSelector enabled' id='new-york-city'>
 					<div class='gameSelectorContents'>
-						<h1>New York City</h1>
+						<h1>New York<br>City</h1>
 						<img src='resources/images/new-york-city/city-thumbnail.png' class='city-thumbnail'>
 						<div class='playButton'>Play</div>
 					</div>
@@ -27,12 +27,6 @@
 					<div class='gameSelectorContents'>
 						<h1>San Francisco</h1>
 						<img src='resources/images/san-francisco/city-thumbnail.png' class='city-thumbnail'>
-						<div class='comingSoon'>Coming Soon</div>
-					</div>
-				</div>
-				<div class='gameSelector disabled' id='london'>
-					<div class='gameSelectorContents'>
-						<h1>London</h1>
 						<div class='comingSoon'>Coming Soon</div>
 					</div>
 				</div>
