@@ -21,20 +21,22 @@ function selectGame(tappedGameSelector) {
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
             selectedGameSelector.classList.add('selected');
-            selectedGameSelector.style.height = `${window.innerHeight}px`;
+            if (window.deviceType === 'desktop') {
+                selectedGameSelector.style.height = `${window.innerHeight}px`;
+            }
     
             selectedGameSelector.style.top = `${document.querySelector('#gameSelectionScreen').scrollTop}px`;
     
             setTimeout(function() {
                 selectedGameSelector.classList.add('selectedFullScreen');
                 document.getElementById('gameSelectionScreen').classList.add('gameSelected');
+
+                setTimeout(function() {
+                    document.getElementById('gameSelectionScreen').classList.add('done');
+                    document.getElementById('preGameOptionsScreen').classList.add('visible');
+                }, 800);
             }, 200);
-        }, 100);
-    
-        setTimeout(function() {
-            document.getElementById('gameSelectionScreen').classList.add('done');
-            document.getElementById('preGameOptionsScreen').classList.add('visible');
-        }, 800);
+        }, 400);
     }
 }
 
@@ -42,7 +44,7 @@ function renderGameSelectors() {
     const gameSelectors = document.querySelectorAll('.gameSelector');
 
     let gameSelectorIndex = 0;
-    const gameSelectorCardHeight = 300;
+    const gameSelectorCardHeight = Math.round(window.innerHeight / 2.5);
     const gameSelectorCardMarginBottom = 30;
     
     for (const gameSelector of gameSelectors) {

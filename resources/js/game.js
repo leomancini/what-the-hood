@@ -127,11 +127,11 @@ function getShapeColor(type) {
 }
 
 let timer;
-let secondsRaw = 0, secondsFormatted = 0, minutesFormatted = 0;
+let timerValueSeconds = 0, secondsFormatted = 0, minutesFormatted = 0;
 
 function incrementTimer() {
-    secondsRaw++;
-    gameState.totalTime = secondsRaw;
+    timerValueSeconds++;
+    gameState.totalTime = timerValueSeconds;
 
     secondsFormatted++;
 
@@ -140,6 +140,9 @@ function incrementTimer() {
         minutesFormatted++;
     }
     
+    gameState.totalTimeMinutes = minutesFormatted;
+    gameState.totalTimeSeconds = secondsFormatted;
+
     document.querySelector('#clock').textContent =
         (minutesFormatted ? (minutesFormatted > 9 ? minutesFormatted : "0" + minutesFormatted) : "00") + ":" +
         (secondsFormatted > 9 ? secondsFormatted : "0" + secondsFormatted);
@@ -311,7 +314,7 @@ function startGame() {
 }
 
 function stopGame() {
-    const delayToShowGameOverScreen = 0;
+    const delayToShowGameOverScreen = delayToShowNextLevelForEachSubsequentLevel;
     stopTimer(timer);
 
     answeredCorrectlyPercentage = gameState.answeredCorrectly / (gameState.answeredCorrectly + gameState.answeredIncorrectly);
@@ -319,19 +322,38 @@ function stopGame() {
 
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
 
+    let totalTimeFormattedString = '';
+    if (gameState.totalTimeMinutes > 0) {
+        totalTimeFormattedString += `${gameState.totalTimeMinutes} minute`;
+        if (gameState.totalTimeMinutes > 1) {
+            totalTimeFormattedString += 's';
+        }
+    }
+
+    if (gameState.totalTimeMinutes > 0 && gameState.totalTimeSeconds > 0) {
+        totalTimeFormattedString += ' and ';
+    }
+
+    if (gameState.totalTimeSeconds > 0) {
+        totalTimeFormattedString += `${gameState.totalTimeSeconds} second`;
+        if (gameState.totalTimeSeconds > 1) {
+            totalTimeFormattedString += 's';
+        }
+    }
+
+    document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
+    document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage * 100}%`;
+
     setTimeout(function() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
-        document.getElementById('gameScreen').classList.add('gameOver');
         document.getElementById('gameOverScreen').classList.add('visible');
-
-        document.querySelector('#gameOverScreen #gameOverScreenContents #clock').textContent = gameState.totalTimeFormatted;
-        document.querySelector('#gameOverScreen #gameOverScreenContents #answerTotals #answeredCorrectly').textContent = gameState.answeredCorrectly;
-        document.querySelector('#gameOverScreen #gameOverScreenContents #answerTotals #answeredIncorrectly').textContent = gameState.answeredIncorrectly;
     }, delayToShowGameOverScreen);
 }
 
 let gameState = {
     totalTime: 0,
+    totalTimeMinutes: 0,
+    totalTimeSeconds: 0,
     totalTimeFormatted: '',
     answeredCorrectly: 0,
     answeredIncorrectly: 0,

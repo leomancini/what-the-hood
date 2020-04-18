@@ -14,6 +14,7 @@
 @orange: #FF6600;
 @black: #000000;
 @white: #FFFFFF;
+@gray: rgba(0, 0, 0, 0.08);
 
 @border-radius: 8px;
 @standard-row-height: 52px;
@@ -21,7 +22,6 @@
 
 .desktop {
 	@desktop-width: 600px;
-
 	width: @desktop-width;
 	left: 50%;
 	margin-left: @desktop-width / -2;
@@ -43,6 +43,44 @@
 	font-feature-settings: 'liga';
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+}
+
+.h2Standard {
+	width: 100%;
+	font-family: 'Helvetica Neue';
+	font-weight: bold;
+	font-size: 32px;
+	line-height: 38px;
+	letter-spacing: -0.25px;
+	margin: 0;
+}
+
+.buttonStandard {
+	width: 100%;
+	background: @black;
+	font-family: 'Helvetica Neue', 'Helvetica';
+	display: block;
+	height: @standard-row-height - 4px;
+	color: @white;
+	text-align: center;
+	line-height: @standard-row-height - 4px;
+	border-radius: @border-radius;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 18px;
+	position: absolute;
+	bottom: 0;
+	transition: all 0.2s;
+	cursor: pointer;
+}
+
+.buttonStandardTapped {
+	opacity: 0.7;
+	transform: scale(0.98);
+}
+
+a.button {
+	text-decoration: none;
 }
 
 * {
@@ -144,7 +182,7 @@ html, body {
 					overflow: hidden;
 					mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 					-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-					
+
 					@media @desktop {
 						.desktop();
 					}
@@ -162,19 +200,25 @@ html, body {
 					}
 	
 					&.selected {
+						transform-origin: top center;
 						// position: absolute!important;
 						// width: 100%;
-						margin-bottom: 0!important;
+						// margin-bottom: 0!important;
 						// margin-left: 0;
-						border-radius: 0;
-						transform-origin: top center;
+						// border-radius: 0;
 						z-index: 2;
-						transform: scale(1.2);
+						// transform: scaleY(2.5) scaleX(1.5);
 
 						@media @desktop {
 							width: 100%;
+							height: 100%;
+							border-radius: 0;
 							left: 0;
 							margin-left: 0;
+						}
+
+						@media @mobile {
+							transform: scale(2.5);
 						}
 	
 						&:active {
@@ -195,11 +239,12 @@ html, body {
 	
 					.gameSelectorContents {
 						opacity: 1;
-						transition: all 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+						transition: all 0.4s;
 						left: 0;
 						top: 0;
 						position: absolute;
 						width: 100%;
+						height: 100%;
 	
 						&.selected {
 							opacity: 0;
@@ -253,7 +298,7 @@ html, body {
 							width: 265px;
 							left: 50%;
 							margin-left: -132px;
-							bottom: -300px;
+							bottom: -120px;
 							z-index: -1;
 						}
 					}
@@ -263,7 +308,7 @@ html, body {
 					color: white;
 					position: absolute;
 					margin-left: 30px;
-					height: 30px;
+					height: 50px;
 
 					@media @desktop {
 						.desktop();
@@ -334,17 +379,11 @@ html, body {
 					margin-left: -250px;
 				}
 
-				#titleWrapper {
+				.titleWrapper {
 					margin-bottom: 40px;
-		
+
 					h2 {
-						width: calc(~"100% - 100px");
-						font-family: 'Helvetica Neue';
-						font-weight: bold;
-						font-size: 32px;
-						line-height: 38px;
-						letter-spacing: -0.25px;
-						margin: 0;
+						&:extend(.h2Standard);
 					}
 				}
 	
@@ -459,26 +498,10 @@ html, body {
 				}
 	
 				#startButton {
-					width: 100%;
-					background: @black;
-					font-family: 'Helvetica Neue', 'Helvetica';
-					display: block;
-					height: @standard-row-height - 4px;
-					color: @white;
-					text-align: center;
-					line-height: @standard-row-height - 4px;
-					border-radius: @border-radius;
-					text-decoration: none;
-					font-weight: bold;
-					font-size: 18px;
-					position: absolute;
-					bottom: 0;
-					transition: all 0.2s;
-					cursor: pointer;
-	
+					&:extend(.buttonStandard);
+
 					&:focus, &:active {
-						opacity: 0.7;
-						transform: scale(0.98);
+						&:extend(.buttonStandardTapped);
 					}
 				}
 			}
@@ -509,16 +532,11 @@ html, body {
 					opacity: 1;
 				}
 			}
-	
-			&.gameOver {
-				opacity: 0;
-				pointer-events: none;
-			}
-	
+
 			#gameScreenContents {
 				width: 100%;
 				height: 100%;
-				transition: transform 0.8s;
+				transition: all 0.8s;
 				transform: scale(0.95);
 				opacity: 0;
 				position: absolute;
@@ -687,37 +705,85 @@ html, body {
 		}
 	
 		#gameOverScreen {
+			z-index: 2;
 			width: 100%;
 			height: 100%;
+			min-height: 592px;
 			position: absolute;
-			background: black;
-			z-index: 2;
+			background: @white;
 			pointer-events: none;
+			transition: transform 0.5s;
 			opacity: 0;
-			transition: opacity 0.5s;
+			transform: translate3d(0, -120%, 0);
+			box-shadow: 0px 2px 50px rgba(0, 0, 0, 0.2);
 	
 			&.visible {
-				pointer-events: auto;
 				opacity: 1;
+				pointer-events: auto;
+				transform: translate3d(0, 0, 0);
+	
+				#gameOverScreenContents {
+					transform: scale(1);
+				}
 			}
 	
 			#gameOverScreenContents {
-				width: 200px;
-				height: 200px;
-				padding: 50px;
-				background: white;
+				text-align: left;
 				position: absolute;
-				top: 50%;
-				left: 50%;
-				border-radius: @border-radius;
-				margin-left: -150px;
-				margin-top: -150px;
-				text-align: center;
-				font-size: 24px;
-				line-height: 40px;
+				top: @standard-padding;
+				left: @standard-padding;
+				width: calc(~"100% - 60px");
+				height: calc(~"100% - 60px");
+				transition: all 0.5s;
+				transform: scale(0.95);
+				
+				@media @desktop {
+					width: 500px;
+					left: 50%;
+					margin-left: -250px;
+				}
+
+				#gameOverLabel {
+					&:extend(.h2Standard);
+
+					color: rgba(0, 0, 0, 0.25);
+					font-weight: normal;
+				}
+				
+				.titleWrapper {
+					h2 {
+						&:extend(.h2Standard);
+						
+						font-size: 48px;
+						line-height: 52px;
+						margin-top: 80px;
+					}
+				}
+
+				#buttons {
+					position: absolute;
+					bottom: 0;
+					width: 100%;
+
+					#shareButton,
+					#playAgainButton {
+						position: relative;
+						&:extend(.buttonStandard);
 	
-				#answerTotals * {
-					display: inline-block;
+						&:focus, &:active {
+							&:extend(.buttonStandardTapped);
+						}
+					}
+
+					#shareButton {
+						background: @blue;
+						margin-bottom: 15px;
+					}
+
+					#playAgainButton {
+						color: @black;
+						background: @gray;
+					}
 				}
 			}
 		}	

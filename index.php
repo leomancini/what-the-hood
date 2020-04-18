@@ -38,8 +38,8 @@
 			</div>
 			<div id='preGameOptionsScreen'>
 				<div id='preGameOptionsScreenContents'>
-						<div id='titleWrapper'>
-							<h2>What boroughs do you want to play?</h2>
+						<div class='titleWrapper'>
+							<h2>What boroughs<br>do you want to<br>play?</h2>
 						</div>
 						<div id='boroughCheckboxesWrapper'>
 							<div class='boroughCheckboxWrapper on'>
@@ -120,14 +120,13 @@
 			</div>
 			<div id='gameOverScreen'>
 				<div id='gameOverScreenContents'>
-					<div id='answerTotals'>
-						✅ <div id='answeredCorrectly'>0</div>
-						<br>
-						🚫 <div id='answeredIncorrectly'>0</div>
+					<div id='gameOverLabel'>Game over</div>
+					<div class='titleWrapper'>
+						<h2>You got <span id='answeredCorrectlyPercentage'></span> correct and took <span id='totalTimeFormattedString'></span>!</h2>
 					</div>
-					<br>
-					Total Time: <div id='clock'>
-						<time>00:00</time>
+					<div id='buttons'>
+						<div id='shareButton'>Share</div>
+						<a href='.' class='button'><div id='playAgainButton'>Play Again</div></a>
 					</div>
 				</div>
 			</div>
