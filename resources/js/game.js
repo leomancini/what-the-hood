@@ -330,7 +330,7 @@ function stopGame() {
     for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
         if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
             seenBoroughScores[boroughScore] = {
-                correctPercentage: (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen),
+                correctPercentage: ((gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
                 correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
                 seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
             }
@@ -368,9 +368,17 @@ function stopGame() {
 
     for (i = 0; i < seenBoroughScoresSortedByCorrectPercentage.length; i++) {
         boroughName = seenBoroughScoresSortedByCorrectPercentage[i];
+        scoreDisplayType = 'percentage';
+
+        if (scoreDisplayType === 'percentage') {
+            boroughScoreDisplay = `${seenBoroughScores[boroughName].correctPercentage}%`;
+        } else if(scoreDisplayType === 'fraction') {
+            boroughScoreDisplay = `${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}`;
+        }
+
         seenBoroughScoresHTML += `<div class='boroughScoreRow'>
             <label>${boroughName}</label>
-            <span class='score'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
+            <span class='score'>${boroughScoreDisplay}</span>
         </div>`;
     }
 
