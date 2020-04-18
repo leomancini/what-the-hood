@@ -2,7 +2,7 @@ function getNextNeighborhoodData() {
     const selectedBoroughs = window.selectedBoroughs;
 
     const neighborhoodDatabaseSelectedBoroughsOnly = window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods.filter((neighborhood) => {
-        if(selectedBoroughs.includes(neighborhood.metadata.borough)) {
+        if (selectedBoroughs.includes(neighborhood.metadata.borough)) {
             return true;
         }
     });
@@ -10,7 +10,7 @@ function getNextNeighborhoodData() {
     const randomlySelectedNeighborhood = neighborhoodDatabaseSelectedBoroughsOnly[Math.floor(Math.random() * neighborhoodDatabaseSelectedBoroughsOnly.length)];
 
     window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods.filter((neighborhood) => {
-        if(neighborhood !== randomlySelectedNeighborhood) {
+        if (neighborhood !== randomlySelectedNeighborhood) {
             return true;
         }
     });
@@ -58,9 +58,11 @@ function getAnswerOptions(neighborhoodData) {
         shuffledNeighborhoodNames[2]
     ];
 
+    gameState.citySpecficMetrics.newYorkCity.boroughScores[neighborhoodData.randomlySelectedNeighborhood.metadata.borough].seen++;
+
     const shuffledAnswerOptions = answerOptions.sort(() => Math.random() - 0.5);
 
-    window.correctAnswerOption = neighborhoodData.randomlySelectedNeighborhood.metadata.name;
+    window.correctAnswerOptionMetadata = neighborhoodData.randomlySelectedNeighborhood.metadata;
 
     return shuffledAnswerOptions;
 }
@@ -86,8 +88,6 @@ function populateAnswerOptions(answerOptions, neighborhoodData) {
 
     for (i = 0; i < optionsDivs.length; ++i) {
         optionsDivs[i].style.pointerEvents = 'auto';
-        // if (optionsDivs[i].getAttribute('data-neighborhood-name') === neighborhoodData.randomlySelectedNeighborhood.metadata.name) {
-        // }
     }
 }
 
@@ -168,8 +168,9 @@ function goToNextLevel(e) {
     }
 
     if (e && (e.type === 'touchend' || e.type === 'click')) {
-        if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
+        if (e.target.getAttribute('data-neighborhood-name') === window.correctAnswerOptionMetadata.name) {
             gameState.answeredCorrectly++;
+            gameState.citySpecficMetrics.newYorkCity.boroughScores[window.correctAnswerOptionMetadata.borough].correct++;
         } else {
             gameState.answeredIncorrectly++;
         }
@@ -178,7 +179,7 @@ function goToNextLevel(e) {
 
         const optionDivs = document.querySelectorAll('.option');
         for (const optionDiv of optionDivs) {
-            if (optionDiv.getAttribute('data-neighborhood-name') === window.correctAnswerOption) {
+            if (optionDiv.getAttribute('data-neighborhood-name') === window.correctAnswerOptionMetadata.name) {
                 optionDiv.classList.add('correctAnswer');
             }
         }
@@ -261,6 +262,7 @@ function goToNextLevel(e) {
 
                 setTimeout(function() {
                     mapDiv.style.opacity = 1;
+                    
                     populateAnswerOptions(answerOptions, neighborhoodData);  
                 }, delayToShowAnswerOptions);
             }, delayToShowNextLevel);
@@ -310,6 +312,8 @@ function startGame() {
     window.scrollTo(0, 0);
     document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
 
+    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs
+
     goToNextLevel();
 }
 
@@ -321,6 +325,17 @@ function stopGame() {
     gameState.answeredCorrectlyPercentage = answeredCorrectlyPercentage;
 
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
+
+    let seenBoroughScores = {};
+    for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
+        if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
+            seenBoroughScores[boroughScore] = {
+                correctPercentage: (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen),
+                correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
+                seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
+            }
+        }
+    }
 
     let totalTimeFormattedString = '';
     if (gameState.totalTimeMinutes > 0) {
@@ -341,6 +356,26 @@ function stopGame() {
         }
     }
 
+    if (window.deviceType === 'mobile') {
+        document.querySelector('#gameOverScreen #gameOverScreenContents #playAgainButton').addEventListener('touchend', restartGame);
+    } else {
+        document.querySelector('#gameOverScreen #gameOverScreenContents #playAgainButton').addEventListener('click', restartGame);
+    }
+    
+    const seenBoroughScoresSortedByCorrectPercentage = Object.keys(seenBoroughScores).sort(function(a, b) { return seenBoroughScores[b]['correctPercentage'] - seenBoroughScores[a]['correctPercentage'] });
+
+    let seenBoroughScoresHTML = '';
+
+    for (i = 0; i < seenBoroughScoresSortedByCorrectPercentage.length; i++) {
+        boroughName = seenBoroughScoresSortedByCorrectPercentage[i];
+        seenBoroughScoresHTML += `<div class='boroughScoreRow'>
+            <label>${boroughName}</label>
+            <span class='score'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
+        </div>`;
+    }
+
+    document.querySelector('#gameOverScreen #gameOverScreenContents #citySpecificMetricsWrapper .citySpecificMetrics#newYorkCity').innerHTML = seenBoroughScoresHTML;
+
     document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
     document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage * 100}%`;
 
@@ -348,6 +383,14 @@ function stopGame() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
         document.getElementById('gameOverScreen').classList.add('visible');
     }, delayToShowGameOverScreen);
+}
+
+function restartGame() {
+    document.querySelector('body').classList.add('reload');
+
+    setTimeout(function() {
+        location.reload();
+    }, 500);
 }
 
 let gameState = {
@@ -358,7 +401,34 @@ let gameState = {
     answeredCorrectly: 0,
     answeredIncorrectly: 0,
     answeredCorrectlyPercentage: 0,
-    totalScore: 0
+    totalScore: 0,
+    citySpecficMetrics: {
+        newYorkCity: {
+            selectedBoroughs: [],
+            boroughScores: {
+                'Manhattan': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Queens': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Brooklyn': {
+                    correct: 0,
+                    seen: 0
+                },
+                'The Bronx': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Staten Island': {
+                    correct: 0,
+                    seen: 0
+                }
+            }
+        }
+    }
 };
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';

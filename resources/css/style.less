@@ -105,6 +105,11 @@ html, body {
 	overflow: hidden;
 	position: fixed;
 	background: @black;
+	transition: opacity 0.5s;
+
+	&.reload {
+		opacity: 0;
+	}
 
 	#preloadImages {
 		opacity: 0;
@@ -745,18 +750,45 @@ html, body {
 
 				#gameOverLabel {
 					&:extend(.h2Standard);
-
+					
+					font-size: 26px;
 					color: rgba(0, 0, 0, 0.25);
 					font-weight: normal;
 				}
 				
 				.titleWrapper {
+					width: 80%;
+					margin-top: 20px;
+					
 					h2 {
 						&:extend(.h2Standard);
 						
-						font-size: 48px;
-						line-height: 52px;
-						margin-top: 80px;
+						font-size: 40px;
+						line-height: 44px;
+					}
+				}
+
+				#citySpecificMetricsWrapper {
+					.citySpecificMetrics {
+						margin-top: 30px;
+						
+						&#newYorkCity {
+							.boroughScoreRow {
+								width: 100%;
+								height: 35px;
+								font-family: 'Helvetica Neue';
+								font-size: 20px;
+	
+								label {
+									color: rgba(0, 0, 0, 0.8);
+								}
+	
+								.score {
+									color: rgba(0, 0, 0, 0.4);
+									float: right;
+								}
+							}
+						}
 					}
 				}
 
