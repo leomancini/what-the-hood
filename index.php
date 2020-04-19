@@ -32,7 +32,7 @@
 						</div>
 					</div>
 					<div id='bottomLinks'>
-						<a href='credits.html'>Credits</a>
+						<a href='about.html'>About</a>
 					</div>
 				</div>
 			</div>

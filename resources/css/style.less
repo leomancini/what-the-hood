@@ -107,6 +107,11 @@ html, body {
 	background: @black;
 	transition: opacity 0.5s;
 
+	@media only screen and (max-height: 568px) {
+		overflow: scroll;
+		position: absolute;
+	}
+
 	&.reload {
 		opacity: 0;
 	}
@@ -862,7 +867,7 @@ html, body {
 		
 	}
 
-	#credits {
+	#about {
 		width: calc(~"100% - 60px");
 		height: calc(~"100% - 60px");
 		background: @black;
@@ -870,6 +875,28 @@ html, body {
 		padding: 30px;
 		color: @white;
 		line-height: 20px;
+		position: absolute;
+
+		h2 {
+			&:extend(.h2Standard);
+			margin: 0;
+
+			a {
+				color: @white;
+
+				&:hover {
+					text-decoration: none;
+				}
+			}
+		}
+
+		h3 {
+			font-family: 'Helvetica Neue';
+			font-weight: normal;
+			font-size: 20px;
+			color: rgba(255, 255, 255, 0.5);
+			margin: 0;
+		}
 
 		h6 {
 			font-family: 'Helvetica Neue';
@@ -878,7 +905,7 @@ html, body {
 			margin: 0 0 5px 0;
 		}
 		
-		.link, a {
+		.link, .link a {
 			font-family: 'Helvetica Neue';
 			font-weight: normal;
 			font-size: 14px;
