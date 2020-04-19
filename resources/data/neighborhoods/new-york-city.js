@@ -19664,7 +19664,7 @@ const neighborhoodDatabase = [
 	  },
 	  "metadata": {
 		"name": "West Brighton",
-		"borough": "Brooklyn"
+		"borough": "Staten Island"
 	  },
 	  "geometry": {
 		"type": "Polygon",
@@ -22757,7 +22757,7 @@ const neighborhoodDatabase = [
 	  "metadata": {
 		"name": "Murray Hill",
 		"description": "FLUSHING",
-		"borough": "Manhattan"
+		"borough": "Queens"
 	  },
 	  "geometry": {
 		"type": "Polygon",
@@ -29329,8 +29329,8 @@ const neighborhoodDatabase = [
 		"id": "shape"
 	  },
 	  "metadata": {
-		"name": "Classon Point",
-		"borough": "Brooklyn"
+		"name": "Clason Point",
+		"borough": "The Bronx"
 	  },
 	  "geometry": {
 		"type": "Polygon",
