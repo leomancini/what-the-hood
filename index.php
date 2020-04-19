@@ -128,7 +128,7 @@
 						<div class='citySpecificMetrics scoreDisplayTypePercentage' id='newYorkCity'></div>
 					</div>
 					<div id='buttons'>
-						<div id='shareButton'>Share</div>
+						<div id='shareButton'>Share Your Score</div>
 						<!-- <a href='.' class='button'><div id='playAgainButton'>Play Again</div></a> -->
 						<div id='playAgainButton'>Play Again</div>
 					</div>
