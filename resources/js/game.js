@@ -451,20 +451,46 @@ function stopGame() {
     document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage}%`;
     
     fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}`).then((response) => {
-      return response.json();
+        return response.json();
     }).then((response) => {
-      console.log(response.newShareImage.fileName);
+        shareImageShortHash = response.newShareImage.fileName.substr(window.config.shareImageHashDatePrefixLength, window.config.shareImageShortHashLength);
 
-      // TODO:
-      // Enable share button (add class to enable pointer-events)
-      // Create URL that uses new shareImage as URL image preview
-      // If mobile, set share button link to share image using Web Share API
+        document.getElementById('shareButton').classList.add('shareImageURLReady');
+
+        if (window.deviceType === 'mobile') {
+            document.getElementById('shareButton').addEventListener('touchend', function() {
+                showShareSheet(shareImageShortHash);
+            });
+        } else {
+            document.getElementById('shareButton').addEventListener('click', function() {
+                showShareSheet(shareImageShortHash);
+            });
+        }
+
+        //   helpers/shareImages/getShareImage.php?shortHashLookup=eccbc87
+
+        // TODO:
+        // If mobile, set share button link to share image using Web Share API
+        // Figure out solution for desktop
     });
 
     setTimeout(function() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
         document.getElementById('gameOverScreen').classList.add('visible');
     }, delayToShowGameOverScreen);
+}
+
+function showShareSheet(shareImageShortHash) {
+    console.log(shareImageShortHash);
+
+    if (navigator.share) {
+        navigator.share({
+        title: 'What the Hood?',
+        url: `https://whatthehood.city/helpers/shareImages/getShareImage.php?shortHashLookup=${shareImageShortHash}`,
+    })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    }
 }
 
 function toggleBoroughScoreRowsScoreDisplayType(e) {

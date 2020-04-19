@@ -13,7 +13,7 @@
     $shareImageFileNameMatched = '';
 
     foreach($shareImageFileNames as $shareImageFileName) {
-        if ($shareImageShortHashLookup === substr($shareImageFileName, 20, strlen($shareImageShortHashLookup))) {
+        if ($shareImageShortHashLookup === substr($shareImageFileName, $config['shareImageHashDatePrefixLength'], strlen($shareImageShortHashLookup))) {
             $shareImageMatched = true;
             $shareImageFileNameMatched = $shareImageFileName;
         }

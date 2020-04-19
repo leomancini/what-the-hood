@@ -835,6 +835,14 @@ html, body {
 					#shareButton {
 						background: @blue;
 						margin-bottom: 15px;
+
+						pointer-events: none;
+						opacity: 0.5;
+
+						&.shareImageURLReady {
+							pointer-events: all;
+							opacity: 1;
+						}
 					}
 
 					#playAgainButton {

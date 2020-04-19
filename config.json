@@ -6,5 +6,7 @@
         "black": "#000000",
         "white": "#FFFFFF"
     },
-    "shareImagesDirectory": "storage/shareImages/"
+    "shareImagesDirectory": "storage/shareImages/",
+    "shareImageHashDatePrefixLength": 20,
+    "shareImageShortHashLength": 8
 }
