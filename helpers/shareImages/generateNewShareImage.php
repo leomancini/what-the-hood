@@ -2,7 +2,9 @@
     require('../functions.php');
     $config = loadConfig('../');
 
-    mkdir('../../'.$config['shareImagesDirectory'], 0777, true);
+    if (!file_exists('../../'.$config['shareImagesDirectory'])) {
+        mkdir('../../'.$config['shareImagesDirectory'], 0777, true);
+    }
 
     function generateNewShareImageFileName() {
         global $config;
