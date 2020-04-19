@@ -125,7 +125,7 @@
 						<h2>You got <span id='answeredCorrectlyPercentage'>0%</span> correct and took <span id='totalTimeFormattedString'>0 seconds</span>!</h2>
 					</div>
 					<div id='citySpecificMetricsWrapper'>
-						<div class='citySpecificMetrics scoreDisplayTypeFraction' id='newYorkCity'></div>
+						<div class='citySpecificMetrics scoreDisplayTypePercentage' id='newYorkCity'></div>
 					</div>
 					<div id='buttons'>
 						<div id='shareButton'>Share</div>

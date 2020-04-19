@@ -330,7 +330,7 @@ function stopGame() {
     for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
         if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
             seenBoroughScores[boroughScore] = {
-                correctPercentage: (Math.round(gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
+                correctPercentage: Math.round((gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
                 correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
                 seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
             }
@@ -371,8 +371,8 @@ function stopGame() {
 
         seenBoroughScoresHTML += `<div class='boroughScoreRow'>
             <label>${boroughName}</label>
-            <span class='scoreFraction'>${seenBoroughScores[boroughName].correctPercentage}%</span>
-            <span class='scorePercentage'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
+            <span class='scorePercentage'>${seenBoroughScores[boroughName].correctPercentage}%</span>
+            <span class='scoreFraction'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
         </div>`;
     }
 
@@ -396,7 +396,7 @@ function stopGame() {
 
 function toggleBoroughScoreRowsScoreDisplayType(e) {
     const boroughScoreRows = e.target.closest('.citySpecificMetrics#newYorkCity');
-    
+
     if (boroughScoreRows.classList.contains('scoreDisplayTypeFraction')) {
         boroughScoreRows.classList.remove('scoreDisplayTypeFraction');
         boroughScoreRows.classList.add('scoreDisplayTypePercentage');
