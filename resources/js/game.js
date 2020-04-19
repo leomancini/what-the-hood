@@ -1,3 +1,68 @@
+mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
+
+window.selectedBoroughs = [];
+window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase;
+
+let map,
+    mapDiv = document.querySelector('#map');
+
+let timer,
+    timerValueSeconds = 0,
+    secondsFormatted = 0,
+    minutesFormatted = 0;
+
+let gameState = {
+    totalTime: 0,
+    totalTimeMinutes: 0,
+    totalTimeSeconds: 0,
+    totalTimeFormatted: '',
+    answeredCorrectly: 0,
+    answeredIncorrectly: 0,
+    answeredCorrectlyPercentage: 0,
+    totalScore: 0,
+    citySpecficMetrics: {
+        newYorkCity: {
+            selectedBoroughs: [],
+            boroughScores: {
+                'Manhattan': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Queens': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Brooklyn': {
+                    correct: 0,
+                    seen: 0
+                },
+                'The Bronx': {
+                    correct: 0,
+                    seen: 0
+                },
+                'Staten Island': {
+                    correct: 0,
+                    seen: 0
+                }
+            }
+        }
+    }
+};
+
+loadConfig();
+
+function loadConfig() {
+    fetch('config.json')
+        .then((response) => {
+            return response.json();
+        })
+        .then((config) => {
+            window.config = config;
+
+            getSelectedBoroughs();
+        });
+}
+
 function getNextNeighborhoodData() {
     const selectedBoroughs = window.selectedBoroughs;
 
@@ -111,23 +176,20 @@ function clearAnswerOptions() {
 
 function getShapeColor(type) {
     if (type === 'random') {
-        const availableColors = [config.colors.blue, config.colors.orange];
+        const availableColors = [window.config.colors.blue, window.config.colors.orange];
         const randomlySelectedColor = availableColors[Math.floor(Math.random() * availableColors.length)];
     
         return randomlySelectedColor;
     } else if (type === 'order') {
         if (levelNumber % 2 === 1) {
-            orderBasedColor = config.colors.blue;
+            orderBasedColor = window.config.colors.blue;
         } else {
-            orderBasedColor = config.colors.orange;
+            orderBasedColor = window.config.colors.orange;
         }
 
         return orderBasedColor;
     }
 }
-
-let timer;
-let timerValueSeconds = 0, secondsFormatted = 0, minutesFormatted = 0;
 
 function incrementTimer() {
     timerValueSeconds++;
@@ -195,12 +257,12 @@ function goToNextLevel(e) {
     delayToShowAnswerOptionsForEachSubsequentLevel = 500;
 
     if(window.levelNumber === 0) {
-        document.querySelector('#statusBar #level').textContent = `1 of ${config.maxNumLevels}`;
+        document.querySelector('#statusBar #level').textContent = `1 of ${window.config.maxNumLevels}`;
         document.getElementById('gameScreen').classList.add('gameInProgress');
         startTimer();
     }
 
-    if (window.levelNumber === config.maxNumLevels) {
+    if (window.levelNumber === window.config.maxNumLevels) {
         // Stop game
         setTimeout(function() {
             mapDiv.style.opacity = 0;
@@ -245,7 +307,7 @@ function goToNextLevel(e) {
                     'data': neighborhoodData.randomlySelectedNeighborhood
                 });
     
-                const fillColor = config.colors.orange;
+                const fillColor = window.config.colors.orange;
             
                 map.addLayer({
                     'id': 'neighborhood',
@@ -258,7 +320,7 @@ function goToNextLevel(e) {
                     }
                 });
 
-                document.querySelector('#statusBar #level').textContent = `${window.levelNumber} of ${config.maxNumLevels}`;
+                document.querySelector('#statusBar #level').textContent = `${window.levelNumber} of ${window.config.maxNumLevels}`;
 
                 setTimeout(function() {
                     mapDiv.style.opacity = 1;
@@ -321,7 +383,7 @@ function stopGame() {
     const delayToShowGameOverScreen = delayToShowNextLevelForEachSubsequentLevel;
     stopTimer(timer);
 
-    answeredCorrectlyPercentage = gameState.answeredCorrectly / (gameState.answeredCorrectly + gameState.answeredIncorrectly);
+    answeredCorrectlyPercentage = Math.round((gameState.answeredCorrectly / (gameState.answeredCorrectly + gameState.answeredIncorrectly)) * 100);
     gameState.answeredCorrectlyPercentage = answeredCorrectlyPercentage;
 
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
@@ -386,7 +448,18 @@ function stopGame() {
     }
 
     document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
-    document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage * 100}%`;
+    document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage}%`;
+    
+    fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}`).then((response) => {
+      return response.json();
+    }).then((response) => {
+      console.log(response.newShareImage.fileName);
+
+      // TODO:
+      // Enable share button (add class to enable pointer-events)
+      // Create URL that uses new shareImage as URL image preview
+      // If mobile, set share button link to share image using Web Share API
+    });
 
     setTimeout(function() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
@@ -413,50 +486,3 @@ function restartGame() {
         location.reload();
     }, 500);
 }
-
-let gameState = {
-    totalTime: 0,
-    totalTimeMinutes: 0,
-    totalTimeSeconds: 0,
-    totalTimeFormatted: '',
-    answeredCorrectly: 0,
-    answeredIncorrectly: 0,
-    answeredCorrectlyPercentage: 0,
-    totalScore: 0,
-    citySpecficMetrics: {
-        newYorkCity: {
-            selectedBoroughs: [],
-            boroughScores: {
-                'Manhattan': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Queens': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Brooklyn': {
-                    correct: 0,
-                    seen: 0
-                },
-                'The Bronx': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Staten Island': {
-                    correct: 0,
-                    seen: 0
-                }
-            }
-        }
-    }
-};
-
-mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
-
-let map;
-const mapDiv = document.querySelector('#map');
-window.selectedBoroughs = [];
-window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase;
-
-getSelectedBoroughs();

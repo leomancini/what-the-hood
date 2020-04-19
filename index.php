@@ -140,7 +140,6 @@
         <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js'></script>
 		<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
 		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
-		<script src='resources/js/config.js?hash=<?php echo rand(0, 9999); ?>'></script>
 		<script src='resources/js/index.js?hash=<?php echo rand(0, 9999); ?>'></script>
 		<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
 		<script src='resources/js/game.js?hash=<?php echo rand(0, 9999); ?>'></script>
