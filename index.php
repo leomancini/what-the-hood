@@ -3,7 +3,7 @@
 	<head>
 		<title>What the Hood?</title>
 		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Tangerine'>
-		<link rel='stylesheet/less' href='resources/css/style.less?v=<?php echo rand(0, 9999); ?>'>
+		<link rel='stylesheet/less' href='resources/css/game.less?v=<?php echo rand(0, 9999); ?>'>
 		<script src='resources/js/lib/less.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<meta charset='UTF-8'>

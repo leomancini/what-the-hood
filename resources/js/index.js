@@ -34,7 +34,7 @@ function selectGame(tappedGameSelector) {
                 setTimeout(function() {
                     document.getElementById('gameSelectionScreen').classList.add('done');
                     document.getElementById('preGameOptionsScreen').classList.add('visible');
-                }, 800);
+                }, 400);
             }, 200);
         }, 400);
     }
