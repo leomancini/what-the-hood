@@ -749,6 +749,10 @@ html, body {
 						&.shareImageURLReady {
 							pointer-events: all;
 							opacity: 1;
+
+							&:focus, &:active {
+								&:extend(.buttonStandardTapped);
+							}
 						}
 					}
 
