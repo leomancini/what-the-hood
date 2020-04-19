@@ -1,7 +1,7 @@
 <?php
     require('../functions.php');
     $config = loadConfig('../');
-    
+
     if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'leo.local') {
         $rootURL = 'http://'.$_SERVER['HTTP_HOST'].'/nyc-neighborhood-quiz';
     } else {
@@ -47,6 +47,11 @@
             <meta property='og:image:url' content='../../<?php echo $config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
             <meta property='og:image' content='../../<?php echo $config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
         <?php } ?>
+        <style>
+            html, body {
+                background: #000000;
+            }
+        </style>
 	</head>
 	<body>
 
