@@ -330,7 +330,7 @@ function stopGame() {
     for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
         if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
             seenBoroughScores[boroughScore] = {
-                correctPercentage: ((gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
+                correctPercentage: (Math.round(gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
                 correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
                 seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
             }
@@ -368,21 +368,22 @@ function stopGame() {
 
     for (i = 0; i < seenBoroughScoresSortedByCorrectPercentage.length; i++) {
         boroughName = seenBoroughScoresSortedByCorrectPercentage[i];
-        scoreDisplayType = 'percentage';
-
-        if (scoreDisplayType === 'percentage') {
-            boroughScoreDisplay = `${seenBoroughScores[boroughName].correctPercentage}%`;
-        } else if(scoreDisplayType === 'fraction') {
-            boroughScoreDisplay = `${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}`;
-        }
 
         seenBoroughScoresHTML += `<div class='boroughScoreRow'>
             <label>${boroughName}</label>
-            <span class='score'>${boroughScoreDisplay}</span>
+            <span class='scoreFraction'>${seenBoroughScores[boroughName].correctPercentage}%</span>
+            <span class='scorePercentage'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
         </div>`;
     }
 
     document.querySelector('#gameOverScreen #gameOverScreenContents #citySpecificMetricsWrapper .citySpecificMetrics#newYorkCity').innerHTML = seenBoroughScoresHTML;
+
+    const boroughScoreRows = document.querySelector('.citySpecificMetrics#newYorkCity');
+    if (window.deviceType === 'mobile') {
+        boroughScoreRows.addEventListener('touchend', toggleBoroughScoreRowsScoreDisplayType);
+    } else {
+        boroughScoreRows.addEventListener('click', toggleBoroughScoreRowsScoreDisplayType);
+    }
 
     document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
     document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage * 100}%`;
@@ -391,6 +392,18 @@ function stopGame() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
         document.getElementById('gameOverScreen').classList.add('visible');
     }, delayToShowGameOverScreen);
+}
+
+function toggleBoroughScoreRowsScoreDisplayType(e) {
+    const boroughScoreRows = e.target.closest('.citySpecificMetrics#newYorkCity');
+    
+    if (boroughScoreRows.classList.contains('scoreDisplayTypeFraction')) {
+        boroughScoreRows.classList.remove('scoreDisplayTypeFraction');
+        boroughScoreRows.classList.add('scoreDisplayTypePercentage');
+    } else if (boroughScoreRows.classList.contains('scoreDisplayTypePercentage')) {
+        boroughScoreRows.classList.remove('scoreDisplayTypePercentage');
+        boroughScoreRows.classList.add('scoreDisplayTypeFraction');
+    }
 }
 
 function restartGame() {

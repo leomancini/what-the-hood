@@ -782,10 +782,35 @@ html, body {
 								label {
 									color: rgba(0, 0, 0, 0.8);
 								}
-	
-								.score {
+
+								.scoreFraction,
+								.scorePercentage {
 									color: rgba(0, 0, 0, 0.4);
 									float: right;
+								}
+							}
+
+							&.scoreDisplayTypeFraction {
+								.boroughScoreRow {
+									.scoreFraction {
+										display: inline-block;
+									}
+
+									.scorePercentage {
+										display: none;
+									}
+								}
+							}
+
+							&.scoreDisplayTypePercentage {
+								.boroughScoreRow {
+									.scorePercentage {
+										display: inline-block;
+									}
+
+									.scoreFraction {
+										display: none;
+									}
 								}
 							}
 						}
