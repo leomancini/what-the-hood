@@ -4,14 +4,13 @@
 
     function generateNewShareImageFileName() {
         global $config;
+        echo '../../'.$config['shareImagesDirectory'];
         $shareImagesDirectoryItems = scandir('../../'.$config['shareImagesDirectory']);
 
         $newFileNameIndex = count($shareImagesDirectoryItems) + 1;
-        $newFileNameHash = md5($newFileNameIndex);
-
         date_default_timezone_set('America/Los_Angeles');
-        $timeFormatted = date('Y-m-d-h-i-s');;
-
+        $timeFormatted = date('Y-m-d-h-i-s');
+        $newFileNameHash = md5($timeFormatted.'-'.$newFileNameIndex);
         $newFileName = $timeFormatted.'-'.$newFileNameHash;
 
         return $newFileName;
