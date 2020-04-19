@@ -2,9 +2,10 @@
     require('../functions.php');
     $config = loadConfig('../');
 
+    mkdir('../../'.$config['shareImagesDirectory']);
+
     function generateNewShareImageFileName() {
         global $config;
-        echo '../../'.$config['shareImagesDirectory'];
         $shareImagesDirectoryItems = scandir('../../'.$config['shareImagesDirectory']);
 
         $newFileNameIndex = count($shareImagesDirectoryItems) + 1;
