@@ -483,7 +483,7 @@ function showShareSheet(shareImageShortHash) {
     if (navigator.share) {
         navigator.share({
         title: 'What the Hood?',
-        url: `https://whatthehood.city/helpers/shareImages/getShareImage.php?shortHashLookup=${shareImageShortHash}`,
+        url: `https://whatthehood.city/share/${shareImageShortHash}`,
     })
         .then(() => console.log('Successful share'))
         .catch((error) => console.log('Error sharing', error));

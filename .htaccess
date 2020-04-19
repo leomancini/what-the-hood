@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^share/(.*)$ helpers/shareImages/getShareImage.php?shortHashLookup=$1
+RewriteRule ^about$ views/about.php
+RewriteRule ^$ views/game.php
+
+Options -Indexes

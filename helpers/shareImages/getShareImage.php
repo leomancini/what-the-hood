@@ -37,7 +37,6 @@
 ?>
 <!DOCTYPE HTML>
 <html>
-
 	<head>
 		<title>What the Hood?</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -50,14 +49,12 @@
         <style>
             html, body {
                 background: #000000;
+                color: #FFFFFF;
             }
         </style>
+        <script type='text/javascript'>
+            window.location.href = '<?php echo $rootURL; ?>';
+        </script>
 	</head>
-	<body>
-
-    <script type='text/javascript'>
-        window.location.href = '<?php echo $rootURL; ?>';
-    </script>
-
-	</body>
+	<body></body>
 </html>
