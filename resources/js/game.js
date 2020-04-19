@@ -467,10 +467,7 @@ function stopGame() {
             });
         }
 
-        //   helpers/shareImages/getShareImage.php?shortHashLookup=eccbc87
-
         // TODO:
-        // If mobile, set share button link to share image using Web Share API
         // Figure out solution for desktop
     });
 
