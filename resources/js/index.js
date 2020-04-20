@@ -55,7 +55,7 @@ function renderGameSelectors() {
     let gameSelectionScreenContentsPaddingTop = 0;
 
     if (window.deviceType === 'desktop') {
-        gameSelectionScreenContentsPaddingTop = 100;
+        gameSelectionScreenContentsPaddingTop = 120;
     }
     
     for (const gameSelector of gameSelectors) {

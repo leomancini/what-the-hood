@@ -251,7 +251,6 @@ html, body {
 			z-index: 3;
 			width: 100%;
 			height: 100%;
-			min-height: 592px;
 			position: absolute;
 			background: @white;
 			pointer-events: none;
@@ -263,6 +262,15 @@ html, body {
 			@offset: -105px;
 			@size: 240px;
 
+			@media @mobile {
+				min-height: 592px;
+			}
+
+			@media only screen and (max-height: 745px) and (min-width: 667px) {
+				overflow-y: scroll;
+				position: absolute;
+			}
+			
 			&.visible {
 				opacity: 1;
 				pointer-events: auto;
@@ -295,9 +303,14 @@ html, body {
 				@media @desktop {
 					.desktop();
 				
-					height: 540px;
+					height: 650px;
 					top: 50%;
-					margin-top: -310px;
+					margin-top: -280px;
+				}
+
+				@media only screen and (max-height: 745px) and (min-width: 667px) {
+					top: 93px;
+					margin-top: unset;
 				}
 
 				.titleWrapper {
@@ -446,6 +459,11 @@ html, body {
 				pointer-events: none;
 			}
 	
+			@media only screen and (max-height: 745px) and (min-width: 667px) {
+				overflow-y: scroll;
+				position: absolute;
+			}
+
 			&.gameInProgress {
 				pointer-events: auto;
 	
@@ -479,7 +497,13 @@ html, body {
 				@media only screen and (max-height: 568px) {
 					height: calc(~"100% - 30px");
 				}
-	
+
+				@media only screen and (max-height: 743px) and (min-width: 745px) {
+					top: 76px;
+					margin-top: unset;
+					margin-bottom: 80px;
+				}
+				
 				#statusBar {
 					width: 100%;
 					font-size: 18px;
@@ -656,6 +680,11 @@ html, body {
 				}
 			}
 
+			@media only screen and (max-height: 745px) and (min-width: 667px) {
+				overflow-y: scroll;
+				position: absolute;
+			}
+			
 			#gameOverScreenContents {
 				text-align: left;
 				position: absolute;
@@ -668,9 +697,16 @@ html, body {
 
 				@media @desktop {
 					.desktop();
-					height: 540px;
+				
+					height: 530px;
 					top: 50%;
-					margin-top: -310px;
+					margin-top: -300px;
+				}
+
+				@media only screen and (max-height: 743px) and (min-width: 745px) {
+					top: 72px;
+					margin-top: unset;
+					margin-bottom: 130px;
 				}
 		
 				#gameOverLabel {
