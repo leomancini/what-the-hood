@@ -41,6 +41,9 @@ function selectGame(tappedGameSelector) {
         }, 400);
     }
 }
+Math.clip = function(number, min, max) {
+    return Math.max(min, Math.min(number, max));
+}
 
 function renderGameSelectors() {
     console.log('ok');
@@ -56,9 +59,8 @@ function renderGameSelectors() {
     }
     
     for (const gameSelector of gameSelectors) {
-        gameSelector.style.top = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + gameSelectionScreenContentsPaddingTop}px`;
-        gameSelector.style.height = `${gameSelectorCardHeight}px`;
-        // TODO: Add min height to gameSelector
+        gameSelector.style.top = `${(gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + gameSelectionScreenContentsPaddingTop}px`;
+        gameSelector.style.height = `${Math.clip(gameSelectorCardHeight, 184, 300)}px`;
         gameSelectorIndex++;
         
         gameSelector.addEventListener('click', selectGame);
@@ -66,10 +68,10 @@ function renderGameSelectors() {
 
     const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
 
-    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
+    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
-    if (((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight) > window.innerHeight) {
-        document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight}px`;
+    if (((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight) > window.innerHeight) {
+        document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight}px`;
     } else {
         document.getElementById('gameSelectionScreenContents').style.height = '100%';
     }
