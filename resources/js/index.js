@@ -15,6 +15,8 @@ function selectGame(tappedGameSelector) {
                 gameSelector.classList.add('notSelected');
             }
         }
+
+        document.getElementById('bottomLinks').classList.add('hidden');
     
         selectedGameSelector.children[0].classList.add('selected');
         
@@ -41,15 +43,22 @@ function selectGame(tappedGameSelector) {
 }
 
 function renderGameSelectors() {
+    console.log('ok');
     const gameSelectors = document.querySelectorAll('.gameSelector');
 
     let gameSelectorIndex = 0;
     const gameSelectorCardHeight = Math.round(window.innerHeight / 2.5);
     const gameSelectorCardMarginBottom = 30;
+    let gameSelectionScreenContentsPaddingTop = 0;
+
+    if (window.deviceType === 'desktop') {
+        gameSelectionScreenContentsPaddingTop = 100;
+    }
     
     for (const gameSelector of gameSelectors) {
-        gameSelector.style.top = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom}px`;
+        gameSelector.style.top = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + gameSelectionScreenContentsPaddingTop}px`;
         gameSelector.style.height = `${gameSelectorCardHeight}px`;
+        // TODO: Add min height to gameSelector
         gameSelectorIndex++;
         
         gameSelector.addEventListener('click', selectGame);
@@ -57,10 +66,12 @@ function renderGameSelectors() {
 
     const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
 
-    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom)}px`;
+    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
     if (((gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight) > window.innerHeight) {
         document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (gameSelectorCardHeight + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight}px`;
+    } else {
+        document.getElementById('gameSelectionScreenContents').style.height = '100%';
     }
     
     setTimeout(function() {
@@ -108,6 +119,8 @@ function renderBoroughCheckboxes() {
         }
     }
 }
+
+window.addEventListener('resize', renderGameSelectors);
 
 renderGameSelectors();
 renderBoroughCheckboxes();

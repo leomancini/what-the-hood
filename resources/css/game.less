@@ -53,7 +53,7 @@ html, body {
 			background: @black;
 			pointer-events: auto;
 			opacity: 1;
-			transition: all 0.5s;
+			transition: opacity 0.5s;
 			overflow-y: scroll;
 			-webkit-overflow-scrolling: touch;
 	
@@ -89,7 +89,7 @@ html, body {
 					margin-left: @standard-padding;
 					margin-bottom: @standard-padding;
 					border-radius: @border-radius;
-					transition: all 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+					transition: opacity 0.4s, transform 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 					position: absolute;
 					overflow: hidden;
 					mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
@@ -151,7 +151,7 @@ html, body {
 	
 					.gameSelectorContents {
 						opacity: 1;
-						transition: all 0.4s;
+						transition: opacity 0.4s;
 						left: 0;
 						top: 0;
 						position: absolute;
@@ -221,9 +221,15 @@ html, body {
 					position: absolute;
 					margin-left: 30px;
 					height: 50px;
+					transition: opacity 0.4s;
 
 					@media @desktop {
 						.desktop();
+					}
+
+					&.hidden {
+						opacity: 0;
+						z-index: 1;
 					}
 
 					a {
@@ -255,7 +261,7 @@ html, body {
 	
 			@offset: -105px;
 			@size: 240px;
-	
+
 			&.visible {
 				opacity: 1;
 				pointer-events: auto;
@@ -282,13 +288,15 @@ html, body {
 				left: @standard-padding;
 				width: calc(~"100% - 60px");
 				height: calc(~"100% - 60px");
-				transition: all 0.5s;
+				transition: transform 0.5s;
 				transform: scale(0.95);
 				
 				@media @desktop {
-					width: 500px;
-					left: 50%;
-					margin-left: -250px;
+					.desktop();
+				
+					height: 540px;
+					top: 50%;
+					margin-top: -310px;
 				}
 
 				.titleWrapper {
@@ -415,6 +423,11 @@ html, body {
 					&:focus, &:active {
 						&:extend(.buttonStandardTapped);
 					}
+
+					@media @desktop {
+						bottom: unset;
+						margin-top: 20px;
+					}
 				}
 			}
 		}
@@ -446,15 +459,20 @@ html, body {
 			}
 
 			#gameScreenContents {
-				width: 100%;
+				width: calc(~'100% - 60px');
 				height: 100%;
-				transition: all 0.8s;
+				padding-left: 30px;
+				transition: transform 0.8s, opacity 0.8s;
 				transform: scale(0.95);
 				opacity: 0;
 				position: absolute;
 	
 				@media @desktop {
 					.desktop();
+					padding-left: 0;
+					height: 750px;
+					top: 50%;
+					margin-top: -375px
 				}
 				
 				@media only screen and (max-height: 568px) {
@@ -462,13 +480,12 @@ html, body {
 				}
 	
 				#statusBar {
-					width: calc(~"100% - 60px");
+					width: 100%;
 					font-size: 18px;
 					height: 20px;
 					font-family: 'Helvetica Neue', 'Helvetica';
 					position: relative;
 					margin-top: 25px;
-					margin-left: @standard-padding;
 					margin-bottom: 25px;
 		
 					#info, #level {
@@ -502,11 +519,10 @@ html, body {
 				}
 		
 				#mapWrapperContainer {
-					width: calc(~"100% - 60px");
+					width: 100%;
 					height: calc(~"100% - 368px");
 					border-radius: @border-radius;
 					box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.1);
-					margin-left: @standard-padding;
 					margin-bottom: @standard-padding;
 					min-height: 200px;
 		
@@ -541,8 +557,7 @@ html, body {
 							height: @standard-row-height;
 							background: rgba(0, 0, 0, 0.2);
 							border-radius: @border-radius;
-							width: calc(~"100% - 60px");
-							margin-left: @standard-padding;
+							width: 100%;
 							margin-bottom: 10px;
 							transition: all 0.2s;
 				
@@ -579,17 +594,23 @@ html, body {
 								margin-bottom: 0;
 							}
 		
+							&.selectedAnswer,
+							&.correctAnswer {
+								&:after {
+									&:extend(.material-icons);
+									position: absolute;
+									right: 15px;
+									margin-top: 14px;
+									font-size: 24px;
+								}
+							}
+
 							&.selectedAnswer {
 								background: rgba(255, 255, 255, 0.2);
 		
 								&:after {
-									&:extend(.material-icons);
 									content: 'clear';
-									position: absolute;
-									right: 45px;
-									margin-top: 14px;
 									color: @white;
-									font-size: 24px;
 								}
 							}
 		
@@ -601,13 +622,8 @@ html, body {
 								}
 		
 								&:after {
-									&:extend(.material-icons);
 									content: 'check_circle';
-									position: absolute;
-									right: 45px;
-									margin-top: 14px;
 									color: @blue;
-									font-size: 24px;
 								}
 							}
 						}
@@ -638,7 +654,7 @@ html, body {
 					transform: scale(1);
 				}
 			}
-	
+
 			#gameOverScreenContents {
 				text-align: left;
 				position: absolute;
@@ -646,15 +662,16 @@ html, body {
 				left: @standard-padding;
 				width: calc(~"100% - 60px");
 				height: calc(~"100% - 60px");
-				transition: all 0.5s;
+				transition: transform 0.5s;
 				transform: scale(0.95);
-				
-				@media @desktop {
-					width: 500px;
-					left: 50%;
-					margin-left: -250px;
-				}
 
+				@media @desktop {
+					.desktop();
+					height: 540px;
+					top: 50%;
+					margin-top: -310px;
+				}
+		
 				#gameOverLabel {
 					&:extend(.h2Standard);
 					
