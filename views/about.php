@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<title>What the Hood? – About</title>
-		<link rel='stylesheet/less' href='resources/css/about.less'>
+		<link rel='stylesheet/less' href='resources/css/about.less?v=<?php echo rand(0, 9999); ?>'>
 		<script src='resources/js/lib/less.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
         <meta charset='UTF-8'>
 	</head>
-	<body>
+	<body ontouchstart=''>
         <div id='about'>
             <span class='link'><a href='./'>← back to game</a></span>
             <br>
