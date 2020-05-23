@@ -72,16 +72,15 @@
             $scoreComponents['totalTimeFormattedString'] = htmlspecialchars($_GET['totalTimeFormattedString']);
         }
         
-        
         renderWrappedText($outputImage, [
             'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
-                'font-size' => 56,
-                'margin-top' => 142,
-                'margin-right' => 100,
+                'font-size' => 112,
+                'margin-top' => 284,
+                'margin-right' => 200,
                 'margin-bottom' => 0,
-                'margin-left' => 60,
+                'margin-left' => 120,
                 'rotation' => 0,
                 'color' => $colorBlack
             ]
@@ -95,11 +94,11 @@
             'textContent' => $scoreComponents['cityDisplayName'],
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica.ttf',
-                'font-size' => 24,
-                'margin-top' => 60,
-                'margin-right' => 200,
+                'font-size' => 48,
+                'margin-top' => 120,
+                'margin-right' => 400,
                 'margin-bottom' => 0,
-                'margin-left' => 60,
+                'margin-left' => 120,
                 'rotation' => 0,
                 'color' => $colorGray
             ]
@@ -109,7 +108,7 @@
         imagedestroy($outputImage);
     }
 
-    $imageSize = 600;
+    $imageSize = 1200;
     $newShareImageFileName = generateNewShareImageFileName();
     generateNewShareImage($newShareImageFileName);
 
