@@ -1,6 +1,6 @@
 <?php
     // TODO: Save two different images for Facebook (1200x630) & iMessage (1200x1200)
-    
+
     require('../functions.php');
     $config = loadConfig('../');
 
@@ -80,7 +80,7 @@
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
                 'font-size' => 80,
                 'margin-top' => 200,
-                'margin-right' => 100,
+                'margin-right' => 160,
                 'margin-bottom' => 0,
                 'margin-left' => 80,
                 'rotation' => 0,
