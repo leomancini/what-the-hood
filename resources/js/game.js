@@ -441,6 +441,7 @@ function stopGame() {
     document.querySelector('#gameOverScreen #gameOverScreenContents #citySpecificMetricsWrapper .citySpecificMetrics#newYorkCity').innerHTML = seenBoroughScoresHTML;
 
     const boroughScoreRows = document.querySelector('.citySpecificMetrics#newYorkCity');
+
     if (window.deviceType === 'mobile') {
         boroughScoreRows.addEventListener('touchend', toggleBoroughScoreRowsScoreDisplayType);
     } else {
@@ -478,15 +479,24 @@ function stopGame() {
 }
 
 function showShareSheet(shareImageShortHash) {
-    console.log(shareImageShortHash);
-
     if (navigator.share) {
         navigator.share({
-        title: 'What the Hood?',
-        url: `https://whatthehood.city/share/${shareImageShortHash}`,
-    })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error));
+            title: 'What the Hood?',
+            url: `https://whatthehood.city/share/${shareImageShortHash}`,
+        })
+    } else {
+        document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', function() {  
+            document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
+            document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
+
+            setTimeout(function() {
+                document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
+            }, 200);
+        });
+
+        document.getElementById('shareSheetDesktopContainer').classList.add('visible');
+        document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');
+        document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.add('visible');
     }
 }
 

@@ -164,7 +164,6 @@ html, body {
 						}
 	
 						h1 {	
-							font-family: 'Helvetica Neue';
 							font-weight: bold;
 							font-size: 32px;
 							line-height: 38px;
@@ -173,11 +172,10 @@ html, body {
 	
 						.playButton {
 							background: rgba(0, 0, 0, 0.8);
-							color: #FFFFFF;
+							color: @white;
 							display: inline-block;
 							padding: 10px 20px;
 							border-radius: 8px;
-							font-family: 'Helvetica Neue';
 							font-weight: bold;
 							font-size: 18px;
 							margin-left: 25px;
@@ -188,7 +186,6 @@ html, body {
 							color: rgba(0, 0, 0, 0.5);
 							display: inline-block;
 							border-radius: @border-radius;
-							font-family: 'Helvetica Neue';
 							font-weight: normal;
 							font-size: 18px;
 							margin-left: 25px;
@@ -218,7 +215,7 @@ html, body {
 				}
 	
 				#bottomLinks {
-					color: white;
+					color: @white;
 					position: absolute;
 					margin-left: 30px;
 					height: 50px;
@@ -234,7 +231,6 @@ html, body {
 					}
 
 					a {
-						font-family: 'Helvetica Neue';
 						font-weight: normal;
 						font-size: 14px;
 						color: rgba(255, 255, 255, 0.4);
@@ -343,7 +339,6 @@ html, body {
 						}
 	
 						label {
-							font-family: 'Helvetica Neue';
 							font-weight: bold;
 							font-size: 18px;
 							line-height: @standard-row-height;
@@ -508,7 +503,6 @@ html, body {
 					width: 100%;
 					font-size: 18px;
 					height: 20px;
-					font-family: 'Helvetica Neue', 'Helvetica';
 					position: relative;
 					margin-top: 25px;
 					margin-bottom: 25px;
@@ -539,7 +533,7 @@ html, body {
 						line-height: 20px;
 						font-weight: bold;
 						text-align: center;
-						color: #FFFFFF;
+						color: @white;
 					}
 				}
 		
@@ -593,7 +587,6 @@ html, body {
 							label {
 								display: inline-block;
 								color: @white;
-								font-family: 'Helvetica Neue';
 								font-style: normal;
 								font-weight: bold;
 								font-size: 18px;
@@ -737,7 +730,6 @@ html, body {
 							.boroughScoreRow {
 								width: 100%;
 								height: 35px;
-								font-family: 'Helvetica Neue';
 								font-size: 20px;
 	
 								label {
@@ -813,6 +805,118 @@ html, body {
 					#playAgainButton {
 						color: @black;
 						background: @gray;
+					}
+				}
+			}
+
+			#shareSheetDesktopContainer {
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				pointer-events: none;
+
+				&.visible {
+					opacity: 1;
+					pointer-events: auto;
+				}
+
+				#modalContainer {
+					width: 500px;
+					height: 235px;
+					background: @white;
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					margin-left: -250px;
+					margin-top: -170px;
+					z-index: 2;
+					border-radius: @border-radius;
+					box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.3);
+					transition: transform 0.2s, opacity 0.2s;
+					transform: scale(0.9);
+					opacity: 0;
+
+					&.visible {
+						opacity: 1;
+						transform: scale(1);
+					}
+
+					#modalContents {
+						padding: @standard-padding;
+						text-align: center;
+
+						.optionContainer {
+							height: 100%;
+							width: 25%;
+							text-align: center;
+							display: inline-block;
+							text-decoration: none;
+							color: rgba(0, 0, 0, 0.6);
+							transition: all 0.2s;
+							margin-top: 5px;
+
+							&:hover {
+								text-decoration: underline;
+								color: @black;
+							}
+
+							.icon {
+								width: 56px;
+								height: 56px;
+								border-radius: 56px;
+								background: gray;
+								margin: 0 auto;
+								overflow: hidden;
+
+								img {
+									width: 100%;
+									height: 100%;
+								}
+
+								&#email,
+								&#link {
+									background: @gray;
+									color: rgba(0, 0, 0, 0.4);
+									line-height: 56px;
+									font-size: 26px;
+									&:extend(.material-icons);
+								}
+							}
+
+							.label {
+								font-size: 16px;
+								margin-top: 10px;
+							}
+						}
+
+						#cancelButton {
+							&:extend(.buttonStandard);
+							color: @black;
+							background: @gray;
+							width: calc(~"100% - 60px");
+							margin-bottom: @standard-padding;
+
+							&:focus, &:active {
+								&:extend(.buttonStandardTapped);
+							}
+						}
+					}
+				}
+
+				#backgroundOverlay {
+					width: 100%;
+					height: 100%;
+					background: rgba(0, 0, 0, 0.5);
+					position: fixed;
+					z-index: 1;
+					transition: opacity 0.2s;
+					opacity: 0;
+
+					&.visible {
+						opacity: 1;
 					}
 				}
 			}

@@ -46,7 +46,6 @@ Math.clip = function(number, min, max) {
 }
 
 function renderGameSelectors() {
-    console.log('ok');
     const gameSelectors = document.querySelectorAll('.gameSelector');
 
     let gameSelectorIndex = 0;
