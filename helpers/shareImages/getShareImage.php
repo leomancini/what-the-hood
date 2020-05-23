@@ -38,6 +38,8 @@
             <meta property='og:title' content='What the Hood?' />
             <meta property='og:url' content='<?php echo $config['baseURL'].'/share/'.$shareImageShortHashLookup; ?>' />
             <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
+            <meta property='og:image:width' content='1200' />
+            <meta property='og:image:height' content='630' />
             <meta property='og:image:url' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
             <meta property='og:image' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
         <?php } ?>
