@@ -1,4 +1,6 @@
 <?php
+    // TODO: Save two different images for Facebook (1200x630) & iMessage (1200x1200)
+    
     require('../functions.php');
     $config = loadConfig('../');
 
@@ -76,7 +78,7 @@
             'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
-                'font-size' => 84,
+                'font-size' => 80,
                 'margin-top' => 200,
                 'margin-right' => 100,
                 'margin-bottom' => 0,
@@ -85,6 +87,21 @@
                 'color' => $colorBlack
             ]
         ]);
+        
+        // For iMessage
+        // renderWrappedText($outputImage, [
+        //     'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
+        //     'attributes' => [
+        //         'font-family' => 'resources/fonts/helvetica-bold.ttf',
+        //         'font-size' => 112,
+        //         'margin-top' => 284,
+        //         'margin-right' => 200,
+        //         'margin-bottom' => 0,
+        //         'margin-left' => 120,
+        //         'rotation' => 0,
+        //         'color' => $colorBlack
+        //     ]
+        // ]);
 
         if (isset($_GET['cityDisplayName']) && $_GET['cityDisplayName'] !== '') {
             $scoreComponents['cityDisplayName'] = htmlspecialchars($_GET['cityDisplayName']);
@@ -103,6 +120,21 @@
                 'color' => $colorGray
             ]
         ]);
+
+        // For iMessage
+        // renderWrappedText($outputImage, [
+        //     'textContent' => $scoreComponents['cityDisplayName'],
+        //     'attributes' => [
+        //         'font-family' => 'resources/fonts/helvetica.ttf',
+        //         'font-size' => 48,
+        //         'margin-top' => 120,
+        //         'margin-right' => 400,
+        //         'margin-bottom' => 0,
+        //         'margin-left' => 120,
+        //         'rotation' => 0,
+        //         'color' => $colorGray
+        //     ]
+        // ]);
         
         imagepng($outputImage, '../../'.$config['shareImagesDirectory'].$fileName.'.png');
         imagedestroy($outputImage);
@@ -112,6 +144,12 @@
         'width' => 1200,
         'height' => 630
     ];
+
+    // For iMessage
+    // $imageSize = [
+    //     'width' => 1200,
+    //     'height' => 630
+    // ];
 
     $newShareImageFileName = generateNewShareImageFileName();
     generateNewShareImage($newShareImageFileName);

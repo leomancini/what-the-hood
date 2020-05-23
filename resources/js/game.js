@@ -475,7 +475,6 @@ function stopGame() {
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
 
             facebookShareButton.addEventListener('click', function() {  
-                console.log(`${config.baseURL}/share/${shareImageShortHash}`);
                 FB.ui({
                     display: 'popup',
                     method: 'share',
