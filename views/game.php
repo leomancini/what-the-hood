@@ -135,20 +135,20 @@
 				<div id='shareSheetDesktopContainer'>
 					<div id='modalContainer'>
 						<div id='modalContents'>
-							<a class='optionContainer' href='https://twitter.com/intent/tweet?text=Hello%20world' target="_blank" rel="noopener">
+							<a class='optionContainer' href='https://twitter.com/intent/tweet' target='_blank' rel='noopener' id='twitter'>
 								<div class='icon'>
 									<img src='https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B_400x400.png'>
 								</div>
 								<div class='label'>Twitter</div>
-							</a><a class='optionContainer' href='mailto:asd@asd.com' target="_blank" rel="noopener" >
+							</a><a class='optionContainer' href='mailto:asd@asd.com' target='_blank' rel='noopener' id='facebook'>
 								<div class='icon'>
 									<img src='https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/58978526_10158354585751729_7411073224387067904_o.png?_nc_cat=1&_nc_sid=09cbfe&_nc_ohc=DB-xqjVXqYkAX_hSnX1&_nc_ht=scontent-sjc3-1.xx&oh=74fcb9207c85af941a34492bbeabf651&oe=5EEEBE88'>
 								</div>
 								<div class='label'>Facebook</div>
-							</a><a class='optionContainer' href='mailto:asd@asd.com'>
+							</a><a class='optionContainer'>
 								<div class='icon' id='email'>mail</div>
 								<div class='label'>Email</div>
-							</a><a class='optionContainer' href='mailto:asd@asd.com'>
+							</a><a class='optionContainer'>
 								<div class='icon' id='link'>link</div>
 								<div class='label'>Copy Link</div>
 							</a>
@@ -167,5 +167,17 @@
 		<script src='resources/js/index.js?hash=<?php echo rand(0, 9999); ?>'></script>
 		<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
 		<script src='resources/js/game.js?hash=<?php echo rand(0, 9999); ?>'></script>
+		<script>
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId: '966866140399022',
+					autoLogAppEvents: true,
+					xfbml: true,
+					version: 'v7.0'
+				});
+			};
+		</script>
+		<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+
 	</body>
 </html>

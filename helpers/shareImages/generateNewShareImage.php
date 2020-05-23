@@ -65,12 +65,13 @@
         ];
     
         if (isset($_GET['answeredCorrectlyPercentage']) && $_GET['answeredCorrectlyPercentage'] !== '') {
-            $scoreComponents['answeredCorrectlyPercentage'] = $_GET['answeredCorrectlyPercentage'];
+            $scoreComponents['answeredCorrectlyPercentage'] = htmlspecialchars($_GET['answeredCorrectlyPercentage']);
         }
     
         if (isset($_GET['totalTimeFormattedString']) && $_GET['totalTimeFormattedString'] !== '') {
-            $scoreComponents['totalTimeFormattedString'] = $_GET['totalTimeFormattedString'];
+            $scoreComponents['totalTimeFormattedString'] = htmlspecialchars($_GET['totalTimeFormattedString']);
         }
+        
         
         renderWrappedText($outputImage, [
             'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
@@ -86,8 +87,12 @@
             ]
         ]);
 
+        if (isset($_GET['cityDisplayName']) && $_GET['cityDisplayName'] !== '') {
+            $scoreComponents['cityDisplayName'] = htmlspecialchars($_GET['cityDisplayName']);
+        }
+
         renderWrappedText($outputImage, [
-            'textContent' => 'New York City',
+            'textContent' => $scoreComponents['cityDisplayName'],
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica.ttf',
                 'font-size' => 24,

@@ -12,6 +12,7 @@ let timer,
     minutesFormatted = 0;
 
 let gameState = {
+    cityDisplayName: '',
     totalTime: 0,
     totalTimeMinutes: 0,
     totalTimeSeconds: 0,
@@ -380,6 +381,7 @@ function startGame() {
 }
 
 function stopGame() {
+    gameState.cityDisplayName = 'New York City';
     const delayToShowGameOverScreen = delayToShowNextLevelForEachSubsequentLevel;
     stopTimer(timer);
 
@@ -450,27 +452,40 @@ function stopGame() {
 
     document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
     document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage}%`;
-    
-    fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}`).then((response) => {
-        return response.json();
-    }).then((response) => {
-        shareImageShortHash = response.newShareImage.fileName.substr(window.config.shareImageHashDatePrefixLength, window.config.shareImageShortHashLength);
 
-        document.getElementById('shareButton').classList.add('shareImageURLReady');
+    if (navigator.share) {
+        fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}&cityDisplayName=${gameState.cityDisplayName}`).then((response) => {
+            return response.json();
+        }).then((response) => {
+            shareImageShortHash = response.newShareImage.fileName.substr(window.config.shareImageHashDatePrefixLength, window.config.shareImageShortHashLength);
 
-        if (window.deviceType === 'mobile') {
+            document.getElementById('shareButton').classList.add('shareImageURLReady');
+
             document.getElementById('shareButton').addEventListener('touchend', function() {
-                showShareSheet(shareImageShortHash);
+                showMobileShareSheet(shareImageShortHash);;
             });
-        } else {
-            document.getElementById('shareButton').addEventListener('click', function() {
-                showShareSheet(shareImageShortHash);
-            });
-        }
+        });
+    } else {
+        document.getElementById('shareButton').classList.add('shareImageURLReady');
+        
+        const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
 
-        // TODO:
-        // Figure out solution for desktop
-    });
+        twitterShareButton.href = `${twitterShareButton.href}?text=What the Hood? ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! https://whatthehood.city`;
+        
+        const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
+
+        facebookShareButton.addEventListener('click', function() {  
+            FB.ui({
+                display: 'popup',
+                method: 'share',
+                href: window.config.baseURL,
+            }, function(response) { });
+        });
+        
+        document.getElementById('shareButton').addEventListener('click', function() {
+            showDesktopShareSheet();
+        });
+    }
 
     setTimeout(function() {
         document.getElementById('gameScreen').classList.remove('gameInProgress');
@@ -478,26 +493,26 @@ function stopGame() {
     }, delayToShowGameOverScreen);
 }
 
-function showShareSheet(shareImageShortHash) {
-    if (navigator.share) {
-        navigator.share({
-            title: 'What the Hood?',
-            url: `https://whatthehood.city/share/${shareImageShortHash}`,
-        })
-    } else {
-        document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', function() {  
-            document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
-            document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
+function showMobileShareSheet(shareImageShortHash) {
+    navigator.share({
+        title: 'What the Hood?',
+        url: `https://whatthehood.city/share/${shareImageShortHash}`,
+    })
+}
 
-            setTimeout(function() {
-                document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
-            }, 200);
-        });
+function showDesktopShareSheet() {
+    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', function() {  
+        document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
+        document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
 
-        document.getElementById('shareSheetDesktopContainer').classList.add('visible');
-        document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');
-        document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.add('visible');
-    }
+        setTimeout(function() {
+            document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
+        }, 200);
+    });
+
+    document.getElementById('shareSheetDesktopContainer').classList.add('visible');
+    document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');
+    document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.add('visible');
 }
 
 function toggleBoroughScoreRowsScoreDisplayType(e) {
