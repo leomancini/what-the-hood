@@ -466,16 +466,14 @@ function stopGame() {
                 showMobileShareSheet(shareImageShortHash);;
             });
         } else {
-            console.log(`${config.baseURL}/share/${shareImageShortHash}`);
+            // console.log(`${config.baseURL}/share/${shareImageShortHash}`);
 
             document.getElementById('shareButton').classList.add('shareImageURLReady');
 
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
-
             twitterShareButton.href = `${twitterShareButton.href}?text=What the Hood? ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${config.baseURL}`;
             
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
-
             facebookShareButton.addEventListener('click', function() {  
                 FB.ui({
                     display: 'popup',
