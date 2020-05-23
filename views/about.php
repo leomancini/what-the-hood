@@ -13,7 +13,7 @@
             <br>
             <br>
             <br>
-            <h2><i>What the Hood?</i> is a neighborhood quiz game by Leo Mancini.</h2>
+            <h2>What the Hood? is a neighborhood quiz game by Leo Mancini.</h2>
             <br>
             <br>
             <a class='button' href='https://leomancini.net/what-the-hood' target='_blank'>Learn More</a>
