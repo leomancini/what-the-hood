@@ -372,6 +372,8 @@ function initalizeGame() {
 }
 
 function startGame() {
+    gameState.cityDisplayName = 'New York City';
+    
     window.scrollTo(0, 0);
     document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
 
@@ -381,7 +383,6 @@ function startGame() {
 }
 
 function stopGame() {
-    gameState.cityDisplayName = 'New York City';
     const delayToShowGameOverScreen = delayToShowNextLevelForEachSubsequentLevel;
     stopTimer(timer);
 

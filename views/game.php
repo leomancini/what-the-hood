@@ -1,9 +1,12 @@
+<?php
+    require('../helpers/functions.php');
+	$config = loadConfig('');
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
 		<title>What the Hood?</title>
-		<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Tangerine'>
-		<link rel='stylesheet/less' href='resources/css/game.less?v=<?php echo rand(0, 9999); ?>'>
+		<link rel='stylesheet/less' href='resources/css/game.less<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'>
 		<script src='resources/js/lib/less.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
 		<meta charset='UTF-8'>
@@ -164,13 +167,13 @@
         <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js'></script>
 		<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
 		<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
-		<script src='resources/js/index.js?hash=<?php echo rand(0, 9999); ?>'></script>
+		<script src='resources/js/index.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
 		<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
-		<script src='resources/js/game.js?hash=<?php echo rand(0, 9999); ?>'></script>
+		<script src='resources/js/game.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
 		<script>
 			window.fbAsyncInit = function() {
 				FB.init({
-					appId: '966866140399022',
+					appId: '<?php echo $config['facebookAppId']; ?>',
 					autoLogAppEvents: true,
 					xfbml: true,
 					version: 'v7.0'

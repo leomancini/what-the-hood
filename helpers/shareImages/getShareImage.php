@@ -43,6 +43,7 @@
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='What the Hood?' />
             <meta property='og:url' content='<?php echo $config['baseURL'].'/share/'.$shareImageShortHashLookup; ?>' />
+            <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
             <meta property='og:image:url' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
             <meta property='og:image' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
         <?php } ?>
@@ -52,9 +53,9 @@
                 color: #FFFFFF;
             }
         </style>
-        <!-- <script type='text/javascript'>
+        <script type='text/javascript'>
             window.location.href = '<?php echo $config['baseURL']; ?>';
-        </script> -->
+        </script>
 	</head>
 	<body></body>
 </html>
