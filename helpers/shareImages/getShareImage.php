@@ -52,9 +52,9 @@
                 color: #FFFFFF;
             }
         </style>
-        <script type='text/javascript'>
+        <!-- <script type='text/javascript'>
             window.location.href = '<?php echo $rootURL; ?>';
-        </script>
+        </script> -->
 	</head>
 	<body></body>
 </html>
