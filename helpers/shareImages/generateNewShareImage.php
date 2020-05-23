@@ -78,7 +78,7 @@
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
                 'font-size' => 84,
                 'margin-top' => 200,
-                'margin-right' => 80,
+                'margin-right' => 100,
                 'margin-bottom' => 0,
                 'margin-left' => 80,
                 'rotation' => 0,
