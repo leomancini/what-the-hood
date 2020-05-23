@@ -26,7 +26,7 @@
     
         foreach($textDataTextContentWordComponents as $textDataTextContentWordComponent){
             $box = imagettfbbox($textData['attributes']['font-size'], 0, $textData['attributes']['font-family'], $textDataTextContentWrapped.' '.$textDataTextContentWordComponent);
-            if($box[2] > $imageSize['width'] - $textData['attributes']['margin-right']){
+            if($box[2] > $imageSize - $textData['attributes']['margin-right']){
                 $textDataTextContentWrapped .= "\n".$textDataTextContentWordComponent;
             } else {
                 $textDataTextContentWrapped .= " ".$textDataTextContentWordComponent;
@@ -51,13 +51,13 @@
         global $config;
         global $imageSize;
     
-        $outputImage = imagecreatetruecolor($imageSize['width'], $imageSize['height']);
+        $outputImage = imagecreatetruecolor($imageSize, $imageSize);
     
         $colorWhite = imagecolorallocate($outputImage, 255, 255, 255);
         $colorBlack = imagecolorallocate($outputImage, 0, 0, 0);
         $colorGray = imagecolorallocate($outputImage, 179, 179, 179);
     
-        imagefilledrectangle($outputImage, 0, 0, $imageSize['width'], $imageSize['height'], $colorWhite);
+        imagefilledrectangle($outputImage, 0, 0, $imageSize, $imageSize, $colorWhite);
     
         $scoreComponents = [
             'answeredCorrectlyPercentage' => 0,
@@ -76,11 +76,11 @@
             'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
-                'font-size' => 84,
-                'margin-top' => 200,
-                'margin-right' => 80,
+                'font-size' => 112,
+                'margin-top' => 284,
+                'margin-right' => 200,
                 'margin-bottom' => 0,
-                'margin-left' => 80,
+                'margin-left' => 120,
                 'rotation' => 0,
                 'color' => $colorBlack
             ]
@@ -94,11 +94,11 @@
             'textContent' => $scoreComponents['cityDisplayName'],
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica.ttf',
-                'font-size' => 36,
-                'margin-top' => 80,
+                'font-size' => 48,
+                'margin-top' => 120,
                 'margin-right' => 400,
                 'margin-bottom' => 0,
-                'margin-left' => 80,
+                'margin-left' => 120,
                 'rotation' => 0,
                 'color' => $colorGray
             ]
@@ -108,11 +108,7 @@
         imagedestroy($outputImage);
     }
 
-    $imageSize = [
-        'width' => 1200,
-        'height' => 630
-    ];
-
+    $imageSize = 1200;
     $newShareImageFileName = generateNewShareImageFileName();
     generateNewShareImage($newShareImageFileName);
 
