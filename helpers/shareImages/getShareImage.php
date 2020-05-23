@@ -2,11 +2,11 @@
     require('../functions.php');
     $config = loadConfig('../');
 
-    if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'leo.local') {
-        $rootURL = 'http://'.$_SERVER['HTTP_HOST'].'/nyc-neighborhood-quiz';
-    } else {
-        $rootURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].'/';
-    }
+    // if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === 'leo.local') {
+    //     $rootURL = 'http://'.$_SERVER['HTTP_HOST'].'/nyc-neighborhood-quiz';
+    // } else {
+    //     $rootURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].'/';
+    // }
     
     $shareImageShortHashLookup = $_GET['shortHashLookup'];
 
@@ -42,9 +42,9 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='What the Hood?' />
-            <meta property='og:url' content='<?php echo $rootURL; ?>' />
-            <meta property='og:image:url' content='../../<?php echo $config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
-            <meta property='og:image' content='../../<?php echo $config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
+            <meta property='og:url' content='<?php echo $config['baseURL']; ?>' />
+            <meta property='og:image:url' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
+            <meta property='og:image' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
         <?php } ?>
         <style>
             html, body {
@@ -53,7 +53,7 @@
             }
         </style>
         <!-- <script type='text/javascript'>
-            window.location.href = '<?php echo $rootURL; ?>';
+            window.location.href = '<?php echo $config['baseURL']; ?>';
         </script> -->
 	</head>
 	<body></body>
