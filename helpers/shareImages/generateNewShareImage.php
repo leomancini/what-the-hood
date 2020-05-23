@@ -25,24 +25,37 @@
         global $imageSize;
         $textDataTextContentWordComponents = explode(' ', $textData['textContent']);
         $textDataTextContentWrapped = '';
-    
-        foreach($textDataTextContentWordComponents as $textDataTextContentWordComponent){
-            $box = imagettfbbox($textData['attributes']['font-size'], 0, $textData['attributes']['font-family'], $textDataTextContentWrapped.' '.$textDataTextContentWordComponent);
+        $textDataLineCount = 0;
+        
+        foreach($textDataTextContentWordComponents as $textDataTextContentWordComponent) {
+            $box = imagettfbbox($textData['attributes']['default-font-size'], 0, $textData['attributes']['font-family'], $textDataTextContentWrapped.' '.$textDataTextContentWordComponent);
+            
             if($box[2] > $imageSize['width'] - $textData['attributes']['margin-right']){
                 $textDataTextContentWrapped .= "\n".$textDataTextContentWordComponent;
+                $textDataLineCount++;
             } else {
                 $textDataTextContentWrapped .= " ".$textDataTextContentWordComponent;
             }
         }
     
         $textDataTextContentWrapped = trim($textDataTextContentWrapped);
-    
+
+        if ($textData['attributes']['font-size'] === 'BASED_ON_NUM_LINES') {
+            if ($textDataLineCount < 3) {
+                $fontSize = $textData['attributes']['default-font-size'];
+            } else {
+                $fontSize = 64;
+            }
+        } else {
+            $fontSize = $textData['attributes']['font-size'];
+        }
+
         imagettftext(
             $outputImage,
-            $textData['attributes']['font-size'],
+            $fontSize,
             $textData['attributes']['rotation'],
             $textData['attributes']['margin-left'],
-            $textData['attributes']['font-size'] + $textData['attributes']['margin-top'],
+            $fontSize + $textData['attributes']['margin-top'],
             $textData['attributes']['color'],
             $textData['attributes']['font-family'],
             $textDataTextContentWrapped
@@ -74,11 +87,14 @@
             $scoreComponents['totalTimeFormattedString'] = htmlspecialchars($_GET['totalTimeFormattedString']);
         }
         
+        $mainTextContent = 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!';
+
         renderWrappedText($outputImage, [
-            'textContent' => 'I got '.$scoreComponents['answeredCorrectlyPercentage'].'% correct and took '.$scoreComponents['totalTimeFormattedString'].'!',
+            'textContent' => $mainTextContent,
             'attributes' => [
                 'font-family' => 'resources/fonts/helvetica-bold.ttf',
-                'font-size' => 80,
+                'default-font-size' => 88,
+                'font-size' => 'BASED_ON_NUM_LINES',
                 'margin-top' => 200,
                 'margin-right' => 160,
                 'margin-bottom' => 0,
@@ -163,4 +179,9 @@
     $responseJSON = json_encode($response);
 
     echo $responseJSON;
+
+    if ($_GET['debug'] === 'true') {
+        echo "<body style='background: black;'>
+            <img src='../../storage/shareImages/".$newShareImageFileName.".png'>";
+    }
 ?>

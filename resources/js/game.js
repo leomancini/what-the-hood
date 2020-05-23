@@ -466,6 +466,8 @@ function stopGame() {
                 showMobileShareSheet(shareImageShortHash);;
             });
         } else {
+            console.log(`${config.baseURL}/share/${shareImageShortHash}`);
+
             document.getElementById('shareButton').classList.add('shareImageURLReady');
 
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
