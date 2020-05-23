@@ -42,6 +42,7 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='What the Hood?' />
+            <meta property='og:url' content='<?php echo $config['baseURL'].'/share/'.$shareImageShortHashLookup; ?>' />
             <meta property='og:image:url' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
             <meta property='og:image' content='<?php echo $config['baseURL'].'/'.$config['shareImagesDirectory'].$shareImage['shareImageData']['fileNameMatched']; ?>' />
         <?php } ?>
