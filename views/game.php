@@ -5,6 +5,15 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-112757234-6');
+		</script>
 		<title><?php echo $config['about']['title']; ?></title>
 		<link rel='stylesheet/less' href='resources/css/game.less<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'>
 		<script src='resources/js/lib/less.js'></script>

@@ -1,7 +1,20 @@
+<?php
+    require('../helpers/functions.php');
+	$config = loadConfig('');
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>What the Hood? – About</title>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-112757234-6');
+		</script>
+		<title><?php echo $config['about']['title']; ?> – About</title>
 		<link rel='stylesheet/less' href='resources/css/about.less?v=<?php echo rand(0, 9999); ?>'>
 		<script src='resources/js/lib/less.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -13,7 +26,7 @@
             <br>
             <br>
             <br>
-            <h2>What the Hood? is a neighborhood quiz game by Leo Mancini.</h2>
+            <h2><?php echo $config['about']['title']; ?> is a neighborhood quiz game by Leo Mancini.</h2>
             <br>
             <br>
             <a class='button' href='https://leomancini.net/what-the-hood' target='_blank'>Learn More</a>
