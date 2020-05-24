@@ -37,6 +37,7 @@
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='<?php echo $config['about']['title']; ?>' />
             <meta property='og:description' content='<?php echo $config['about']['shortDescription']; ?>' />
+            <meta property='og:type' content='website' />
             <meta property='og:url' content='<?php echo $config['baseURL'].'/share/'.$shareImageShortHashLookup; ?>' />
             <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
             <meta property='og:image:width' content='1200' />
