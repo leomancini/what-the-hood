@@ -468,19 +468,23 @@ function stopGame() {
         } else {
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
             twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
-            
+            twitterShareButton.addEventListener('click', hideDesktopShareSheet);
+
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
-            facebookShareButton.addEventListener('click', function() {  
+            facebookShareButton.addEventListener('click', function() {
                 FB.ui({
                     display: 'popup',
                     method: 'share',
                     href: `${window.config.baseURL}/share/${shareImageShortHash}`,
-                }, function(response) { });
+                });
+
+                hideDesktopShareSheet();
             });
 
             const emailShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#email');
             emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${gameState.cityDisplayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
-            
+            emailShareButton.addEventListener('click', hideDesktopShareSheet);
+
             const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
             linkShareButton.addEventListener('click', function() {                        
                 const hiddenInputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
@@ -496,6 +500,10 @@ function stopGame() {
                 setTimeout(function() {
                     document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link').classList.remove('copied');                
                     document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link .label').innerHTML = 'Copy Link';
+
+                    setTimeout(function() {
+                        hideDesktopShareSheet();
+                    }, 200);
                 }, 500);
             });
 
@@ -518,15 +526,17 @@ function showMobileShareSheet(shareImageShortHash) {
     });
 }
 
-function showDesktopShareSheet() {
-    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', function() {  
-        document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
-        document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
+function hideDesktopShareSheet() {
+    document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
+    document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
 
-        setTimeout(function() {
-            document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
-        }, 200);
-    });
+    setTimeout(function() {
+        document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
+    }, 200);
+}
+
+function showDesktopShareSheet() {
+    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', hideDesktopShareSheet);
 
     document.getElementById('shareSheetDesktopContainer').classList.add('visible');
     document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');

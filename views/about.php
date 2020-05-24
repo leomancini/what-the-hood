@@ -3,7 +3,7 @@
     $config = loadConfig('');
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang='en'>
     <head>
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
         <script>

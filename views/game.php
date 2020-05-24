@@ -3,15 +3,13 @@
     $config = loadConfig('');
 ?>
 <!DOCTYPE HTML>
-<html>
+<html lang='en'>
     <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-
             gtag('config', 'UA-112757234-6');
         </script>
         <title><?php echo $config['about']['title']; ?></title>
@@ -158,11 +156,11 @@
                                 </div>
                                 <div class='label'>Facebook</div>
                             </a><a class='optionContainer' id='email'>
-                                <div class='icon' id='email'>mail</div>
+                                <div class='icon'>mail</div>
                                 <div class='label'>Email</div>
                             </a><a class='optionContainer' id='link'>
                                 <input type='text'>
-                                <div class='icon' id='link'>link</div>
+                                <div class='icon'>link</div>
                                 <div class='label'>Copy Link</div>
                             </a>
                             <div id='cancelButton'>Cancel</div>
