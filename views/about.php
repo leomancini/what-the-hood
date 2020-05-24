@@ -28,7 +28,7 @@
             <br>
             <br>
             <a class='button' href='https://leomancini.net/what-the-hood' target='_blank'>Learn More</a>
-            <a class='button' href='https://github.com/leomancini/nyc-neighborhood-quiz' target='_blank'>View on GitHub</a>
+            <a class='button' href='https://github.com/leomancini/what-the-hood' target='_blank'>View on GitHub</a>
             <br>
             <br>
             <h3>Credits</h3>
