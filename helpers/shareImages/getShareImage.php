@@ -31,8 +31,8 @@
 ?>
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title>What the Hood?</title>
+    <head>
+        <title>What the Hood?</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='<?php echo $config['about']['title']; ?>' />
@@ -54,6 +54,6 @@
         <!-- <script type='text/javascript'>
             window.location.href = '<?php echo $config['baseURL']; ?>';
         </script> -->
-	</head>
-	<body></body>
+    </head>
+    <body></body>
 </html>
