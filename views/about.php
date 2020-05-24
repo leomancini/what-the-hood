@@ -24,8 +24,8 @@
         <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
         <meta property='og:image:width' content='1200' />
         <meta property='og:image:height' content='630' />
-        <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest2.png' />
-        <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest2.png' />
+        <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest3.png' />
+        <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest3.png' />
     </head>
     <body ontouchstart=''>
         <div id='about'>
@@ -55,7 +55,15 @@
             <br>
             <br>
             <h6>Background Maps</h6>
-            <span class='link'><a href='https://www.mapbox.com/' target='_blank'  rel='noopener'>Mapbox</a></span>
+            <span class='link'><a href='https://www.mapbox.com/' target='_blank' rel='noopener'>Mapbox</a></span>
+            <br>
+            <br>
+            <h6>Map Thumbnail in Share Preview Image</h6>
+            <span class='link'><a href='https://www.mapbox.com/' target='_blank' rel='noopener'>Mapbox</a></span>
+            <br>
+            <br>
+            <h6>Device Thumbnail in Share Preview Image</h6>
+            <span class='link'><a href='https://facebook.design/devices' target='_blank' rel='noopener'>Facebook Design</a></span>
             <br>
             <br>
             <h6>Icons</h6>
