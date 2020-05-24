@@ -17,6 +17,15 @@
         <script src='resources/js/lib/less.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <meta charset='UTF-8'>
+        <meta property='og:title' content='<?php echo $config['about']['title']; ?>' />
+        <meta property='og:description' content='<?php echo $config['about']['shortDescription']; ?>' />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content='<?php echo $config['baseURL']; ?>' />
+        <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
+        <meta property='og:image:width' content='1200' />
+        <meta property='og:image:height' content='630' />
+        <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest1.png' />
+        <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest1.png' />
     </head>
     <body ontouchstart=''>
         <div id='preloadImages'>
@@ -147,12 +156,12 @@
                         <div id='modalContents'>
                             <a class='optionContainer' target='_blank' rel='noopener' id='twitter'>
                                 <div class='icon'>
-                                    <img src='resources/images/shareLogos/twitter.png'>
+                                    <img src='resources/images/share/logos/twitter.png'>
                                 </div>
                                 <div class='label'>Twitter</div>
                             </a><a class='optionContainer' target='_blank' rel='noopener' id='facebook'>
                                 <div class='icon'>
-                                    <img src='resources/images/shareLogos/facebook.png'>
+                                    <img src='resources/images/share/logos/facebook.png'>
                                 </div>
                                 <div class='label'>Facebook</div>
                             </a><a class='optionContainer' id='email'>
