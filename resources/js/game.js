@@ -471,17 +471,38 @@ function stopGame() {
             document.getElementById('shareButton').classList.add('shareImageURLReady');
 
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
-            twitterShareButton.href = `${twitterShareButton.href}?text=What the Hood? ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${config.baseURL}`;
+            twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
             
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
             facebookShareButton.addEventListener('click', function() {  
                 FB.ui({
                     display: 'popup',
                     method: 'share',
-                    href: `${config.baseURL}/share/${shareImageShortHash}`,
+                    href: `${window.config.baseURL}/share/${shareImageShortHash}`,
                 }, function(response) { });
             });
+
+            const emailShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#email');
+            emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${gameState.cityDisplayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
             
+            const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
+            linkShareButton.addEventListener('click', function() {                        
+                const inputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
+                inputField.value = `${window.config.baseURL}/share/${shareImageShortHash}`;
+                inputField.select();
+                inputField.setSelectionRange(0, 99999);
+
+                document.execCommand("copy");
+
+                document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link .label').innerHTML = 'Copied';
+                document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link').classList.add('copied');
+
+                setTimeout(function() {
+                    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link').classList.remove('copied');                
+                    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link .label').innerHTML = 'Copy Link';
+                }, 500);
+            });
+
             document.getElementById('shareButton').addEventListener('click', function() {
                 showDesktopShareSheet();
             });
@@ -496,8 +517,8 @@ function stopGame() {
 
 function showMobileShareSheet(shareImageShortHash) {
     navigator.share({
-        title: 'What the Hood?',
-        url: `${config.baseURL}/share/${shareImageShortHash}`,
+        title: `${titleAndShortDescription}`,
+        url: `${window.config.baseURL}/share/${shareImageShortHash}`,
     })
 }
 

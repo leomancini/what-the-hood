@@ -35,7 +35,7 @@
 		<title>What the Hood?</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <?php if ($shareImageMatched) { ?>
-            <meta property='og:title' content='What the Hood?' />
+            <meta property='og:title' content='<?php echo $config['about']['titleAndShortDescription']; ?>' />
             <meta property='og:url' content='<?php echo $config['baseURL'].'/share/'.$shareImageShortHashLookup; ?>' />
             <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
             <meta property='og:image:width' content='1200' />

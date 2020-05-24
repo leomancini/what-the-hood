@@ -857,6 +857,24 @@ html, body {
 							color: rgba(0, 0, 0, 0.6);
 							transition: all 0.2s;
 							margin-top: 10px;
+							cursor: pointer;
+
+							&.copied {
+								&:hover {
+									text-decoration: none!important;
+								}
+
+								.icon {
+									background: @blue!important;
+									color: @white!important;
+								}
+							}
+
+							input {
+								opacity: 0;
+								pointer-events: none;
+								position: absolute;
+							}
 
 							&:hover {
 								text-decoration: underline;
@@ -870,6 +888,7 @@ html, body {
 								background: gray;
 								margin: 0 auto;
 								overflow: hidden;
+								transition: all 0.2s;
 
 								img {
 									width: 100%;

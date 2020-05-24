@@ -5,7 +5,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>What the Hood?</title>
+		<title><?php echo $config['about']['title']; ?></title>
 		<link rel='stylesheet/less' href='resources/css/game.less<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'>
 		<script src='resources/js/lib/less.js'></script>
 		<meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -138,20 +138,21 @@
 				<div id='shareSheetDesktopContainer'>
 					<div id='modalContainer'>
 						<div id='modalContents'>
-							<a class='optionContainer' href='https://twitter.com/intent/tweet' target='_blank' rel='noopener' id='twitter'>
+							<a class='optionContainer' target='_blank' rel='noopener' id='twitter'>
 								<div class='icon'>
-									<img src='https://pbs.twimg.com/profile_images/1111729635610382336/_65QFl7B_400x400.png'>
+									<img src='resources/images/shareLogos/twitter.png'>
 								</div>
 								<div class='label'>Twitter</div>
-							</a><a class='optionContainer' href='mailto:asd@asd.com' target='_blank' rel='noopener' id='facebook'>
+							</a><a class='optionContainer' target='_blank' rel='noopener' id='facebook'>
 								<div class='icon'>
-									<img src='https://scontent-sjc3-1.xx.fbcdn.net/v/t1.0-9/58978526_10158354585751729_7411073224387067904_o.png?_nc_cat=1&_nc_sid=09cbfe&_nc_ohc=DB-xqjVXqYkAX_hSnX1&_nc_ht=scontent-sjc3-1.xx&oh=74fcb9207c85af941a34492bbeabf651&oe=5EEEBE88'>
+									<img src='resources/images/shareLogos/facebook.png'>
 								</div>
 								<div class='label'>Facebook</div>
-							</a><a class='optionContainer'>
+							</a><a class='optionContainer' id='email'>
 								<div class='icon' id='email'>mail</div>
 								<div class='label'>Email</div>
-							</a><a class='optionContainer'>
+							</a><a class='optionContainer' id='link'>
+								<input type='text'>
 								<div class='icon' id='link'>link</div>
 								<div class='label'>Copy Link</div>
 							</a>
