@@ -24,8 +24,8 @@
         <meta property='fb:app_id' content='<?php echo $config['facebookAppId']; ?>' />
         <meta property='og:image:width' content='1200' />
         <meta property='og:image:height' content='630' />
-        <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest3.png' />
-        <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest3.png' />
+        <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest4.png' />
+        <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest4.png' />
     </head>
     <body ontouchstart=''>
         <div id='preloadImages'>
