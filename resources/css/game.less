@@ -57,10 +57,6 @@ html, body {
             overflow-y: scroll;
             -webkit-overflow-scrolling: touch;
     
-            // &.zoom {
-            //     transform: scale(1.05);
-            // }
-    
             &.gameSelected {
                 pointer-events: none;
             }
@@ -113,13 +109,7 @@ html, body {
     
                     &.selected {
                         transform-origin: top center;
-                        // position: absolute!important;
-                        // width: 100%;
-                        // margin-bottom: 0!important;
-                        // margin-left: 0;
-                        // border-radius: 0;
                         z-index: 2;
-                        // transform: scaleY(2.5) scaleX(1.5);
                         transition: opacity 0.4s, all 0.4s cubic-bezier(0.465, 0.183, 0.153, 0.946);
 
                         @media @desktop {
@@ -137,17 +127,11 @@ html, body {
                         &:active {
                             transform: scale(1)!important;
                         }
-    
-                        &.selectedFullScreen {
-                            // top: 0!important;
-                            // position: fixed!important;
-                        }
                     }
     
                     &.notSelected {
                         opacity: 0;
                         z-index: 1;
-                        // transform: scale(0.9);
                     }
     
                     .gameSelectorContents {
