@@ -1,24 +1,24 @@
 <?php
     require('../helpers/functions.php');
-	$config = loadConfig('');
+    $config = loadConfig('');
 ?>
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
+    <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112757234-6"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'UA-112757234-6');
-		</script>
-		<title><?php echo $config['about']['title']; ?> – About</title>
-		<link rel='stylesheet/less' href='resources/css/about.less?v=<?php echo rand(0, 9999); ?>'>
-		<script src='resources/js/lib/less.js'></script>
-		<meta name='viewport' content='width=device-width, initial-scale=1'>
+        </script>
+        <title><?php echo $config['about']['title']; ?> – About</title>
+        <link rel='stylesheet/less' href='resources/css/about.less?v=<?php echo rand(0, 9999); ?>'>
+        <script src='resources/js/lib/less.js'></script>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
         <meta charset='UTF-8'>
-	</head>
-	<body ontouchstart=''>
+    </head>
+    <body ontouchstart=''>
         <div id='about'>
             <span class='link'><a href='./'>← back to game</a></span>
             <br>
@@ -55,5 +55,5 @@
             <br>
             <br>
         </div>
-	</body>
+    </body>
 </html>
