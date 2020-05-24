@@ -466,10 +466,6 @@ function stopGame() {
                 showMobileShareSheet(shareImageShortHash);;
             });
         } else {
-            // console.log(`${config.baseURL}/share/${shareImageShortHash}`);
-
-            document.getElementById('shareButton').classList.add('shareImageURLReady');
-
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
             twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
             
@@ -487,10 +483,10 @@ function stopGame() {
             
             const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
             linkShareButton.addEventListener('click', function() {                        
-                const inputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
-                inputField.value = `${window.config.baseURL}/share/${shareImageShortHash}`;
-                inputField.select();
-                inputField.setSelectionRange(0, 99999);
+                const hiddenInputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
+                hiddenInputField.value = `${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}/share/${shareImageShortHash}`;
+                hiddenInputField.select();
+                hiddenInputField.setSelectionRange(0, 99999);
 
                 document.execCommand("copy");
 
@@ -517,9 +513,9 @@ function stopGame() {
 
 function showMobileShareSheet(shareImageShortHash) {
     navigator.share({
-        title: `${titleAndShortDescription}`,
+        title: `${window.config.about.titleAndShortDescription}`,
         url: `${window.config.baseURL}/share/${shareImageShortHash}`,
-    })
+    });
 }
 
 function showDesktopShareSheet() {
