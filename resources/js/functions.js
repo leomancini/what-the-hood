@@ -60,6 +60,7 @@ function getConfig() {
         })
         .then((config) => {
             window.config = config;
+            mapboxgl.accessToken = config.mapboxAccessToken;
 
             loadNeighborhoodData();
         });

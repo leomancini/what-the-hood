@@ -1,11 +1,10 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw'; // TODO: Put thins in config.json
+getConfig();
 
 window.selectedBoroughs = [];
 
 let map,
-    mapDiv = document.querySelector('#map');
-
-let timer,
+    mapDiv = document.querySelector('#map'),
+    timer,
     timerValueSeconds = 0,
     secondsFormatted = 0,
     minutesFormatted = 0;
@@ -561,5 +560,3 @@ function restartGame() {
         location.reload();
     }, 500);
 }
-
-getConfig();
