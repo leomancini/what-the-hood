@@ -1,11 +1,7 @@
-if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.deviceType = 'mobile';
-} else {
-    window.deviceType = 'desktop';
-}
-
 function selectGame(tappedGameSelector) {
     const selectedGameSelector = tappedGameSelector.target.closest('.gameSelector');
+
+    const cityConfig = getCityConfig(selectedGameSelector.getAttribute('id'));
 
     if (selectedGameSelector.classList.contains('enabled')) {
         const gameSelectors = document.querySelectorAll('.gameSelector');
@@ -19,7 +15,13 @@ function selectGame(tappedGameSelector) {
         document.getElementById('bottomLinks').classList.add('hidden');
     
         selectedGameSelector.children[0].classList.add('selected');
-        
+            
+        if (cityConfig.preGameOptionsScreen === true) {
+            if (cityConfig.id === 'new-york-city') {
+                renderBoroughCheckboxes();
+            }
+        }
+
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
             selectedGameSelector.classList.add('selected');
@@ -35,31 +37,36 @@ function selectGame(tappedGameSelector) {
 
                 setTimeout(function() {
                     document.getElementById('gameSelectionScreen').classList.add('done');
-                    document.getElementById('preGameOptionsScreen').classList.add('visible');
+
+                    
+                    if (cityConfig.preGameOptionsScreen === true) {
+                        document.getElementById('preGameOptionsScreen').classList.add('visible');
+                    } else {
+                        startGame(cityConfig.id);
+                    }
                 }, 400);
             }, 200);
         }, 400);
     }
-}
-Math.clip = function(number, min, max) {
-    return Math.max(min, Math.min(number, max));
 }
 
 function renderGameSelectors() {
     const gameSelectors = document.querySelectorAll('.gameSelector');
 
     let gameSelectorIndex = 0;
-    const gameSelectorCardHeight = Math.round(window.innerHeight / 2.5);
+    const gameSelectorCardHeight = Math.round(window.innerHeight / 3);
     const gameSelectorCardMarginBottom = 30;
     let gameSelectionScreenContentsPaddingTop = 0;
+    let gameSelectionScreenContentsPaddingBottom = 0;
 
     if (window.deviceType === 'desktop') {
         gameSelectionScreenContentsPaddingTop = 120;
+        gameSelectionScreenContentsPaddingBottom = 0;
     }
     
     for (const gameSelector of gameSelectors) {
-        gameSelector.style.top = `${(gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + gameSelectionScreenContentsPaddingTop}px`;
-        gameSelector.style.height = `${Math.clip(gameSelectorCardHeight, 184, 300)}px`;
+        gameSelector.style.top = `${(gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + gameSelectionScreenContentsPaddingTop}px`;
+        gameSelector.style.height = `${Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight)}px`;
         gameSelectorIndex++;
         
         gameSelector.addEventListener('click', selectGame);
@@ -67,10 +74,10 @@ function renderGameSelectors() {
 
     const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
 
-    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
+    document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
-    if (((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight) > window.innerHeight) {
-        document.getElementById('gameSelectionScreenContents').style.height = `${(gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, 300) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight}px`;
+    if (((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + gameSelectionScreenContentsPaddingBottom) > window.innerHeight) {
+        document.getElementById('gameSelectionScreenContents').style.height = `${ (gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + gameSelectionScreenContentsPaddingBottom}px`;
     } else {
         document.getElementById('gameSelectionScreenContents').style.height = '100%';
     }
@@ -124,4 +131,3 @@ function renderBoroughCheckboxes() {
 window.addEventListener('resize', renderGameSelectors);
 
 renderGameSelectors();
-renderBoroughCheckboxes();

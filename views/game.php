@@ -36,20 +36,19 @@
         <div id='container'>
             <div id='gameSelectionScreen'>
                 <div id='gameSelectionScreenContents'>
-                    <div class='gameSelector enabled' id='new-york-city'>
-                        <div class='gameSelectorContents'>
-                            <h1>New York<br>City</h1>
-                            <img src='resources/images/new-york-city/city-thumbnail.png' class='city-thumbnail'>
-                            <div class='playButton'>Play</div>
+                    <?php foreach($config['cities'] as $city) { ?>
+                        <div class='gameSelector <?php echo $city['enabled'] === true ? 'enabled' : 'disabled' ?>' id='<?php echo $city['id']; ?>'>
+                            <div class='gameSelectorContents'>
+                                <h1><?php echo $city['displayName']; ?></h1>
+                                <img src='resources/images/<?php echo $city['id']; ?>/city-thumbnail.png' class='city-thumbnail'>
+                                <?php if ($city['enabled'] === true) { ?>
+                                    <div class='playButton'>Play</div>
+                                <?php } else { ?>
+                                    <div class='comingSoon'>Coming Soon</div>
+                                <?php } ?>
+                            </div>
                         </div>
-                    </div>
-                    <div class='gameSelector disabled' id='san-francisco'>
-                        <div class='gameSelectorContents'>
-                            <h1>San Francisco</h1>
-                            <img src='resources/images/san-francisco/city-thumbnail.png' class='city-thumbnail'>
-                            <div class='comingSoon'>Coming Soon</div>
-                        </div>
-                    </div>
+                    <?php } ?>
                     <div id='bottomLinks'>
                         <a href='about'>About</a>
                     </div>
@@ -179,13 +178,11 @@
                 </div>
             </div>
         </div>
-        <script src='resources/data/neighborhoods/new-york-city.js'></script>
-        <script src='resources/js/functions/averageGeolocation.js'></script>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
-        <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'>
-        <script src='resources/js/index.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
+        <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
+        <script src='resources/js/functions.js'></script>
         <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
+        <script src='resources/js/index.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
         <script src='resources/js/game.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
         <script>
             window.fbAsyncInit = function() {
@@ -198,6 +195,5 @@
             };
         </script>
         <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
-
     </body>
 </html>

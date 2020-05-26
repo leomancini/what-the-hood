@@ -72,8 +72,7 @@ html, body {
                 height: 100%;
                 opacity: 0;
                 transition: opacity 0.5s;
-                overflow-y: scroll;
-                -webkit-overflow-scrolling: touch;
+                overflow-y: hidden;
     
                 &.visible {
                     opacity: 1;
@@ -121,7 +120,7 @@ html, body {
                         }
 
                         @media @mobile {
-                            transform: scale(2.5);
+                            transform: scaleY(3) scaleX(1.5);
                         }
     
                         &:active {

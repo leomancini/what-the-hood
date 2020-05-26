@@ -1,7 +1,6 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw';
+mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbWFuY2luaSIsImEiOiJjazdkbzZiYmkyMjlqM2xwNm5xdXJ0bTcyIn0.UN3YLKP-fEJbPFEY0e0PDw'; // TODO: Put thins in config.json
 
 window.selectedBoroughs = [];
-window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase;
 
 let map,
     mapDiv = document.querySelector('#map');
@@ -50,16 +49,14 @@ let gameState = {
     }
 };
 
-loadConfig();
-
-function loadConfig() {
-    fetch('config.json')
+function loadNeighborhoodData() {
+    fetch('resources/data/neighborhoods/new-york-city.json')
         .then((response) => {
             return response.json();
         })
-        .then((config) => {
-            window.config = config;
-
+        .then((neighborhoodDatabase) => {
+            window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase.neighborhoods;
+        
             getSelectedBoroughs();
         });
 }
@@ -334,10 +331,12 @@ function goToNextLevel(e) {
 }
 
 function initalizeMap() {
+    const selectedCityConfig = getCityConfig('new-york-city');
+
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
-        center: [-73.935242, 40.730610],
+        center: selectedCityConfig.defaultMapCenterCoords,
         interactive: false,
         zoom: 11
     });
@@ -377,7 +376,7 @@ function startGame() {
     window.scrollTo(0, 0);
     document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
 
-    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs
+    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
 
     goToNextLevel();
 }
@@ -562,3 +561,5 @@ function restartGame() {
         location.reload();
     }, 500);
 }
+
+getConfig();
