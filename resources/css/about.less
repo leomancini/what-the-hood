@@ -5,13 +5,17 @@ html, body {
     width: 100%;
     height: 100%;
     background: @black;
+
+    @media @desktop {
+        overscroll-behavior-y: none;
+    }
         
     #about {
         width: calc(~"100% - 60px");
         height: calc(~"100% - 60px");
         background: @black;
         margin: 0;
-        padding: 30px;
+        padding: 150px 30px;
         color: @white;
         line-height: 20px;
         position: absolute;

@@ -61,7 +61,7 @@ function renderGameSelectors() {
 
     if (window.deviceType === 'desktop') {
         gameSelectionScreenContentsPaddingTop = 120;
-        gameSelectionScreenContentsPaddingBottom = 0;
+        gameSelectionScreenContentsPaddingBottom = 120;
     }
     
     for (const gameSelector of gameSelectors) {
@@ -72,12 +72,19 @@ function renderGameSelectors() {
         gameSelector.addEventListener('click', selectGame);
     }
 
-    const bottomLinksHeight = document.getElementById('bottomLinks').offsetHeight;
-
     document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
-    if (((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + gameSelectionScreenContentsPaddingBottom) > window.innerHeight) {
-        document.getElementById('gameSelectionScreenContents').style.height = `${ (gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom + bottomLinksHeight + gameSelectionScreenContentsPaddingBottom}px`;
+    const gameSelectionScreenContentsHeight = 
+        gameSelectionScreenContentsPaddingTop
+            + (
+                (gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom))
+                + gameSelectorCardMarginBottom
+            )
+            + document.getElementById('bottomLinks').offsetHeight
+            + gameSelectionScreenContentsPaddingBottom;
+    
+    if (gameSelectionScreenContentsHeight > window.innerHeight) {
+        document.getElementById('gameSelectionScreenContents').style.height = `${gameSelectionScreenContentsHeight}px`;
     } else {
         document.getElementById('gameSelectionScreenContents').style.height = '100%';
     }
