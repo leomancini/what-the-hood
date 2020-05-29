@@ -11,8 +11,6 @@ html, body {
     }
         
     #about {
-        width: calc(~"100% - 60px");
-        height: calc(~"100% - 60px");
         background: @black;
         margin: 0;
         padding: 150px 30px;
@@ -22,6 +20,11 @@ html, body {
 
         @media @desktop {
             .desktop();
+        }
+
+        @media @mobile {
+            width: calc(~"100% - 60px");
+            height: calc(~"100% - 60px");
         }
 
         h2 {
