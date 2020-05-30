@@ -45,11 +45,9 @@ function averageGeolocation(coords) {
     ];
 }
 
-function getCityConfig(cityID) {
-    console.log(window.config);
-
+function getCityConfig(cityId) {
     const cityConfig = window.config.cities.filter(function (city) {
-        return city.id === cityID;
+        return city.id === cityId;
     });
 
     return cityConfig[0];

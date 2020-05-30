@@ -380,7 +380,7 @@ async function initalizeGame(selectedCityConfig) {
     window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = await loadNeighborhoodData(selectedCityConfig);
 
     map.on('load', function() {
-        map.resize();  
+        map.resize();
     });
 
     document.querySelector('#statusBar #info').textContent = selectedCityConfig.displayNameAcronym;
@@ -471,6 +471,8 @@ function stopGame() {
 
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
 
+    // TODO: Only show borough score for New York City
+    
     let seenBoroughScores = {};
     for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
         if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
