@@ -118,9 +118,7 @@ function getSelectedBoroughs() {
         selectedBoroughs.push(checkboxes[i].value);
     }
 
-    window.selectedBoroughs = selectedBoroughs;
-    
-    initalizeGame();
+    return selectedBoroughs;
 }
 
 function renderBoroughCheckboxes() {

@@ -46,6 +46,8 @@ function averageGeolocation(coords) {
 }
 
 function getCityConfig(cityID) {
+    console.log(window.config);
+
     const cityConfig = window.config.cities.filter(function (city) {
         return city.id === cityID;
     });
@@ -53,15 +55,9 @@ function getCityConfig(cityID) {
     return cityConfig[0];
 }
 
-function getConfig() {
-    fetch('config.json')
-        .then((response) => {
-            return response.json();
-        })
-        .then((config) => {
-            window.config = config;
-            mapboxgl.accessToken = config.mapboxAccessToken;
+async function getConfig() {
+    const configFile = await fetch('config.json');
+    const config = await configFile.json();
 
-            loadNeighborhoodData();
-        });
+    return config;
 }

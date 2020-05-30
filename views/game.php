@@ -39,7 +39,7 @@
                     <?php foreach($config['cities'] as $city) { ?>
                         <div class='gameSelector <?php echo $city['enabled'] === true ? 'enabled' : 'disabled' ?>' id='<?php echo $city['id']; ?>'>
                             <div class='gameSelectorContents'>
-                                <h1><?php echo $city['displayName']; ?></h1>
+                                <h1><?php echo $city['displayNameFormatted']; ?></h1>
                                 <img src='resources/images/<?php echo $city['id']; ?>/city-thumbnail.png' class='city-thumbnail'>
                                 <?php if ($city['enabled'] === true) { ?>
                                     <div class='playButton'>Play</div>
@@ -107,7 +107,7 @@
             <div id='gameScreen'>
                 <div id='gameScreenContents'>
                     <div id='statusBar'>
-                        <div id='info'>NYC</div>
+                        <div id='info'>NYC</div> <!-- TODO: Make this based on selectedCityConfig -->
                         <div id='clock'>
                             <time>00:00</time>
                         </div>
@@ -118,7 +118,7 @@
                             <div id='map'></div>
                         </div>
                     </div>
-                    <div id='questions'>
+                    <div id='questions'> <!-- TODO: Remove letters -->
                         <div id='options'>
                             <div class='option' id='A'>
                                 <span class='letter'>A</span><label></label>

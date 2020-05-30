@@ -1,4 +1,14 @@
-getConfig();
+start();
+
+async function start() {
+    const config = await getConfig();
+
+    mapboxgl.accessToken = config.mapboxAccessToken;
+
+    window.config = config;
+
+    initalizeGame();
+}
 
 window.selectedBoroughs = [];
 
@@ -48,16 +58,11 @@ let gameState = {
     }
 };
 
-function loadNeighborhoodData() {
-    fetch('resources/data/neighborhoods/new-york-city.json')
-        .then((response) => {
-            return response.json();
-        })
-        .then((neighborhoodDatabase) => {
-            window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = neighborhoodDatabase.neighborhoods;
-        
-            getSelectedBoroughs();
-        });
+async function loadNeighborhoodData() {
+    const neighborhoodsDatabaseFile = await fetch('resources/data/neighborhoods/new-york-city.json');
+    const neighborhoodsDatabase = await neighborhoodsDatabaseFile.json();
+
+    return neighborhoodsDatabase.neighborhoods;
 }
 
 function getNextNeighborhoodData() {
@@ -330,12 +335,10 @@ function goToNextLevel(e) {
 }
 
 function initalizeMap() {
-    const selectedCityConfig = getCityConfig('new-york-city');
-
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
-        center: selectedCityConfig.defaultMapCenterCoords,
+        center: [0, 0], // TODO: Does this work if set to 0, 0 ???
         interactive: false,
         zoom: 11
     });
@@ -343,19 +346,17 @@ function initalizeMap() {
     return map;
 }
 
-function initalizeGame() {
+function initalizeGame(config) {
     window.levelNumber = 0; // need to redo this
-    map = initalizeMap();
+    map = initalizeMap(config);
 
     map.on('load', function() {
         map.resize();  
     });
 
     if (window.deviceType === 'mobile') {
-        document.getElementById('startButton').addEventListener('touchend', getSelectedBoroughs);
         document.getElementById('startButton').addEventListener('touchend', startGame);
     } else {
-        document.getElementById('startButton').addEventListener('click', getSelectedBoroughs);
         document.getElementById('startButton').addEventListener('click', startGame);
     }
     
@@ -369,13 +370,17 @@ function initalizeGame() {
     }
 }
 
-function startGame() {
-    gameState.cityDisplayName = 'New York City';
+async function startGame() {
+    const selectedCityConfig = getCityConfig('new-york-city'); // TODO: Pass this through from previous function instead of calling it again
+
+    window.selectedBoroughs = getSelectedBoroughs();
+    window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = await loadNeighborhoodData();
+
+    gameState.cityDisplayName = selectedCityConfig.displayName;
+    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
     
     window.scrollTo(0, 0);
     document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
-
-    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
 
     goToNextLevel();
 }
