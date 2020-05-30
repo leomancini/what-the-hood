@@ -20,7 +20,7 @@ let map,
 let gameState = {
         neighborhoodDataLoaded: false,
         levelNumber: 0,
-        cityDisplayName: '',
+        selectedCityConfig: {},
         theme: {},
         totalTime: 0,
         totalTimeMinutes: 0,
@@ -431,8 +431,11 @@ function checkNeighborhoodDataLoaded(selectedCityConfig) {
 function startGame(selectedCityConfig) {
     window.selectedBoroughs = getSelectedBoroughs();
 
-    gameState.cityDisplayName = selectedCityConfig.displayName;
-    gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
+    gameState.selectedCityConfig = selectedCityConfig;
+
+    if (selectedCityConfig.id === 'new-york-city') {
+        gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
+    }
     
     window.scrollTo(0, 0);
 
@@ -471,19 +474,6 @@ function stopGame() {
 
     // gameState.totalScore = answeredCorrectlyPercentage * gameState.totalTime;
 
-    // TODO: Only show borough score for New York City
-    
-    let seenBoroughScores = {};
-    for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
-        if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
-            seenBoroughScores[boroughScore] = {
-                correctPercentage: Math.round((gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
-                correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
-                seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
-            }
-        }
-    }
-
     let totalTimeFormattedString = '';
     if (gameState.totalTimeMinutes > 0) {
         totalTimeFormattedString += `${gameState.totalTimeMinutes} minute`;
@@ -509,34 +499,48 @@ function stopGame() {
         document.querySelector('#gameOverScreen #gameOverScreenContents #playAgainButton').addEventListener('click', restartGame);
     }
     
-    const seenBoroughScoresSortedByCorrectPercentage = Object.keys(seenBoroughScores).sort(function(a, b) { return seenBoroughScores[b]['correctPercentage'] - seenBoroughScores[a]['correctPercentage'] });
+    if (gameState.selectedCityConfig.id === 'new-york-city') {
+        let seenBoroughScores = {};
 
-    let seenBoroughScoresHTML = '';
+        for (const boroughScore in gameState.citySpecficMetrics.newYorkCity.boroughScores) {
+            if (gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen > 0) {
+                seenBoroughScores[boroughScore] = {
+                    correctPercentage: Math.round((gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct / gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen) * 100),
+                    correct: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].correct,
+                    seen: gameState.citySpecficMetrics.newYorkCity.boroughScores[boroughScore].seen
+                }
+            }
+        }
 
-    for (i = 0; i < seenBoroughScoresSortedByCorrectPercentage.length; i++) {
-        boroughName = seenBoroughScoresSortedByCorrectPercentage[i];
+        const seenBoroughScoresSortedByCorrectPercentage = Object.keys(seenBoroughScores).sort(function(a, b) { return seenBoroughScores[b]['correctPercentage'] - seenBoroughScores[a]['correctPercentage'] });
 
-        seenBoroughScoresHTML += `<div class='boroughScoreRow'>
-            <label>${boroughName}</label>
-            <span class='scorePercentage'>${seenBoroughScores[boroughName].correctPercentage}%</span>
-            <span class='scoreFraction'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
-        </div>`;
-    }
+        let seenBoroughScoresHTML = '';
 
-    document.querySelector('#gameOverScreen #gameOverScreenContents #citySpecificMetricsWrapper .citySpecificMetrics#newYorkCity').innerHTML = seenBoroughScoresHTML;
+        for (i = 0; i < seenBoroughScoresSortedByCorrectPercentage.length; i++) {
+            boroughName = seenBoroughScoresSortedByCorrectPercentage[i];
 
-    const boroughScoreRows = document.querySelector('.citySpecificMetrics#newYorkCity');
+            seenBoroughScoresHTML += `<div class='boroughScoreRow'>
+                <label>${boroughName}</label>
+                <span class='scorePercentage'>${seenBoroughScores[boroughName].correctPercentage}%</span>
+                <span class='scoreFraction'>${seenBoroughScores[boroughName].correct} of ${seenBoroughScores[boroughName].seen}</span>
+            </div>`;
+        }
 
-    if (window.deviceType === 'mobile') {
-        boroughScoreRows.addEventListener('touchend', toggleBoroughScoreRowsScoreDisplayType);
-    } else {
-        boroughScoreRows.addEventListener('click', toggleBoroughScoreRowsScoreDisplayType);
+        document.querySelector('#gameOverScreen #gameOverScreenContents #citySpecificMetricsWrapper .citySpecificMetrics#newYorkCity').innerHTML = seenBoroughScoresHTML;
+
+        const boroughScoreRows = document.querySelector('.citySpecificMetrics#newYorkCity');
+
+        if (window.deviceType === 'mobile') {
+            boroughScoreRows.addEventListener('touchend', toggleBoroughScoreRowsScoreDisplayType);
+        } else {
+            boroughScoreRows.addEventListener('click', toggleBoroughScoreRowsScoreDisplayType);
+        }
     }
 
     document.querySelector('#gameOverScreen #gameOverScreenContents #totalTimeFormattedString').textContent = totalTimeFormattedString;
     document.querySelector('#gameOverScreen #gameOverScreenContents #answeredCorrectlyPercentage').textContent = `${gameState.answeredCorrectlyPercentage}%`;
 
-    fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}&cityDisplayName=${gameState.cityDisplayName}`).then((response) => {
+    fetch(`helpers/shareImages/generateNewShareImage.php?answeredCorrectlyPercentage=${gameState.answeredCorrectlyPercentage}&totalTimeFormattedString=${encodeURIComponent(totalTimeFormattedString)}&cityDisplayName=${gameState.selectedCityConfig.displayName}`).then((response) => {
         return response.json();
     }).then((response) => {
         shareImageShortHash = response.newShareImage.fileName.substr(window.config.shareImageHashDatePrefixLength, window.config.shareImageShortHashLength);
@@ -549,7 +553,7 @@ function stopGame() {
             });
         } else {
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
-            twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
+            twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.selectedCityConfig.displayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
             twitterShareButton.addEventListener('click', hideDesktopShareSheet);
 
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
@@ -564,13 +568,13 @@ function stopGame() {
             });
 
             const emailShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#email');
-            emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${gameState.cityDisplayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
+            emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${gameState.selectedCityConfig.displayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
             emailShareButton.addEventListener('click', hideDesktopShareSheet);
 
             const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
             linkShareButton.addEventListener('click', function() {                        
                 const hiddenInputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
-                hiddenInputField.value = `${window.config.about.title} ${gameState.cityDisplayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}/share/${shareImageShortHash}`;
+                hiddenInputField.value = `${window.config.about.title} ${gameState.selectedCityConfig.displayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}/share/${shareImageShortHash}`;
                 hiddenInputField.select();
                 hiddenInputField.setSelectionRange(0, 99999);
 
