@@ -55,7 +55,7 @@ function getCityConfig(cityID) {
     return cityConfig[0];
 }
 
-async function getConfig() {
+async function loadConfig() {
     const configFile = await fetch('config.json');
     const config = await configFile.json();
 

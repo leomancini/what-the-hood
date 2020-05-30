@@ -1,9 +1,11 @@
 function selectGame(tappedGameSelector) {
     const selectedGameSelector = tappedGameSelector.target.closest('.gameSelector');
 
-    const cityConfig = getCityConfig(selectedGameSelector.getAttribute('id'));
-
     if (selectedGameSelector.classList.contains('enabled')) {
+        const selectedCityConfig = getCityConfig(selectedGameSelector.getAttribute('id'));
+
+        initalizeGame(selectedCityConfig);
+
         const gameSelectors = document.querySelectorAll('.gameSelector');
     
         for (const gameSelector of gameSelectors) {
@@ -11,20 +13,19 @@ function selectGame(tappedGameSelector) {
                 gameSelector.classList.add('notSelected');
             }
         }
-
-        document.getElementById('bottomLinks').classList.add('hidden');
     
         selectedGameSelector.children[0].classList.add('selected');
             
-        if (cityConfig.preGameOptionsScreen === true) {
-            if (cityConfig.id === 'new-york-city') {
-                renderBoroughCheckboxes();
-            }
+        if (selectedCityConfig.preGameOptionsScreen === true) {
+            renderPreGameOptionsScreen(selectedCityConfig);
         }
-
+        
+        document.getElementById('bottomLinks').classList.add('hidden');
+        
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
             selectedGameSelector.classList.add('selected');
+
             if (window.deviceType === 'desktop') {
                 selectedGameSelector.style.height = `${window.innerHeight}px`;
             }
@@ -37,12 +38,11 @@ function selectGame(tappedGameSelector) {
 
                 setTimeout(function() {
                     document.getElementById('gameSelectionScreen').classList.add('done');
-
                     
-                    if (cityConfig.preGameOptionsScreen === true) {
+                    if (selectedCityConfig.preGameOptionsScreen === true) {
                         document.getElementById('preGameOptionsScreen').classList.add('visible');
                     } else {
-                        startGame(cityConfig.id);
+                        startGame();
                     }
                 }, 400);
             }, 200);
@@ -50,14 +50,28 @@ function selectGame(tappedGameSelector) {
     }
 }
 
-function renderGameSelectors() {
-    const gameSelectors = document.querySelectorAll('.gameSelector');
+function renderPreGameOptionsScreen(selectedCityConfig) {
+    if (selectedCityConfig.id === 'new-york-city') {
+        const boroughCheckboxes = document.querySelectorAll('.boroughCheckboxWrapper');
 
-    let gameSelectorIndex = 0;
-    const gameSelectorCardHeight = Math.round(window.innerHeight / 3);
-    const gameSelectorCardMarginBottom = 30;
-    let gameSelectionScreenContentsPaddingTop = 0;
-    let gameSelectionScreenContentsPaddingBottom = 0;
+        for (const boroughCheckbox of boroughCheckboxes) {
+            if (window.deviceType === 'mobile') {
+                boroughCheckbox.addEventListener('touchend', toggleBoroughCheckbox);
+            } else {
+                boroughCheckbox.addEventListener('click', toggleBoroughCheckbox);
+            }
+        }
+    }
+}
+
+function renderGameSelectors() {
+    const   gameSelectors = document.querySelectorAll('.gameSelector'),
+            gameSelectorCardHeight = Math.round(window.innerHeight / 3),
+            gameSelectorCardMarginBottom = 30;
+
+    let     gameSelectorIndex = 0,
+            gameSelectionScreenContentsPaddingTop = 0,
+            gameSelectionScreenContentsPaddingBottom = 0;
 
     if (window.deviceType === 'desktop') {
         gameSelectionScreenContentsPaddingTop = 120;
@@ -119,18 +133,6 @@ function getSelectedBoroughs() {
     }
 
     return selectedBoroughs;
-}
-
-function renderBoroughCheckboxes() {
-    const boroughCheckboxes = document.querySelectorAll('.boroughCheckboxWrapper');
-
-    for (const boroughCheckbox of boroughCheckboxes) {
-        if (window.deviceType === 'mobile') {
-            boroughCheckbox.addEventListener('touchend', toggleBoroughCheckbox);
-        } else {
-            boroughCheckbox.addEventListener('click', toggleBoroughCheckbox);
-        }
-    }
 }
 
 window.addEventListener('resize', renderGameSelectors);

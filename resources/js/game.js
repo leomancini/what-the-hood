@@ -1,13 +1,11 @@
-start();
+initalize();
 
-async function start() {
-    const config = await getConfig();
+async function initalize() {
+    const config = await loadConfig();
 
     mapboxgl.accessToken = config.mapboxAccessToken;
 
     window.config = config;
-
-    initalizeGame();
 }
 
 window.selectedBoroughs = [];
@@ -20,47 +18,52 @@ let map,
     minutesFormatted = 0;
 
 let gameState = {
-    cityDisplayName: '',
-    totalTime: 0,
-    totalTimeMinutes: 0,
-    totalTimeSeconds: 0,
-    totalTimeFormatted: '',
-    answeredCorrectly: 0,
-    answeredIncorrectly: 0,
-    answeredCorrectlyPercentage: 0,
-    totalScore: 0,
-    citySpecficMetrics: {
-        newYorkCity: {
-            selectedBoroughs: [],
-            boroughScores: {
-                'Manhattan': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Queens': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Brooklyn': {
-                    correct: 0,
-                    seen: 0
-                },
-                'The Bronx': {
-                    correct: 0,
-                    seen: 0
-                },
-                'Staten Island': {
-                    correct: 0,
-                    seen: 0
+        neighborhoodDataLoaded: false,
+        cityDisplayName: '',
+        totalTime: 0,
+        totalTimeMinutes: 0,
+        totalTimeSeconds: 0,
+        totalTimeFormatted: '',
+        answeredCorrectly: 0,
+        answeredIncorrectly: 0,
+        answeredCorrectlyPercentage: 0,
+        totalScore: 0,
+        citySpecficMetrics: {
+            newYorkCity: {
+                selectedBoroughs: [],
+                boroughScores: {
+                    'Manhattan': {
+                        correct: 0,
+                        seen: 0
+                    },
+                    'Queens': {
+                        correct: 0,
+                        seen: 0
+                    },
+                    'Brooklyn': {
+                        correct: 0,
+                        seen: 0
+                    },
+                    'The Bronx': {
+                        correct: 0,
+                        seen: 0
+                    },
+                    'Staten Island': {
+                        correct: 0,
+                        seen: 0
+                    }
                 }
             }
         }
-    }
 };
 
-async function loadNeighborhoodData() {
-    const neighborhoodsDatabaseFile = await fetch('resources/data/neighborhoods/new-york-city.json');
+async function loadNeighborhoodData(selectedCityConfig) {
+    const neighborhoodsDatabaseFile = await fetch(`resources/data/neighborhoods/${selectedCityConfig.id}.json`);
     const neighborhoodsDatabase = await neighborhoodsDatabaseFile.json();
+
+    setTimeout(function() {
+        gameState.neighborhoodDataLoaded = true;
+    }, 5000);
 
     return neighborhoodsDatabase.neighborhoods;
 }
@@ -335,29 +338,34 @@ function goToNextLevel(e) {
 }
 
 function initalizeMap() {
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
-        center: [0, 0], // TODO: Does this work if set to 0, 0 ???
-        interactive: false,
-        zoom: 11
-    });
+    const   map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
+                center: [0, 0], // TODO: Does this work if set to 0, 0 ???
+                interactive: false,
+                zoom: 11
+            });
 
     return map;
 }
 
-function initalizeGame(config) {
-    window.levelNumber = 0; // need to redo this
-    map = initalizeMap(config);
+async function initalizeGame(selectedCityConfig) {
+    window.levelNumber = 0; // TODO: Add this to gameState
+    map = initalizeMap(window.config);
+    window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = await loadNeighborhoodData(selectedCityConfig);
 
     map.on('load', function() {
         map.resize();  
     });
 
     if (window.deviceType === 'mobile') {
-        document.getElementById('startButton').addEventListener('touchend', startGame);
+        document.getElementById('startButton').addEventListener('touchend', function() {
+            startGame(selectedCityConfig);
+        });
     } else {
-        document.getElementById('startButton').addEventListener('click', startGame);
+        document.getElementById('startButton').addEventListener('click', function() {
+            startGame(selectedCityConfig);
+        });
     }
     
     const optionDivs = document.querySelectorAll('.option');
@@ -370,19 +378,34 @@ function initalizeGame(config) {
     }
 }
 
-async function startGame() {
-    const selectedCityConfig = getCityConfig('new-york-city'); // TODO: Pass this through from previous function instead of calling it again
+function checkNeighborhoodDataLoaded(selectedCityConfig) {
+    if (gameState.neighborhoodDataLoaded) {
+        console.log('neighborhoodData is loaded');
 
+        startGame2(selectedCityConfig);
+    } else {
+        setTimeout(function() {
+            checkNeighborhoodDataLoaded(selectedCityConfig);
+        }, 100);
+    }
+}
+
+function startGame2(selectedCityConfig) {
     window.selectedBoroughs = getSelectedBoroughs();
-    window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = await loadNeighborhoodData();
 
     gameState.cityDisplayName = selectedCityConfig.displayName;
     gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
     
     window.scrollTo(0, 0);
-    document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
 
     goToNextLevel();
+}
+
+function startGame(selectedCityConfig) {
+    // TODO: Make this conditional on selectedCityConfig.preGameOptionsScreen === true && selectedCityConfig.id === 'new-york-city'
+    document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
+
+    checkNeighborhoodDataLoaded(selectedCityConfig);
 }
 
 function stopGame() {
