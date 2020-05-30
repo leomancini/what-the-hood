@@ -105,6 +105,11 @@
                 </div>
             </div>
             <div id='gameScreen'>
+                <div id='preGameLoadingIndicator'>
+                    <div class="loadingio-spinner-spinner-22287q9bq5"><div class="ldio-t7o22lret">
+                    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div></div>
+                </div>
                 <div id='gameScreenContents'>
                     <div id='statusBar'>
                         <div id='info'>NYC</div> <!-- TODO: Make this based on selectedCityConfig -->
@@ -178,6 +183,7 @@
                 </div>
             </div>
         </div>
+        <link href='resources/css/spinner.css' rel='stylesheet' />
         <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
         <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
         <script src='resources/js/functions.js'></script>

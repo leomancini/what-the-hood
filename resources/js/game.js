@@ -61,9 +61,7 @@ async function loadNeighborhoodData(selectedCityConfig) {
     const neighborhoodsDatabaseFile = await fetch(`resources/data/neighborhoods/${selectedCityConfig.id}.json`);
     const neighborhoodsDatabase = await neighborhoodsDatabaseFile.json();
 
-    setTimeout(function() {
-        gameState.neighborhoodDataLoaded = true;
-    }, 5000);
+    gameState.neighborhoodDataLoaded = true;
 
     return neighborhoodsDatabase.neighborhoods;
 }
@@ -360,11 +358,11 @@ async function initalizeGame(selectedCityConfig) {
 
     if (window.deviceType === 'mobile') {
         document.getElementById('startButton').addEventListener('touchend', function() {
-            startGame(selectedCityConfig);
+            prepareGame(selectedCityConfig);
         });
     } else {
         document.getElementById('startButton').addEventListener('click', function() {
-            startGame(selectedCityConfig);
+            prepareGame(selectedCityConfig);
         });
     }
     
@@ -378,19 +376,28 @@ async function initalizeGame(selectedCityConfig) {
     }
 }
 
+let preGameLoadingIndicatorVisible = false;
+
 function checkNeighborhoodDataLoaded(selectedCityConfig) {
     if (gameState.neighborhoodDataLoaded) {
-        console.log('neighborhoodData is loaded');
-
-        startGame2(selectedCityConfig);
+        hideLoadingIndicatorAndStartGame(selectedCityConfig);
     } else {
+        const delayToShowPreGameLoadingIndicator = 300;
+        if (!preGameLoadingIndicatorVisible) {
+            setTimeout(function() {
+                document.getElementById('preGameLoadingIndicator').classList.add('visible');
+                preGameLoadingIndicatorVisible = true;
+            }, delayToShowPreGameLoadingIndicator);
+        }
+
+        const intervalForCheckNeighborhoodDataLoaded = 100;
         setTimeout(function() {
             checkNeighborhoodDataLoaded(selectedCityConfig);
-        }, 100);
+        }, intervalForCheckNeighborhoodDataLoaded);
     }
 }
 
-function startGame2(selectedCityConfig) {
+function startGame(selectedCityConfig) {
     window.selectedBoroughs = getSelectedBoroughs();
 
     gameState.cityDisplayName = selectedCityConfig.displayName;
@@ -401,9 +408,25 @@ function startGame2(selectedCityConfig) {
     goToNextLevel();
 }
 
-function startGame(selectedCityConfig) {
-    // TODO: Make this conditional on selectedCityConfig.preGameOptionsScreen === true && selectedCityConfig.id === 'new-york-city'
-    document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
+function hideLoadingIndicatorAndStartGame(selectedCityConfig) {
+    const preGameLoadingIndicator = document.getElementById('preGameLoadingIndicator');
+
+    if (preGameLoadingIndicator.classList.contains('visible')) {
+        preGameLoadingIndicator.classList.remove('visible');
+
+        const delayToStartGameIfPreGameLoadingIndicatorWasVisible = 300;
+        setTimeout(function() {
+            startGame(selectedCityConfig);
+        }, delayToStartGameIfPreGameLoadingIndicatorWasVisible);
+    } else {
+        startGame(selectedCityConfig);
+    }
+}
+
+function prepareGame(selectedCityConfig) {
+    if (selectedCityConfig.preGameOptionsScreen) {
+        document.getElementById('preGameOptionsScreen').classList.add('gameInProgress');
+    }
 
     checkNeighborhoodDataLoaded(selectedCityConfig);
 }
