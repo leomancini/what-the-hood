@@ -19,7 +19,9 @@ let map,
 
 let gameState = {
         neighborhoodDataLoaded: false,
+        levelNumber: 0,
         cityDisplayName: '',
+        theme: {},
         totalTime: 0,
         totalTimeMinutes: 0,
         totalTimeSeconds: 0,
@@ -177,7 +179,7 @@ function clearAnswerOptions() {
     }, 300);
 }
 
-function getShapeColor(type) {
+function getNeighborhoodShapeColor(type) {
     if (type === 'random') {
         const availableColors = [window.config.colors.blue, window.config.colors.orange];
         const randomlySelectedColor = availableColors[Math.floor(Math.random() * availableColors.length)];
@@ -191,6 +193,10 @@ function getShapeColor(type) {
         }
 
         return orderBasedColor;
+    } else if (type === 'config') {
+        const configBasedColor = lookupThemeColorId('neighborhoodShape');
+
+        return configBasedColor;
     }
 }
 
@@ -223,6 +229,10 @@ function stopTimer(timer) {
     clearTimeout(timer);
 
     gameState.totalTimeFormatted = document.querySelector('#clock').textContent;
+}
+
+function lookupThemeColorId(colorId) {
+    return window.config.colors[[gameState.theme[[colorId]]]];
 }
 
 function goToNextLevel(e) {
@@ -259,13 +269,13 @@ function goToNextLevel(e) {
     delayToShowAnswerOptionsForFirstLevel = 0;
     delayToShowAnswerOptionsForEachSubsequentLevel = 500;
 
-    if(window.levelNumber === 0) {
+    if(gameState.levelNumber === 0) {
         document.querySelector('#statusBar #level').textContent = `1 of ${window.config.maxNumLevels}`;
         document.getElementById('gameScreen').classList.add('gameInProgress');
         startTimer();
     }
 
-    if (window.levelNumber === window.config.maxNumLevels) {
+    if (gameState.levelNumber === window.config.maxNumLevels) {
         // Stop game
         setTimeout(function() {
             mapDiv.style.opacity = 0;
@@ -277,13 +287,13 @@ function goToNextLevel(e) {
         }, delayToHideCurrentLevel);
     } else {
         // Go to next level
-        window.levelNumber++;
+        gameState.levelNumber++;
     
         const neighborhoodData = getNextNeighborhoodData();
         const mapCenter = getNeighborhoodCoordsCenter(neighborhoodData);
         const answerOptions = getAnswerOptions(neighborhoodData);
 
-        if (window.levelNumber === 1) {
+        if (gameState.levelNumber === 1) {
             delayToHideCurrentLevel = delayToHideFirstLevel;
             delayToShowNextLevel = delayToShowFirstLevel;
             delayToShowAnswerOptions = delayToShowAnswerOptionsForFirstLevel;
@@ -294,7 +304,7 @@ function goToNextLevel(e) {
         }
     
         setTimeout(function() {
-            if (window.levelNumber !== 0) {
+            if (gameState.levelNumber !== 0) {
                 mapDiv.style.opacity = 0;
                 clearAnswerOptions();
             }
@@ -309,8 +319,7 @@ function goToNextLevel(e) {
                     'type': 'geojson',
                     'data': neighborhoodData.randomlySelectedNeighborhood
                 });
-    
-                const fillColor = window.config.colors.orange;
+
             
                 map.addLayer({
                     'id': 'neighborhood',
@@ -318,12 +327,12 @@ function goToNextLevel(e) {
                     'source': 'neighborhood',
                     'layout': {},
                     'paint': {
-                        'fill-color': fillColor,
+                        'fill-color': getNeighborhoodShapeColor('config'),
                         'fill-opacity': 1
                     }
                 });
 
-                document.querySelector('#statusBar #level').textContent = `${window.levelNumber} of ${window.config.maxNumLevels}`;
+                document.querySelector('#statusBar #level').textContent = `${gameState.levelNumber} of ${window.config.maxNumLevels}`;
 
                 setTimeout(function() {
                     mapDiv.style.opacity = 1;
@@ -339,7 +348,7 @@ function initalizeMap() {
     const   map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/leomancini/ck7dqwjzu1ezu1jlc9s6ardfc',
-                center: [0, 0], // TODO: Does this work if set to 0, 0 ???
+                center: [0, 0],
                 interactive: false,
                 zoom: 11
             });
@@ -347,14 +356,45 @@ function initalizeMap() {
     return map;
 }
 
+function setTheme(selectedCityConfig) {
+    gameState.theme = selectedCityConfig.theme;
+
+    let themeStyle = document.createElement('style');
+
+    const primaryColor = lookupThemeColorId('primary');
+
+    themeStyle.innerHTML = `
+        #preGameOptionsScreen .boroughCheckboxWrapper.on .toggleSwitch { background: ${primaryColor}!important; }
+        #gameScreen { background: ${lookupThemeColorId('background')}!important; }
+        #questions .correctAnswer { background: ${lookupThemeColorId('correctAnswerBackground')}!important; }
+        #questions .correctAnswer label { color: ${lookupThemeColorId('correctAnswerText')}!important; }
+        #questions .correctAnswer::after { color: ${lookupThemeColorId('correctAnswerIcon')}!important; }
+        #gameOverScreen #shareButton { background: ${primaryColor}!important; }
+    `;
+
+    document.head.appendChild(themeStyle);
+}
+
 async function initalizeGame(selectedCityConfig) {
-    window.levelNumber = 0; // TODO: Add this to gameState
     map = initalizeMap(window.config);
     window.neighborhoodDatabaseWithoutPreviousRandomlySelectedNeighborhoods = await loadNeighborhoodData(selectedCityConfig);
 
     map.on('load', function() {
         map.resize();  
     });
+
+    document.querySelector('#statusBar #info').textContent = selectedCityConfig.displayNameAcronym;
+
+    const optionDivs = document.querySelectorAll('.option');
+    for (const optionDiv of optionDivs) {
+        if (window.deviceType === 'mobile') {
+            optionDiv.addEventListener('touchend', goToNextLevel);
+        } else {
+            optionDiv.addEventListener('click', goToNextLevel);
+        }
+    }
+
+    setTheme(selectedCityConfig);
 
     if (window.deviceType === 'mobile') {
         document.getElementById('startButton').addEventListener('touchend', function() {
@@ -364,15 +404,6 @@ async function initalizeGame(selectedCityConfig) {
         document.getElementById('startButton').addEventListener('click', function() {
             prepareGame(selectedCityConfig);
         });
-    }
-    
-    const optionDivs = document.querySelectorAll('.option');
-    for (const optionDiv of optionDivs) {
-        if (window.deviceType === 'mobile') {
-            optionDiv.addEventListener('touchend', goToNextLevel);
-        } else {
-            optionDiv.addEventListener('click', goToNextLevel);
-        }
     }
 }
 

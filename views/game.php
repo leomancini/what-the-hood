@@ -72,7 +72,7 @@
                                 <input type='checkbox' name='queens' value='Queens' checked='checked' class='boroughCheckbox'>
                                 <img src='resources/images/new-york-city/borough-thumbnails/queens.png' class='boroughCheckboxThumbnail'>
                                 <label for='queens'>Queens</label>
-                                <div class='toggleSwitch on'>
+                                <div class='toggleSwitch'>
                                     <div class='toggleSwitchHandle'></div>
                                 </div>
                             </div>
@@ -106,13 +106,13 @@
             </div>
             <div id='gameScreen'>
                 <div id='preGameLoadingIndicator'>
-                    <div class="loadingio-spinner-spinner-22287q9bq5"><div class="ldio-t7o22lret">
+                    <div class='loadingio-spinner-spinner-22287q9bq5'><div class='ldio-t7o22lret'>
                     <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                     </div></div>
                 </div>
                 <div id='gameScreenContents'>
                     <div id='statusBar'>
-                        <div id='info'>NYC</div> <!-- TODO: Make this based on selectedCityConfig -->
+                        <div id='info'></div>
                         <div id='clock'>
                             <time>00:00</time>
                         </div>
@@ -123,19 +123,19 @@
                             <div id='map'></div>
                         </div>
                     </div>
-                    <div id='questions'> <!-- TODO: Remove letters -->
+                    <div id='questions'>
                         <div id='options'>
                             <div class='option' id='A'>
-                                <span class='letter'>A</span><label></label>
+                                <label></label>
                             </div>
                             <div class='option' id='B'>
-                                <span class='letter'>B</span><label></label>
+                                <label></label>
                             </div>
                             <div class='option' id='C'>
-                                <span class='letter'>C</span><label></label>
+                                <label></label>
                             </div>
                             <div class='option' id='D'>
-                                <span class='letter'>D</span><label></label>
+                                <label></label>
                             </div>
                         </div>
                     </div>
