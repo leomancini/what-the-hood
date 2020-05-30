@@ -21,7 +21,7 @@ function selectGame(tappedGameSelector) {
         }
         
         document.getElementById('bottomLinks').classList.add('hidden');
-        
+
         setTimeout(function() {
             document.getElementById('gameSelectionScreen').classList.add('zoom');
             selectedGameSelector.classList.add('selected');
@@ -42,7 +42,7 @@ function selectGame(tappedGameSelector) {
                     if (selectedCityConfig.preGameOptionsScreen === true) {
                         document.getElementById('preGameOptionsScreen').classList.add('visible');
                     } else {
-                        startGame();
+                        prepareGame(selectedCityConfig);
                     }
                 }, 400);
             }, 200);
