@@ -581,13 +581,13 @@ function stopGame() {
             });
 
             const emailShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#email');
-            emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${gameState.selectedCityConfig.displayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
+            emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${window.config.about.title} ${gameState.selectedCityConfig.displayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
             emailShareButton.addEventListener('click', hideDesktopShareSheet);
 
             const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
             linkShareButton.addEventListener('click', function() {                        
                 const hiddenInputField = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link input');
-                hiddenInputField.value = `${window.config.about.title} ${gameState.selectedCityConfig.displayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}/share/${shareImageShortHash}`;
+                hiddenInputField.value = `${window.config.about.title} ${gameState.selectedCityConfig.displayName} – I got ${gameState.answeredCorrectlyPercentage}% correct and took ${totalTimeFormattedString}! ${window.config.baseURL}/share/${shareImageShortHash}`;
                 hiddenInputField.select();
                 hiddenInputField.setSelectionRange(0, 99999);
 
