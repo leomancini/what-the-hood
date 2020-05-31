@@ -341,7 +341,7 @@ function goToNextLevel(e) {
                     'layout': {},
                     'paint': {
                         'fill-color': getNeighborhoodShapeColor('config'),
-                        'fill-opacity': 1
+                        'fill-opacity': 0.8
                     }
                 });
 
