@@ -33,11 +33,14 @@ function selectGame(tappedGameSelector) {
             setTimeout(function() {
                 selectedGameSelector.classList.add('selectedFullScreen');
                 document.getElementById('gameSelectionScreen').classList.add('gameSelected');
+
+                setTimeout(function() {
+                    // Wait for animation to finish before initalizing game
+                    initalizeGame(selectedCityConfig);
+                }, 200);
                 
                 setTimeout(function() {
                     document.getElementById('gameSelectionScreen').classList.add('done');
-                    
-                    initalizeGame(selectedCityConfig);
                     
                     if (selectedCityConfig.preGameOptionsScreen === true) {
                         document.getElementById('preGameOptionsScreen').classList.add('visible');
