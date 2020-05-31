@@ -40,8 +40,8 @@ function averageGeolocation(coords) {
     let centralLatitude = Math.atan2(z, centralSquareRoot);
 
     return [
-        centralLatitude * 180 / Math.PI,
-        centralLongitude * 180 / Math.PI
+        centralLongitude * 180 / Math.PI,
+        centralLatitude * 180 / Math.PI
     ];
 }
 

@@ -54,6 +54,10 @@
             <span class='link'><a href='https://commons.wikimedia.org/wiki/File:San_Francisco_districts_map.svg' target='_blank' rel='noopener'>Peter Fitzgerald, OpenStreetMap via Wikimedia Commons</a> / <a href='https://creativecommons.org/licenses/by-sa/2.0' target='_blank' rel='noopener'>CC BY-SA</a></span>
             <br>
             <br>
+            <h6>San Francisco Neighborhoods Polygon Data</h6>
+            <span class='link'><a href='https://data.sfgov.org/Geographic-Locations-and-Boundaries/SF-Find-Neighborhoods/pty2-tcw4' target='_blank' rel='noopener'>DataSF | San Francisco Open Data</a></span>
+            <br>
+            <br>
             <h6>Background Maps</h6>
             <span class='link'><a href='https://www.mapbox.com/' target='_blank' rel='noopener'>Mapbox</a></span>
             <br>
