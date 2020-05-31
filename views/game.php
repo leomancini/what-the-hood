@@ -13,7 +13,7 @@
             gtag('config', 'UA-112757234-6');
         </script>
         <title><?php echo $config['about']['title']; ?></title>
-        <link rel='stylesheet/less' href='resources/css/game.less<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'>
+        <link rel='stylesheet/less' href='resources/css/game.less<?php if($config['environment'] === 'development') { echo '?hash='.rand(0, 9999); } ?>'>
         <script src='resources/js/lib/less.js'></script>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <meta charset='UTF-8'>
@@ -188,8 +188,8 @@
         <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' />
         <script src='resources/js/functions.js'></script>
         <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
-        <script src='resources/js/index.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
-        <script src='resources/js/game.js<?php if($environment === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
+        <script src='resources/js/index.js<?php if($config['environment'] === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
+        <script src='resources/js/game.js<?php if($config['environment'] === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
         <script>
             window.fbAsyncInit = function() {
                 FB.init({

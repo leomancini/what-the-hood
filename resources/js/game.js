@@ -426,7 +426,7 @@ function checkNeighborhoodDataLoaded(selectedCityConfig) {
     if (gameState.neighborhoodDataLoaded) {
         hideLoadingIndicatorAndStartGame(selectedCityConfig);
     } else {
-        const delayToShowPreGameLoadingIndicator = 300;
+        const delayToShowPreGameLoadingIndicator = 1300;
         if (!preGameLoadingIndicatorVisible) {
             setTimeout(function() {
                 document.getElementById('preGameLoadingIndicator').classList.add('visible');
