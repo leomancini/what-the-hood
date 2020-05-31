@@ -32,7 +32,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>What the Hood?</title>
+        <title><?php echo $config['about']['title']; ?></title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <?php if ($shareImageMatched) { ?>
             <meta property='og:title' content='<?php echo $config['about']['title']; ?>' />
