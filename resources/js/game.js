@@ -420,19 +420,20 @@ async function initalizeGame(selectedCityConfig) {
     }
 }
 
-let preGameLoadingIndicatorVisible = false;
+let preGameLoadingIndicatorRequiredOrSkipped = false;
 
 function checkNeighborhoodDataLoaded(selectedCityConfig) {
     if (gameState.neighborhoodDataLoaded) {
+        preGameLoadingIndicatorRequiredOrSkipped = true;
         hideLoadingIndicatorAndStartGame(selectedCityConfig);
     } else {
-        const delayToShowPreGameLoadingIndicator = 1300;
-        if (!preGameLoadingIndicatorVisible) {
-            setTimeout(function() {
+        const delayToShowPreGameLoadingIndicator = 500;
+        setTimeout(function() {
+            if (!preGameLoadingIndicatorRequiredOrSkipped) {
                 document.getElementById('preGameLoadingIndicator').classList.add('visible');
-                preGameLoadingIndicatorVisible = true;
-            }, delayToShowPreGameLoadingIndicator);
-        }
+                preGameLoadingIndicatorRequiredOrSkipped = true;
+            }
+        }, delayToShowPreGameLoadingIndicator);
 
         const intervalForCheckNeighborhoodDataLoaded = 100;
         setTimeout(function() {
@@ -448,7 +449,7 @@ function startGame(selectedCityConfig) {
         window.selectedBoroughs = getSelectedBoroughs();
         gameState.citySpecficMetrics.newYorkCity.selectedBoroughs = window.selectedBoroughs;
     }
-    
+
     window.scrollTo(0, 0);
 
     goToNextLevel();
@@ -457,7 +458,7 @@ function startGame(selectedCityConfig) {
 function hideLoadingIndicatorAndStartGame(selectedCityConfig) {
     const preGameLoadingIndicator = document.getElementById('preGameLoadingIndicator');
 
-    if (preGameLoadingIndicator.classList.contains('visible')) {
+    if (preGameLoadingIndicatorRequiredOrSkipped) {
         preGameLoadingIndicator.classList.remove('visible');
 
         const delayToStartGameIfPreGameLoadingIndicatorWasVisible = 300;
