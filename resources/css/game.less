@@ -184,18 +184,23 @@ html, body {
 
                         .betaLabel,
                         .comingSoonLabel {
-                            color: rgba(0, 0, 0, 0.5);
                             display: inline-block;
                             border-radius: @border-radius;
                             font-weight: normal;
-                            font-size: 18px;
                             margin-left: 25px;
                             margin-top: 10px;
                         }
 
                         .betaLabel {
+                            vertical-align: 1px;
+                            font-size: 16px;
                             color: rgba(255, 255, 255, 0.4);
-                            letter-spacing: 1px;
+                            letter-spacing: 1.5px;
+                        }
+
+                        .comingSoonLabel {
+                            font-size: 18px;
+                            color: rgba(0, 0, 0, 0.5);
                         }
                     }
     
@@ -882,7 +887,7 @@ html, body {
                                 }
 
                                 .icon {
-                                    background: @dark-gray!important;
+                                    background: rgba(0, 0, 0, 0.7)!important;
                                     color: @white!important;
                                 }
                             }
