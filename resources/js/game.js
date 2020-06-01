@@ -325,6 +325,7 @@ function goToNextLevel(e) {
                 if(map.getLayer('neighborhood')) map.removeLayer('neighborhood');
                 if(map.getSource('neighborhood')) map.removeSource('neighborhood');
         
+                // TODO: Set zoom level to fit neighborhood shape
                 map.setZoom(gameState.selectedCityConfig.zoomLevel);
 
                 map.setCenter(mapCenter);
@@ -383,6 +384,7 @@ function setTheme(selectedCityConfig) {
         #questions .correctAnswer label { color: ${lookupThemeColorId('correctAnswerText')}!important; }
         #questions .correctAnswer::after { color: ${lookupThemeColorId('correctAnswerIcon')}!important; }
         #gameOverScreen #shareButton { background: ${primaryColor}!important; }
+        #statusBar #info, #statusBar #level { color: ${lookupThemeColorId('statusBarText')}!important; }
     `;
 
     document.head.appendChild(themeStyle);

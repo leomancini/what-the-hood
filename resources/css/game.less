@@ -102,6 +102,23 @@ html, body {
                         opacity: 0.3;
                     }
     
+                    &.beta {
+                        background: #2D2D2D;
+
+                        .gameSelectorContents {
+                            opacity: 0.8;
+                            color: @white;
+
+                            img {
+                                display: none;
+                            }
+
+                            .playButton {
+                                background: rgba(255, 255, 255, 0.3);
+                            }
+                        }
+                    }
+
                     &:active {
                         transform: scale(0.95);
                     }
@@ -164,8 +181,9 @@ html, body {
                             margin-left: 25px;
                             margin-top: 20px;
                         }
-    
-                        .comingSoon {
+
+                        .betaLabel,
+                        .comingSoonLabel {
                             color: rgba(0, 0, 0, 0.5);
                             display: inline-block;
                             border-radius: @border-radius;
@@ -173,6 +191,11 @@ html, body {
                             font-size: 18px;
                             margin-left: 25px;
                             margin-top: 10px;
+                        }
+
+                        .betaLabel {
+                            color: rgba(255, 255, 255, 0.4);
+                            letter-spacing: 1px;
                         }
                     }
     
@@ -513,7 +536,7 @@ html, body {
                         position: absolute;
                         font-size: 18px;
                         line-height: 20px;
-                        color: rgba(0, 0, 0, 0.5);
+                        opacity: 0.5;
                         font-weight: normal;
                     }
         
@@ -891,7 +914,7 @@ html, body {
                                 width: 48px;
                                 height: 48px;
                                 border-radius: 56px;
-                                background: gray;
+                                background: @gray;
                                 margin: 0 auto;
                                 overflow: hidden;
                                 transition: all 0.2s;
