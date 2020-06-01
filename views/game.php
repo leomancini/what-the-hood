@@ -36,12 +36,15 @@
         <div id='container'>
             <div id='gameSelectionScreen'>
                 <div id='gameSelectionScreenContents'>
+                    <?php
+                        $enabledType = 'enabledBeta';
+                    ?>
                     <?php foreach($config['cities'] as $city) { ?>
-                        <div class='gameSelector <?php echo $city['enabled'] === true ? 'enabled' : 'disabled' ?>' id='<?php echo $city['id']; ?>'>
+                        <div class='gameSelector <?php echo $city[$enabledType] === true ? 'enabled' : 'disabled' ?>' id='<?php echo $city['id']; ?>'>
                             <div class='gameSelectorContents'>
                                 <h1><?php echo $city['displayNameFormatted']; ?></h1>
                                 <img src='resources/images/<?php echo $city['id']; ?>/city-thumbnail.png' class='city-thumbnail'>
-                                <?php if ($city['enabled'] === true) { ?>
+                                <?php if ($city[$enabledType] === true) { ?>
                                     <div class='playButton'>Play</div>
                                 <?php } else { ?>
                                     <div class='comingSoon'>Coming Soon</div>
