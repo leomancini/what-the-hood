@@ -409,8 +409,6 @@ async function initalizeGame(selectedCityConfig) {
         }
     }
 
-    setTheme(selectedCityConfig);
-
     if (window.deviceType === 'mobile') {
         document.getElementById('startButton').addEventListener('touchend', function() {
             prepareGame(selectedCityConfig);

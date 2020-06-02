@@ -4,6 +4,8 @@ function selectGame(tappedGameSelector) {
     if (selectedGameSelector.classList.contains('enabled')) {
         const selectedCityConfig = getCityConfig(selectedGameSelector.getAttribute('id'));
 
+        setTheme(selectedCityConfig);
+        
         const gameSelectors = document.querySelectorAll('.gameSelector');
     
         for (const gameSelector of gameSelectors) {
@@ -29,7 +31,7 @@ function selectGame(tappedGameSelector) {
             }
     
             selectedGameSelector.style.top = `${document.querySelector('#gameSelectionScreen').scrollTop}px`;
-    
+
             setTimeout(function() {
                 selectedGameSelector.classList.add('selectedFullScreen');
                 document.getElementById('gameSelectionScreen').classList.add('gameSelected');
