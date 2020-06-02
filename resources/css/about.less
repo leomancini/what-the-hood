@@ -13,13 +13,14 @@ html, body {
     #about {
         background: @black;
         margin: 0;
-        padding: 150px 30px;
+        padding: 150px @standard-padding;
         color: @white;
         line-height: 20px;
         position: absolute;
 
         @media @desktop {
             .desktop();
+            margin-left: (@desktop-width + (@standard-padding * 2)) / -2;
         }
 
         @media @mobile {
