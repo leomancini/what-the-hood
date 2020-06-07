@@ -102,6 +102,15 @@ function renderGameSelectors() {
             + document.getElementById('bottomLinks').offsetHeight
             + gameSelectionScreenContentsPaddingBottom;
     
+    console.log('gameSelectionScreenContentsPaddingTop', gameSelectionScreenContentsPaddingTop);
+    console.log('gameSelectorIndex', gameSelectorIndex);
+    console.log('Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight)', Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight));
+    console.log('gameSelectorCardHeight', gameSelectorCardHeight);
+    console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
+    console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
+    console.log('document.getElementById(bottomLinks).offsetHeight', document.getElementById('bottomLinks').offsetHeight);
+    console.log('gameSelectionScreenContentsPaddingBottom', gameSelectionScreenContentsPaddingBottom);
+
     if (gameSelectionScreenContentsHeight > window.innerHeight) {
         document.getElementById('gameSelectionScreenContents').style.height = `${gameSelectionScreenContentsHeight}px`;
     } else {
@@ -131,7 +140,7 @@ function toggleBoroughCheckbox(e) {
 
 function getSelectedBoroughs() {
     var selectedBoroughs = [];
-    
+
     var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
     
     for (var i = 0; i < checkboxes.length; i++) {
