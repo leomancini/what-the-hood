@@ -93,13 +93,15 @@ function renderGameSelectors() {
 
     document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
+    const bottomLinksHeight = 50;
+
     const gameSelectionScreenContentsHeight = 
         gameSelectionScreenContentsPaddingTop
             + (
                 (gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom))
                 + gameSelectorCardMarginBottom
             )
-            + document.getElementById('bottomLinks').offsetHeight
+            + bottomLinksHeight
             + gameSelectionScreenContentsPaddingBottom;
     
     console.log('gameSelectionScreenContentsPaddingTop', gameSelectionScreenContentsPaddingTop);
@@ -108,7 +110,7 @@ function renderGameSelectors() {
     console.log('gameSelectorCardHeight', gameSelectorCardHeight);
     console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
     console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
-    console.log('document.getElementById(bottomLinks).offsetHeight', document.getElementById('bottomLinks').offsetHeight);
+    console.log('bottomLinksHeight', bottomLinksHeight);
     console.log('gameSelectionScreenContentsPaddingBottom', gameSelectionScreenContentsPaddingBottom);
 
     if (gameSelectionScreenContentsHeight > window.innerHeight) {
