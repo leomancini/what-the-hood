@@ -131,6 +131,7 @@ function toggleBoroughCheckbox(e) {
 
 function getSelectedBoroughs() {
     var selectedBoroughs = [];
+    
     var checkboxes = document.querySelectorAll('input[type=checkbox].boroughCheckbox:checked');
     
     for (var i = 0; i < checkboxes.length; i++) {
