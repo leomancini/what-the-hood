@@ -1,3 +1,5 @@
+let aboutScreenContentsPaddingTopAndBottom = 0;
+
 if (window.deviceType === 'desktop') {
     aboutScreenContentsPaddingTopAndBottom = 120;
 }
