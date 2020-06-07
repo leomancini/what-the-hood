@@ -75,6 +75,8 @@
             <br>
             <br>
             <br>
+            <script src='resources/js/functions.js'></script>
+            <script src='resources/js/about.js<?php if($config['environment'] === 'development') { echo '?hash='.rand(0, 9999); } ?>'></script>
         </div>
     </body>
 </html>

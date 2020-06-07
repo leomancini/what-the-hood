@@ -72,7 +72,8 @@ function renderPreGameOptionsScreen(selectedCityConfig) {
 function renderGameSelectors() {
     const   gameSelectors = document.querySelectorAll('.gameSelector'),
             gameSelectorCardHeight = Math.round(window.innerHeight / 3),
-            gameSelectorCardMarginBottom = 30;
+            gameSelectorCardMarginBottom = 30,
+            bottomLinksHeight = 50;
 
     let     gameSelectorIndex = 0,
             gameSelectionScreenContentsPaddingTop = 0,
@@ -93,8 +94,6 @@ function renderGameSelectors() {
 
     document.getElementById('bottomLinks').style.top = `${((gameSelectorIndex * (Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight) + gameSelectorCardMarginBottom)) + gameSelectorCardMarginBottom) + gameSelectionScreenContentsPaddingTop}px`;
 
-    const bottomLinksHeight = 50;
-
     const gameSelectionScreenContentsHeight = 
         gameSelectionScreenContentsPaddingTop
             + (
@@ -103,15 +102,6 @@ function renderGameSelectors() {
             )
             + bottomLinksHeight
             + gameSelectionScreenContentsPaddingBottom;
-    
-    console.log('gameSelectionScreenContentsPaddingTop', gameSelectionScreenContentsPaddingTop);
-    console.log('gameSelectorIndex', gameSelectorIndex);
-    console.log('Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight)', Math.clip(gameSelectorCardHeight, 184, gameSelectorCardHeight));
-    console.log('gameSelectorCardHeight', gameSelectorCardHeight);
-    console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
-    console.log('gameSelectorCardMarginBottom', gameSelectorCardMarginBottom);
-    console.log('bottomLinksHeight', bottomLinksHeight);
-    console.log('gameSelectionScreenContentsPaddingBottom', gameSelectionScreenContentsPaddingBottom);
 
     if (gameSelectionScreenContentsHeight > window.innerHeight) {
         document.getElementById('gameSelectionScreenContents').style.height = `${gameSelectionScreenContentsHeight}px`;
