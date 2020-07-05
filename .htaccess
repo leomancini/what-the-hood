@@ -34,3 +34,8 @@ Options -Indexes
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/xml
 </IfModule>
+
+<Files "config.json">  
+  Order Allow,Deny
+  Deny from all
+</Files>
