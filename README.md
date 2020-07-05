@@ -5,9 +5,6 @@
 
 <br>
 
----
-<br>
-
 #### Credits
 <h6>New York City Neighborhoods Polygon Data</h6>
 <span class='link'><a href='https://www.google.com/maps/d/u/1/viewer?hl=en&ll=40.70476551690573%2C-73.97829884999999&z=10&mid=1_gsxJNfmcGZI4ZL_7LnEHj72YpvgNq-w' target='_blank' rel='noopener'>NYC Neighborhoods Map</a></span>
