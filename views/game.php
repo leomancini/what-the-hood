@@ -26,6 +26,11 @@
         <meta property='og:image:height' content='630' />
         <meta property='og:image:url' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest6.png' />
         <meta property='og:image' content='<?php echo $config['baseURL']?>/resources/images/share/linkPreview/facebookTest6.png' />
+        <meta name='twitter:card' content='summary_large_image'>
+        <meta name='twitter:site' content='@leomancini'>
+        <meta name='twitter:creator' content='@leomancini'>
+        <meta name='twitter:title' content='<?php echo $config['about']['title']; ?>'>
+        <meta name='twitter:description' content='<?php echo $config['about']['shortDescription']; ?>'>
     </head>
     <body ontouchstart=''>
         <div id='preloadImages'>
