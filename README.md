@@ -1,6 +1,6 @@
 ![screenshot](https://github.com/leomancini/what-the-hood/blob/master/screenshots/socialShare.png)
 
-## Live at [whatthehood.city](https://whatthehood.city) / More info at [leomancini.net/what-the-hood](https://leomancini.net/what-the-hood)
+### Live at [whatthehood.city](https://whatthehood.city) / More info at [leomancini.net/what-the-hood](https://leomancini.net/what-the-hood)
 
 #### Credits
 <h6>New York City Neighborhoods Polygon Data</h6>
