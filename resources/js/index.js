@@ -49,6 +49,13 @@ function selectGame(tappedGameSelector) {
                     } else {
                         prepareGame(selectedCityConfig);
                     }
+
+                    // Disable other game selectors (iOS Safari doesn't seem to respect pointer-events: none to disable)
+                    const gameSelectors = document.querySelectorAll('.gameSelector');
+
+                    for (const gameSelector of gameSelectors) {
+                        gameSelector.removeEventListener('click', selectGame);
+                    }
                 }, 400);
             }, 200);
         }, 400);
