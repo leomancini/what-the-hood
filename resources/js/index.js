@@ -54,7 +54,9 @@ function selectGame(tappedGameSelector) {
                     const gameSelectors = document.querySelectorAll('.gameSelector');
 
                     for (const gameSelector of gameSelectors) {
-                        gameSelector.remove();
+                        if (gameSelector !== selectedGameSelector) {
+                            gameSelector.remove();
+                        }
                     }
                 }, 400);
             }, 200);
