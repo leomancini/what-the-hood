@@ -561,13 +561,13 @@ function stopGame() {
         document.getElementById('shareButton').classList.add('shareImageURLReady');
 
         if (navigator.share) {
-            document.getElementById('shareButton').addEventListener('touchend', function() {
-                showMobileShareSheet(shareImageShortHash);;
+            document.getElementById('shareButton').addEventListener(window.deviceType === 'mobile' ? 'touchend' : 'click', function() {
+                showSystemShareSheet(shareImageShortHash);;
             });
         } else {
             const twitterShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#twitter');
             twitterShareButton.href = `https://twitter.com/intent/tweet?text=${window.config.about.title} ${gameState.selectedCityConfig.displayName} – I got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}! ${window.config.baseURL}`;
-            twitterShareButton.addEventListener('click', hideDesktopShareSheet);
+            twitterShareButton.addEventListener('click', hideCustomShareSheet);
 
             const facebookShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#facebook');
             facebookShareButton.addEventListener('click', function() {
@@ -577,12 +577,12 @@ function stopGame() {
                     href: `${window.config.baseURL}/share/${shareImageShortHash}`,
                 });
 
-                hideDesktopShareSheet();
+                hideCustomShareSheet();
             });
 
             const emailShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#email');
             emailShareButton.href = `mailto:?subject=${window.config.about.titleAndShortDescription}&body=${window.config.about.title} ${gameState.selectedCityConfig.displayName}%0D%0A%0D%0AI got ${gameState.answeredCorrectlyPercentage}${encodeURIComponent('%')} correct and took ${encodeURIComponent(totalTimeFormattedString)}!%0D%0A%0D%0APlay: ${window.config.baseURL}`;
-            emailShareButton.addEventListener('click', hideDesktopShareSheet);
+            emailShareButton.addEventListener('click', hideCustomShareSheet);
 
             const linkShareButton = document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link');
             linkShareButton.addEventListener('click', function() {                        
@@ -601,13 +601,13 @@ function stopGame() {
                     document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents .optionContainer#link .label').innerHTML = 'Copy Link';
 
                     setTimeout(function() {
-                        hideDesktopShareSheet();
+                        hideCustomShareSheet();
                     }, 200);
                 }, 500);
             });
 
             document.getElementById('shareButton').addEventListener('click', function() {
-                showDesktopShareSheet();
+                showCustomShareSheet();
             });
         }
     });
@@ -618,28 +618,32 @@ function stopGame() {
     }, delayToShowGameOverScreen);
 }
 
-function showMobileShareSheet(shareImageShortHash) {
-    navigator.share({
-        title: `${window.config.about.titleAndShortDescription}`,
-        url: `${window.config.baseURL}/share/${shareImageShortHash}`,
-    });
+function showSystemShareSheet(shareImageShortHash) {
+    try {
+        navigator.share({
+            title: `${window.config.about.titleAndShortDescription}`,
+            url: `${window.config.baseURL}/share/${shareImageShortHash}`,
+        });
+    } catch (err) {
+        console.error('Error sharing:', err);
+    }
 }
 
-function hideDesktopShareSheet() {
+function showCustomShareSheet() {
+    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', hideCustomShareSheet);
+
+    document.getElementById('shareSheetDesktopContainer').classList.add('visible');
+    document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');
+    document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.add('visible');
+}
+
+function hideCustomShareSheet() {
     document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.remove('visible');
     document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.remove('visible');
 
     setTimeout(function() {
         document.getElementById('shareSheetDesktopContainer').classList.remove('visible');
     }, 200);
-}
-
-function showDesktopShareSheet() {
-    document.querySelector('#shareSheetDesktopContainer #modalContainer #modalContents #cancelButton').addEventListener('click', hideDesktopShareSheet);
-
-    document.getElementById('shareSheetDesktopContainer').classList.add('visible');
-    document.querySelector('#shareSheetDesktopContainer #backgroundOverlay').classList.add('visible');
-    document.querySelector('#shareSheetDesktopContainer #modalContainer').classList.add('visible');
 }
 
 function toggleBoroughScoreRowsScoreDisplayType(e) {
